@@ -10,6 +10,7 @@ const path = require('path');
 
 const HomeBannerRoutes = require('./routes/HomeBannerRoutes') 
 const ServiceRoute = require('./routes/ServiceRoute') 
+const UserRoute = require('./routes/UserRoute') 
 
 
 
@@ -30,7 +31,7 @@ mongoose.connect(env.MONGOOSE_URI)
 // ******** admin routes *************
 app.use(HomeBannerRoutes)
 app.use(ServiceRoute)
-
+app.use(UserRoute)
 
 
 // serve static image from users folder in the server to frontend

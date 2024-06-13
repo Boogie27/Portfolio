@@ -1,5 +1,5 @@
 import './css/Style.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Navigation from './navigation/Navigation'
 import DashBoard from './dashboard/DashBoard'
@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Preloader from './preloader/Preloader'
 import Services from './services/Services'
+import Login from './auto/Login'
 
 
 
@@ -18,6 +19,7 @@ import Services from './services/Services'
 
 const Admin = () => {
     const [theme, setTheme] = useState('dark')
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [isLoading, setIsLoading] = useState({ state: true, text: 'Loading...'})
    
 
@@ -53,13 +55,14 @@ const Admin = () => {
   return (
     <div className={`admin-container ${theme}`}>
         { isLoading.state ? (<Preloader text={isLoading.text}/>) : null }
-        <Navigation theme={theme} setTheme={setTheme}/>
+        { isLoggedIn ? (<Navigation theme={theme} setTheme={setTheme}/>) : null }
         <Routes>
             <Route path="/dashboard" element={<DashBoard/>}/>
+            <Route path="/dashboard/login" element={<Login/>}/>
             <Route path="/dashboard/services" element={<Services preloader={preloader} alertNotification={alertNotification}/> }/>
             <Route path="/dashboard/banner" element={<Banner preloader={preloader} alertNotification={alertNotification}/>}/>
         </Routes>
-        <ToastContainer />
+        <ToastContainer/>
     </div>
   )
 }

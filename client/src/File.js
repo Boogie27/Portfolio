@@ -58,8 +58,13 @@ const icon = (string) => {
 const portfolio_img = (string) => {
     return ClientUrl('/asset/image/portfolio/' + string)
 }
+
 const preloader = (string) => {
     return ClientUrl('/asset/image/preloader/' + string)
+}
+
+const auth_image = (string) => {
+    return ClientUrl('/asset/image/auth/' + string)
 }
 
 
@@ -80,6 +85,7 @@ export {
     url,
     icon,
     page,
+    auth_image,
     userImage,
     preloader,
     user_image,
