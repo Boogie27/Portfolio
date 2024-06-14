@@ -58,7 +58,7 @@ const Admin = () => {
         { isLoggedIn ? (<Navigation theme={theme} setTheme={setTheme}/>) : null }
         <Routes>
             <Route path="/dashboard" element={<DashBoard/>}/>
-            <Route path="/dashboard/login" element={<Login/>}/>
+            <Route path="/dashboard/login" element={<Login preloader={preloader} alertNotification={alertNotification}/>}/>
             <Route path="/dashboard/services" element={<Services preloader={preloader} alertNotification={alertNotification}/> }/>
             <Route path="/dashboard/banner" element={<Banner preloader={preloader} alertNotification={alertNotification}/>}/>
         </Routes>

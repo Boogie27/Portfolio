@@ -81,6 +81,9 @@ h1{
     transition: all 0.3s ease;
     text-transform: uppercase;
 }
+.top-navigation-container .inner-navigation .navigation-middle ul li a{
+    color: #333;
+}
 .top-navigation-container .inner-navigation .navigation-middle ul li:hover{
     color: #FDB813;
 }
@@ -118,6 +121,9 @@ h1{
 .admin-container.dark .top-navigation-container .inner-navigation .icon.moon,
 .admin-container.dark .top-navigation-container .inner-navigation .icon:hover{
     color: #FDB813;
+}
+.admin-container.dark .top-navigation-container .inner-navigation .navigation-middle ul li a{
+    color: #ccc;
 }
 @media only screen and (max-width: 1400px){
     .top-navigation-container .inner-navigation{
@@ -892,7 +898,7 @@ h1{
     cursor: pointer;
     color: #737373;
     margin-left: 20px;
-    font-size: 22px;
+    font-size: 25px;
     position: relative;
 }
 .auth-container .login-form .form-extra .left .icon.active{

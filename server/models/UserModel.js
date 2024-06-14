@@ -5,15 +5,12 @@ const mongoose = require('mongoose')
 const userSchema  = new mongoose.Schema({
     first_name: {
         type: String,
-        required: true
     },
     last_name: {
         type: String,
-        required: true
     },
     middle_name: {
         type: String,
-        required: true
     },
     email: {
         type: String,
@@ -25,30 +22,27 @@ const userSchema  = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: true
     },
     phone_one: {
         type: String,
-        required: true
     },
     phone_two: {
         type: String,
-        required: true
     },
     address: {
         type: String,
-        required: true
     },
     postcode: {
         type: String,
-        required: true
     },
     town: {
         type: String,
-        required: true
     },
     country: {
         type: String,
+    },
+    is_active: {
+        type: Number,
         required: true
     },
     created_at: {
