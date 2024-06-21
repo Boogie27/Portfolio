@@ -9,13 +9,21 @@ import {
 
 
 const SideNavigation = ({ theme, sideNav, toggleNavigation, toggleAppTheme}) => {
+
+  const aboutUs = {
+    title: "MY RECENT PORTFOLIO",
+    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore et magna aliqua. Ut enim ad minim veniam laboris.",
+}
+
+
+
   return (
     <div className={`side-navigation-container ${sideNav ? 'active' : ''}`}>
       <div onClick={() => toggleNavigation()} className="dark-skin"></div>
       <div className="side-navigation-body">
         <TitleHeader theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
         <div className="side-nav-content">
-          <AboutUs/>
+          <AboutUs aboutUs={aboutUs}/>
           <ContactUs/>
         </div>
       </div>
@@ -49,16 +57,14 @@ const TitleHeader = ({ theme, toggleNavigation, toggleAppTheme}) => {
 
 
 
-const AboutUs = () => {
+const AboutUs = ({aboutUs}) => {
   return (
       <div className="about-us">
           <div className="title">
-            <h3>About Me</h3>
+            {aboutUs.title ? (<h3>About Me</h3>) : null }
           </div>
           <div className="description">
-            Lorem ipsum dolor sit amet, consectetur elit, 
-            sed do eiusmod tempor incididunt ut labore et magna 
-            aliqua. Ut enim ad minim veniam laboris.
+            {aboutUs.text}
           </div>
       </div>
   )

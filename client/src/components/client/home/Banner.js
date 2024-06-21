@@ -80,7 +80,7 @@ const ContentLeft = ({homeBanners}) => {
 
 
 const ContentRight = ({homeBanners}) => {
-  const image = homeBanners.image ? homeBanners.image : 'demo.jpg'
+  const image = homeBanners.image ? homeBanners.image : 'demo.png'
   return (
     <div className="content-right">
       <div className="image">

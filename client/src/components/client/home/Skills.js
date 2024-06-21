@@ -1,17 +1,111 @@
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { icon } from '../../../File'
-
+import HTMLReactParser from 'html-react-parser'
 
 
 
 
 const Skills = () => {
+    const header = {
+        title: "MY SKILLS & RATINGS",
+        header_one: "Showcasing talent",
+        header_two: "amplifying your impact",
+    }
+
+    const mySkils = [
+        {
+            title: "HTML",
+            image: "html.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 90,
+        },
+        {
+            title: "CSS",
+            image: "css.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 80,
+        },
+        {
+            title: "JAVASCRIPT",
+            image: "html.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 100,
+        },
+        {
+            title: "Jquery",
+            image: "jquery.webp",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 100,
+        },
+        {
+            title: "PHP",
+            image: "php.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 100,
+        },
+        {
+            title: "LARAVEL",
+            image: "laravel.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 80,
+        },
+        {
+            title: "REACT",
+            image: "react.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 70,
+        },
+        {
+            title: "NodeJS",
+            image: "nodejs.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 100,
+        },
+        {
+            title: "MongoDB",
+            image: "mongo-db.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 70,
+        },
+        {
+            title: "RESTAPI",
+            image: "rest-api.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 50,
+        },
+        {
+            title: "Redux",
+            image: "redux.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 60,
+        },
+        {
+            title: "Git",
+            image: "git.png",
+            duration: "2021 - 2024",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            rating: 80,
+        },
+    ] 
+
+
   return (
     <div className="skills-container">
         <div className="inner-skills">
-            <TitleHeader/>
-            <Content/>
+            <TitleHeader header={header}/>
+            <Content mySkils={mySkils}/>
             <ContentRatings/>
         </div>
     </div>
@@ -24,13 +118,13 @@ export default Skills
 
 
 
-const TitleHeader = () => {
+const TitleHeader = ({header}) => {
     return (
         <div className="title-header">
-            <h3>MY SKILLS & RATINGS</h3>
+            { header.title ? (<h3>{header.title}</h3>) : null }
             <div className="title">
-                <h1>Showcasing talent</h1>
-                <h1>amplifying your impact</h1>
+                { header.header_one ? (<h1>{header.header_one}</h1>) : null }
+                { header.header_two ? (<h1>{header.header_two}</h1>) : null }
             </div>
         </div>
     )
@@ -38,21 +132,15 @@ const TitleHeader = () => {
 
 
 
-const Content = () => {
+const Content = ({mySkils}) => {
     return (
         <div className="content">
             <Row className="show-grid">
-                <ContentItem  rate={85} title={'html'} image={'html.png'} date={'2021-2024'}/>
-                <ContentItem  rate={95} title={'css'} image={'css.png'} date={'2021-2024'}/>
-                <ContentItem  rate={70} title={'Javascript'} image={'js.webp'} date={'2021-2024'}/>
-                <ContentItem  rate={40} title={'Jquery'} image={'jquery.webp'} date={'2021-2024'}/>
-                <ContentItem  rate={60} title={'Php'} image={'php.png'} date={'2021-2024'}/>
-                <ContentItem  rate={85} title={'Laravel'} image={'laravel.png'} date={'2021-2024'}/>
-                <ContentItem  rate={70} title={'NodeJs'} image={'nodejs.png'} date={'2021-2024'}/>
-                <ContentItem  rate={20} title={'MongoDB'} image={'mongo-db.png'} date={'2021-2024'}/>
-                <ContentItem  rate={85} title={'RestAPI'} image={'rest-api.png'} date={'2021-2024'}/>
-                <ContentItem  rate={90} title={'Redux'} image={'redux.png'} date={'2021-2024'}/>
-                <ContentItem  rate={85} title={'Git'} image={'git.png'} date={'2021-2024'}/>
+                {
+                    mySkils.map((skill, index) => (
+                        <ContentItem  key={index} text={skill.text} rate={skill.rating} title={skill.title} image={skill.image} date={skill.duration}/>
+                    ))
+                }
             </Row>
         </div>
     )
@@ -62,7 +150,7 @@ const Content = () => {
 
 
 
-const ContentItem = ({title, image, date, rate}) => {
+const ContentItem = ({title, text, image, date, rate}) => {
     return (
         <Col xs={12} sm={12} md={6} lg={4} xl={4}>
             <div className="content-item">
@@ -76,10 +164,7 @@ const ContentItem = ({title, image, date, rate}) => {
                     <div className="title">
                         <h3>{title}</h3>
                     </div>
-                    <div className="description">
-                        Nemo enim ipsam voluptatem quia voluptas sit aspernatur 
-                        aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem
-                    </div>
+                    <div className="description">{ text ? (HTMLReactParser(text)) : null }</div>
                     <div className="ratings">
                        <div style={{ width: `${rate}%` }} className="bar"></div> 
                     </div>

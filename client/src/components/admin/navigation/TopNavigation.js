@@ -33,8 +33,10 @@ export default TopNavigation
 const NavigationLeft = () => {
     return (
       <div className="navigation-left">
-        <div className="logo"></div>
-        <div className="title">Dash<span>board</span></div>
+        <NavLink to="/">
+          <div className="logo"></div>
+          <div className="title">Dash<span>board</span></div>
+        </NavLink>
       </div>
     )
 }

@@ -6,7 +6,7 @@ import {
   faBriefcase,
   faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons'
-
+import HTMLReactParser from 'html-react-parser'
 
 
 
@@ -14,15 +14,28 @@ import {
 
 
 const GetInTouch = () => {
+
+    const contactMe = {
+        form_title: "Contact Me?",
+        form_text: "For your car we will do everything advice design in us repairs and maintenance We are the some preferred",
+        header: "and Innovation",
+        span: "Design",
+        text: "For your car we will do everything For your car we will do everything advice design in us repairs and maintenance We are the some preferred advice design in us repairs and maintenance We are the some preferred",
+        project_count: "100",
+        review_count: "400",
+    }
+
+
+
   return (
     <div className="get-in-touch-container">
        <div className="inner-get-in-touch">
             <Row className="show-grid">
                 <Col xs={12} sm={12} md={12} lg={12} xl={6}>
-                    <ContentLeft/>
+                    <ContentLeft contactMe={contactMe}/>
                 </Col>
                 <Col xs={12} sm={12} md={12} lg={12} xl={6}>
-                    <ContentRight/>
+                    <ContentRight contactMe={contactMe}/>
                 </Col>
             </Row>
         </div>
@@ -36,21 +49,22 @@ export default GetInTouch
 
 
 
-const ContentLeft = () => {
+const ContentLeft = ({contactMe}) => {
     return (
         <div className="content-left">
             <div className="title-header">
-                <h1><span>Design</span> and Innovation</h1>
+                <h1>
+                    { contactMe.span ? (<span>{contactMe.span} </span>) : null }
+                    { contactMe.header ? (contactMe.header) : null }
+                </h1>
             </div>
             <div className="body">
-                Nemo design enim ipsam voluptatem quim 
-                voluptas sit aspernatur aut odit auting fugit sed thisnquia 
-                consequuntur magni dolores eos designer heresm qui ratione
+                {contactMe.text ? (HTMLReactParser(contactMe.text)) : null }
             </div>
             <div className="bottom-content">
             <Row className="show-grid">
-                <BottomContent counter={'100k+'} description={'Completed Projects'} icon={faBriefcase}/>
-                <BottomContent counter={'400k+'} description={'Client Reviews'} icon={faMagnifyingGlass}/>
+                <BottomContent counter={contactMe.project_count} description={'Completed Projects'} icon={faBriefcase}/>
+                <BottomContent counter={contactMe.review_count} description={'Client Reviews'} icon={faMagnifyingGlass}/>
             </Row>
             </div>
         </div>
@@ -69,7 +83,7 @@ const BottomContent = ({counter, description, icon}) => {
                     <li>
                         <FontAwesomeIcon className="icon" icon={icon} />
                     </li>
-                    <li className="counter">{counter}</li>
+                    <li className="counter">{counter + 'K+'}</li>
                     <li className="description">{description}</li>
                 </ul>
             </div>
@@ -79,15 +93,12 @@ const BottomContent = ({counter, description, icon}) => {
 
 
 
-const ContentRight = () => {
+const ContentRight = ({contactMe}) => {
     return (
         <div className="content-right">
             <div className="title-header">
-                <h3>Contact Me?</h3>
-                <div className="description">
-                    For your car we will do everything advice design in us repairs 
-                    and maintenance We are the some preferred.
-                </div>
+                <h3>{contactMe.form_title}</h3>
+                <div className="description">{contactMe.form_text ? (HTMLReactParser(contactMe.form_text)) : null }</div>
                 <div className="contact-form">
                     <div className="form-group">
                         <input type="text" className="form-control" placeholder="Enter Name"/>

@@ -28,12 +28,30 @@ const LoginAdminUser = AsyncHandler(async (request, response) => {
         // compare password
         const comparePassword = await bcrypt.compare(input.password, exists.password)
         if(!comparePassword){
-            return response.send({status: 'error', message: '*Wrong email or password!'})
+            return response.send({status: 'error', message: '*Wrong email or password credentials!'})
         }
         const loginUser = await UserModel.findOneAndUpdate({_id: exists._id}, {$set: { is_active: 1}}).exec()
         if(loginUser){
+            const user = {
+                _id: loginUser._id,
+                first_name: loginUser.first_name,
+                last_name: loginUser.last_name,
+                middle_name: loginUser.middle_name,
+                address: loginUser.address,
+                postcode: loginUser.postcode,
+                town: loginUser.town,
+                image: loginUser.image,
+                phone_one: loginUser.phone_one,
+                phone_two: loginUser.phone_two,
+                country: loginUser.country,
+                is_active: loginUser.is_active,
+                admin_theme: loginUser.admin_theme,
+                client_theme: loginUser.client_theme,
+                created_at: loginUser.created_at,
+                updated_at: loginUser.updated_at
+            }
             let duration = input.rememberMe ? 365 : 1
-            const token = generate_token(loginUser._id, env.SECRET_KEY, duration) // generate and sign a token
+            const token = generate_token(user, env.SECRET_KEY, duration) // generate and sign a token
             return response.send({ status: 'ok', token: token, duration: duration})
         }
     }
@@ -98,6 +116,19 @@ const generate_token = (string ='', secret_key='', duration='') => {
 
 
 
+const FetchLoginAdminUser = AsyncHandler(async (request, response) => {
+    const token = request.params.token
+    const user = jwt.verify(token, env.SECRET_KEY)
+    if(!user){
+        return response.send({status: 'error', message: 'Login to access the admin dashboard!'})
+    }else{
+        return response.send({status: 'ok', user: user.string})
+    }
+    return response.send({status: 'error', message: 'Something went wront, try again!'})
+})
+
+
+
 
 
 
@@ -106,4 +137,5 @@ const generate_token = (string ='', secret_key='', duration='') => {
 
 module.exports = { 
     LoginAdminUser,
+    FetchLoginAdminUser,
 }

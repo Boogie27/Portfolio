@@ -9,7 +9,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Preloader from './preloader/Preloader'
 import Services from './services/Services'
-import Login from './auto/Login'
+import Login from './auth/Login'
+import { url } from '../../File'
+import { useNavigate } from 'react-router-dom'
+import Axios from 'axios'
+import ProtectedRoutes from './utility/ProtectedRoutes'
+import { useDispatch } from 'react-redux'
+import { fetchUser } from '../redux/admin/UserSlice'
+
+
+
+
+
 
 
 
@@ -18,9 +29,14 @@ import Login from './auto/Login'
 
 
 const Admin = () => {
+    const navigate = useNavigate()
     const [theme, setTheme] = useState('dark')
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [user, setUser] = useState('')
+    const [isLoggedIn, setIsLoggedIn] = useState(true)
     const [isLoading, setIsLoading] = useState({ state: true, text: 'Loading...'})
+
+    // redux store
+    const dispatch = useDispatch()
    
 
     // alert notification
@@ -49,6 +65,32 @@ const Admin = () => {
             }
         }
         setThemeAuto()
+
+        // check if user is loggedin
+       const fetchLoggedInUser = () => {
+            let token = Cookies.get('Eloquent_token')
+            if(token){
+                Axios.get(url(`/api/admin/fetch-active-user/${token}`)).then((response) => {
+                    const data = response.data
+                    if(data.status === 'error'){
+                        alertNotification('error', data.message)
+                        return navigate('/dashboard/login')
+                    }else if(data.status === 'ok'){
+                        setIsLoggedIn(true)
+                        setUser(data.user)
+                        dispatch(fetchUser(data.user))
+                        alertNotification('sucess', 'Login successful!')
+                    }
+                    return preloader(false)
+                }).catch(error => {
+                    preloader(false)
+                    console.log(error)
+                })
+            }else{
+                navigate('/dashboard/login')
+            }
+       }
+       fetchLoggedInUser()
     }, [])
 
 
@@ -57,10 +99,12 @@ const Admin = () => {
         { isLoading.state ? (<Preloader text={isLoading.text}/>) : null }
         { isLoggedIn ? (<Navigation theme={theme} setTheme={setTheme}/>) : null }
         <Routes>
-            <Route path="/dashboard" element={<DashBoard/>}/>
-            <Route path="/dashboard/login" element={<Login preloader={preloader} alertNotification={alertNotification}/>}/>
-            <Route path="/dashboard/services" element={<Services preloader={preloader} alertNotification={alertNotification}/> }/>
-            <Route path="/dashboard/banner" element={<Banner preloader={preloader} alertNotification={alertNotification}/>}/>
+            <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}>
+                <Route path="/dashboard" element={<DashBoard/>}/>
+                <Route path="/dashboard/services" element={<Services preloader={preloader} alertNotification={alertNotification}/> }/>
+                <Route path="/dashboard/banner" element={<Banner user={user} preloader={preloader} alertNotification={alertNotification}/>}/>
+            </Route>
+            <Route path="/dashboard/login" element={<Login setIsLoggedIn={setIsLoggedIn} preloader={preloader} alertNotification={alertNotification}/>}/>
         </Routes>
         <ToastContainer/>
     </div>

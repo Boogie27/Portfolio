@@ -68,6 +68,12 @@ const auth_image = (string) => {
 }
 
 
+const curentURL = (string) => {
+    return window.location.href
+}
+
+
+
 
 const page = (string) => {
     let state = false
@@ -85,6 +91,7 @@ export {
     url,
     icon,
     page,
+    curentURL,
     auth_image,
     userImage,
     preloader,

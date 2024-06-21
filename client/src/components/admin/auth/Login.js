@@ -22,7 +22,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 
-const Login = ({ preloader, alertNotification }) => {
+const Login = ({ setIsLoggedIn, preloader, alertNotification }) => {
     const navigate = useNavigate()
 
     const [email, setEmail] = useState('')
@@ -39,8 +39,8 @@ const Login = ({ preloader, alertNotification }) => {
 
     const LoginUser = () => {
         initErrorAlert() //initialize form input error alert
-        // const validate = validate_input(email, password)
-        // if(validate === false) return 
+        const validate = validate_input(email, password)
+        if(validate === false) return 
         const content = {
             email: email,
             password: password,
@@ -55,9 +55,10 @@ const Login = ({ preloader, alertNotification }) => {
             }else if(data.status === 'input-error'){
                 inputErrorForBackend(data.validationError)
             }else if(data.status === 'ok'){
-                Cookies.set('Portifolio_token', data.token, { expires: data.duration })
+                Cookies.set('Eloquent_token', data.token, { expires: data.duration })
                 setButton(false)
                 preloader(false)
+                setIsLoggedIn(true)
                 navigate('/dashboard')
             }
             setButton(false)
@@ -110,14 +111,25 @@ const Login = ({ preloader, alertNotification }) => {
         }
     }
 
+    const detectKeyPress = (e) => {
+        if(e.key === 'Enter' && !button){
+            LoginUser()
+        }
+    }
+
+
+
+
+    useEffect(() => {
+        document.addEventListener('keydown', detectKeyPress, true) //login user when enter key is pressed
+    }, [])
+
   return (
     <div className="auth-container">
-        <div className="image">
-            <img src={auth_image('key.webp')} alt='login'/>
-        </div>
         <div className="login-form">
             <div className="title-header">
                 <h3>ADMIN LOGIN</h3>
+                <p>Login to access the Portifolio dashboard</p>
             </div>
             <div className="form-group">
                 <label>Email:</label>
@@ -153,3 +165,15 @@ const Login = ({ preloader, alertNotification }) => {
 }
 
 export default Login
+
+
+
+
+
+const BackgroundImage = () => {
+    return (
+        <div className="image">
+            <img src={auth_image('key.webp')} alt='login'/>
+        </div>
+    )
+}

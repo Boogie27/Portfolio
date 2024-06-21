@@ -1,5 +1,9 @@
 const path = require('path');
 const fs = require('fs');
+require('dotenv').config()
+const env = process.env
+const formidable = require('formidable');
+const jwt = require('jsonwebtoken')
 const HomeBannerModel = require('../models/HomeBannerModel')
 const AsyncHandler = require('express-async-handler')
 const { today } = require('../data')
@@ -21,9 +25,8 @@ const AddHomeBanner = AsyncHandler(async (request, response) => {
         return response.send({status: 'input-error', validationError: validation})
     }
     
-    let exists = await HomeBannerModel.find().exec()
-    if(exists.length){
-        exists = exists[0]
+    let exists = await HomeBannerModel.findOne({user_id: input.user_id}).exec()
+    if(exists){
         const updateContent = {
             name: input.name,
             span_header: input.spanHeader,
@@ -42,6 +45,7 @@ const AddHomeBanner = AsyncHandler(async (request, response) => {
         const content = {
             image: '',
             name: input.name,
+            user_id: input.user_id,
             span_header: input.spanHeader,
             cv_link: input.cvLink,
             first_header: input.firstHeader,
@@ -147,9 +151,13 @@ const validate_input = (input) => {
 
 //   fetch admin home banner
 const FetchHomeBanner = AsyncHandler(async (request, response) => {
-    const content = await HomeBannerModel.find().exec()
-    if(content.length){
-        return response.send({status: 'ok', content: content[0]})
+    const token = request.params.token
+    const user = jwt.verify(token, env.SECRET_KEY)
+    if(user){
+        const content = await HomeBannerModel.findOne({user_id: user.string._id}).exec()
+        if(content){
+            return response.send({status: 'ok', content: content})
+        }
     }
     return response.send({status: 'empty', content: []})
 })
@@ -204,3 +212,28 @@ module.exports = {
     UploadHomeBanner,
     FetchClientHomeBanner,
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // const form = new formidable.IncomingForm();
+    // form.parse(request, (err, fields, files) => {
+    //     if (err) {
+    //       console.error('Error', err);
+    //     }
+    //     console.log(fields)
+    // })

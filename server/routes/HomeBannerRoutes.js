@@ -13,7 +13,7 @@ const {
 
 
 // admin home route
-router.get('/api/admin/fetch-home-banners', FetchHomeBanner)
+router.get('/api/admin/fetch-home-banners/:token', FetchHomeBanner)
 router.post('/api/admin/upload-home-banner-image', UploadHomeBanner)
 router.post('/api/admin/add-home-client-banner', AddHomeBanner)
 

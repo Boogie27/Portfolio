@@ -5,7 +5,7 @@
 const FormInputAlert = ({ alert }) => {
     return (
         <div className="form-input-alert">
-            { alert.length ? (<span className="text-danger">{alert}</span>) : null }
+            { alert && alert.length ? (<span className="text-danger">{alert}</span>) : null }
         </div>
     )
 }

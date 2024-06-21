@@ -4,6 +4,8 @@ import {
    faBars,
    faMoon,
 } from '@fortawesome/free-solid-svg-icons'
+import { NavLink } from 'react-router-dom'
+
 
 
 
@@ -32,8 +34,10 @@ export default TopNavigation
 const NavigationLeft = () => {
     return (
       <div className="navigation-left">
-        <div className="logo"></div>
-        <div className="title">PORTF<span>OLIO</span></div>
+         <NavLink to="/">
+          <div className="logo"></div>
+          <div className="title">Portf<span>olio</span></div>
+        </NavLink>
       </div>
     )
 }
@@ -45,7 +49,9 @@ const NavigationMiddle = () => {
       <div className="navigation-middle">
         <ul>
             <li>Home</li>
-            <li>Dashboard</li>
+            <li>
+              <NavLink to="/dashboard">Dashboard</NavLink>
+            </li>
             <li>About</li>
             <li>Services</li>
             <li>Projects</li>

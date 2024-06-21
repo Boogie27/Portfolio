@@ -41,6 +41,12 @@ const userSchema  = new mongoose.Schema({
     country: {
         type: String,
     },
+    admin_theme: {
+        type: String,
+    },
+    client_theme: {
+        type: String,
+    },
     is_active: {
         type: Number,
         required: true

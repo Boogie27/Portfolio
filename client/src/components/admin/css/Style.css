@@ -829,25 +829,32 @@ h1{
 }
 .auth-container .login-form{
     width: 500px;
-    position: absolute;
     padding: 20px 20px;
     border-radius: 5px;
-    background-color: #171717;
+    /* background-color: #030303dc; */
+    background-color: #fff;
+    border: 1px solid #ededed;
 }
 .auth-container .login-form .title-header{
     color: #ccc;
     margin: 20px 0px 40px 0px;
 }
 .auth-container .login-form .title-header h3{
+    color: #555;
     font-size: 30px;
     text-align: center;
     font-weight: 600;
+}
+.auth-container .login-form .title-header p{
+    color: #555;
+    font-size: 16px;
+    text-align: center;
 }
 .auth-container .login-form .form-group{
     margin: 20px 0px;
 }
 .auth-container .login-form label{
-    color: #ccc;
+    color: #555;
     font-weight: 600;
     font-size: 16px;
 }
@@ -861,10 +868,12 @@ h1{
     padding: 15px 10px;
     border-radius: 0px;
     border: 1px solid #3d3d3d;
-    background-color: rgb(22, 22, 22);
+    /* background-color: rgb(22, 22, 22); */
+    background-color: #fff;
+    border: 1px solid #ededed;
 }
 .auth-container .login-form .form-group input::placeholder{
-    color: #555;
+    color: #bababa;
 }
 .auth-container .login-form .form-button{
     margin: 20px 0px;
@@ -903,6 +912,28 @@ h1{
 }
 .auth-container .login-form .form-extra .left .icon.active{
     color: #FDB813;
+}
+/* ************ dark theme ********** */
+.admin-container.dark .auth-container .login-form{
+    background-color: #161616;
+    border: 1px solid #292929;
+}
+.admin-container.dark .auth-container .login-form .form-group input{
+    color: #aeaeae;
+    background-color: #202020;
+    border: 1px solid #323232;
+}
+.admin-container.dark .auth-container .login-form .form-group input::placeholder{
+    color: #595959;
+}
+.admin-container.dark .auth-container .login-form label{
+    color: #a9a9a9;
+}
+.admin-container.dark .auth-container .login-form .title-header h3{
+    color: #ccc;
+}
+.admin-container.dark .auth-container .login-form .title-header p{
+    color: #6b6b6b;
 }
 @media only screen and (max-width: 567px){
     .auth-container{

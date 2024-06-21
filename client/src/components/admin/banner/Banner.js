@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import JoditEditor from 'jodit-react'
-import { useState, useEffect, useRef, createRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faPen,
@@ -12,6 +12,7 @@ import FormInputAlert from '../alert/FormInputAlert'
 import { url, userImage} from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchHomeBanners } from '../../redux/admin/BannerSlice'
+import Cookies from 'js-cookie'
 
 
 
@@ -20,12 +21,11 @@ import { fetchHomeBanners } from '../../redux/admin/BannerSlice'
 
 
 
-
-const Banner = ({ preloader, alertNotification }) => {
+const Banner = ({ user, preloader, alertNotification }) => {
     // redux store
     const dispatch = useDispatch()
     const homeBanners = useSelector(state => state.homeBanners.homeBanners)
-
+  
     const imageRef = useRef()
     const descriptionRef = useRef(null)
     const [formState, setFormState] = useState(false)
@@ -60,6 +60,7 @@ const Banner = ({ preloader, alertNotification }) => {
         const content = {
             name: name,
             cvLink: cvLink,
+            user_id: user._id,
             firstHeader: firstHeader,
             secondHeader: secondHeader,
             spanHeader: spanHeader,
@@ -87,32 +88,36 @@ const Banner = ({ preloader, alertNotification }) => {
         })
     }
 
+    
 
     useEffect(() => {
         window.scrollTo(0, 0) // page scroll to top
 
-        const getHomeBanners = () => {
-            preloader(true, 'Loading, please wait...')
-            Axios.get(url('/api/admin/fetch-home-banners')).then((response) => {
-                const data = response.data
-                if(data.status === 'ok'){
-                    let banner = data.content
-                    setName(banner.name)
-                    setImage(banner.image)
-                    setCvLink(banner.cv_link)
-                    setFirstHeader(banner.first_header)
-                    setSecondHeader(banner.second_header)
-                    setSpanHeader(banner.span_header)
-                    setDescription(banner.description)
-                    dispatch(fetchHomeBanners(banner))
-                    preloader(false)
-                }
-            }).catch(error => {
-                console.log(error)
-            })
+        let token = Cookies.get('Eloquent_token')
+        if(token){
+            const getHomeBanners = () => {
+                preloader(true, 'Loading, please wait...')
+                Axios.get(url(`/api/admin/fetch-home-banners/${token}`)).then((response) => {
+                    const data = response.data
+                    if(data.status === 'ok'){
+                        let banner = data.content
+                        setName(banner.name)
+                        setImage(banner.image)
+                        setCvLink(banner.cv_link)
+                        setFirstHeader(banner.first_header)
+                        setSecondHeader(banner.second_header)
+                        setSpanHeader(banner.span_header)
+                        setDescription(banner.description)
+                        dispatch(fetchHomeBanners(banner))
+                        preloader(false)
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
+            getHomeBanners()
         }
-        getHomeBanners()
-    }, [])
+    }, [dispatch])
 
 
     const initErrorAlert = () => {
@@ -190,7 +195,7 @@ const Banner = ({ preloader, alertNotification }) => {
             setDescriptionAlert(`*Must be minimum of 20 characters`)
         }else if(description.length > 1000){
             failed = true
-            setDescriptionAlert(`*Must be maximum of 200 characters`)
+            setDescriptionAlert(`*Must be maximum of 1000 characters`)
         }
         if(failed === true){
             return false
@@ -212,23 +217,25 @@ const Banner = ({ preloader, alertNotification }) => {
 
     // upload banner image
     const toggleImageInput = (event) => {
-        preloader(true, 'Uploading image, please wait...')
-        if(event.target.files && event.target.files.length > 0){
-            // upload image here
-            const formData = new FormData()
-            formData.append('image', event.target.files[0])
-            Axios.post(url('/api/admin/upload-home-banner-image'), formData).then((response) => {
-                const data = response.data
-                if(data.status === 'ok'){
-                    setImage(data.imageName)
-                    clearFileInput()
-                    preloader(false)
-                    alertNotification('success', 'Image uploaded sucessfully!')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-
+        let token = Cookies.get('Eloquent_token')
+        if(token){
+            preloader(true, 'Uploading image, please wait...')
+            if(event.target.files && event.target.files.length > 0){
+                // upload image here
+                const formData = new FormData()
+                formData.append('image', event.target.files[0])
+                Axios.post(url('/api/admin/upload-home-banner-image'), formData).then((response) => {
+                    const data = response.data
+                    if(data.status === 'ok'){
+                        setImage(data.imageName)
+                        clearFileInput()
+                        preloader(false)
+                        alertNotification('success', 'Image uploaded sucessfully!')
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
         }
     }
 
@@ -330,7 +337,6 @@ const ContentBanner = ({
                                 <button onClick={() => addNewBanner()} type="button">UPDATE BANNER</button>
                             )
                         }
-                        
                     </div>
                </div>
             </div>
