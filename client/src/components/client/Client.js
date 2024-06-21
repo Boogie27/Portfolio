@@ -5,7 +5,7 @@ import Navigation from './navigation/Navigation'
 import { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import Footer from './footer/Footer'
-
+import Preloader from './preloader/Preloader'
 
 
 
@@ -27,6 +27,7 @@ const Client = () => {
 
   return (
     <div className={`portfolio-container ${theme}`}>
+        <Preloader/>
         <Navigation theme={theme} setTheme={setTheme}/>
             <Routes>
                 <Route path="/" element={<Home/>}/>

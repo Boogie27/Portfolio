@@ -6,6 +6,7 @@ const {
     FetchHomeBanner,
     UploadHomeBanner,
     FetchClientHomeBanner,
+    CheckIfServerIsReady,
 } = require('../controllers/HomeBannerController')
 
 
@@ -21,6 +22,15 @@ router.post('/api/admin/add-home-client-banner', AddHomeBanner)
 
 //  client routes
 router.get('/api/client/fetch-home-banners', FetchClientHomeBanner)
+
+
+
+// check if server is ready and remove preloader
+router.get('/api/client/check-server-ready', CheckIfServerIsReady)
+
+
+
+
 
 module.exports = router
 

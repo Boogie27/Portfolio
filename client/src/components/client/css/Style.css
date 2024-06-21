@@ -17,7 +17,89 @@ h1{
     padding: 0px;
     list-style: none;
 }
-
+.preloader-conatiner{
+    top: 0px;
+    left: 0px;
+    z-index: 40;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    align-items: center;
+    transition: all 2s ease;
+    justify-content: center;
+    background-color: rgb(14, 14, 14);
+}
+.preloader-conatiner.active{
+    opacity: 1;
+    visibility: visible;
+}
+.preloader-conatiner .inner-preloader .title-header{
+    top: -50px;
+    opacity: 0;
+    visibility: hidden;
+    margin: 20px 0px;
+    position: relative;
+    transition: all 0.7s ease;
+}
+.preloader-conatiner.active .inner-preloader .title-header{
+    top: 0px;
+    opacity: 1;
+    visibility: visible;
+}
+.preloader-conatiner .inner-preloader .title-header h3,
+.preloader-conatiner .inner-preloader .title-header h3 span{
+    font-size: 60px;
+    letter-spacing: 5px;
+    font-weight: bold;
+    font-family: fantasy;
+}
+.preloader-conatiner .inner-preloader{
+    width: 60%;
+    padding: 100px 0px;
+    overflow: hidden;
+    text-align: center;
+}
+.preloader-conatiner .inner-preloader h3{
+    color: #ccc;
+}
+.preloader-conatiner .inner-preloader h3 span{
+    color: #FDB813;
+}
+.preloader-conatiner .inner-preloader .line{
+    right: -100%;
+    width: 500px;
+    height: 5px;
+    margin: 0 auto;
+    opacity: 0;
+    visibility: hidden;
+    position: relative;
+    border-radius: 10px;
+    background-color: #333;
+    transition: all 0.5s ease;
+}
+.preloader-conatiner .inner-preloader .line .bar{
+    width: 60%;
+    height: 5px;
+    border-radius: 10px;
+    background-color: #d4980c;
+    animation: bar 5s steps(5) both;
+}
+.preloader-conatiner.active .inner-preloader .line{
+    right: 0px;
+    opacity: 1;
+    visibility: visible;
+}
+@keyframes bar {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
 /* ********* APP SECTION ************ */
 .portfolio-container.dark{
     background-color: rgb(14, 14, 14);

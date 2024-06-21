@@ -91,7 +91,7 @@ const Skills = () => {
     const qualifications = [
         {
             title: "Teesside University",
-            date: "2021 - 2023",
+            date: "2021 - 2024",
             text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
         },
         {

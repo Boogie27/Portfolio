@@ -206,11 +206,39 @@ const UploadHomeBanner = AsyncHandler(async (req, res) => {
 
 
 
+
+
+
+
+const CheckIfServerIsReady = AsyncHandler(async (request, response) => {
+    return response.send({status: 'ok'})
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = { 
     AddHomeBanner,
     FetchHomeBanner,
     UploadHomeBanner,
     FetchClientHomeBanner,
+    CheckIfServerIsReady,
 }
 
 
