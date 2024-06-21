@@ -880,14 +880,17 @@ h1{
 }
 .skills-container .inner-skills  .content .content-item .inner-content-item{
     width: 100%;
-    min-height: 400px;
     position: relative;
-    padding: 20px 20px;
+    padding: 10px 10px;
     align-items: center;
     border: 1px solid #ededed;
 }
+.skills-container .inner-skills  .content .content-item .top{
+    display: flex;
+    align-items: center;
+}
 .skills-container .inner-skills  .content .content-item .title{
-    margin-top: 20px;
+    margin-left: 20px;
 }
 .skills-container .inner-skills  .content .content-item .title  h3{
     font-size: 26px;
@@ -903,12 +906,6 @@ h1{
 .skills-container .inner-skills  .content .content-item .icon img{
     width: 70px;
     user-select: none;
-}
-.skills-container .inner-skills  .content .content-item .date{
-    width: 100%;
-    height: 1px;
-    margin: 0px 0px;
-    text-align: right;
 }
 .skills-container .inner-skills  .content .content-item .date span{
     color: #595959;
@@ -933,6 +930,32 @@ h1{
     transition: width 2s ease;
     background-color: #20c997;
 }
+.skills-container .inner-skills .education-skills{
+    margin: 50px 0px;
+}
+.skills-container .inner-skills .education-skills .content{
+    margin: 20px 0px;
+    padding: 10px 0px;
+}
+.skills-container .inner-skills .education-skills .date{
+    color: #555;
+    margin: 10px 0px;
+    padding: 10px 30px;;
+    display: inline-block;
+    border: 1px solid #dcdcdc;
+}
+.skills-container .inner-skills .education-skills .title{
+    margin: 10px 0px;
+}
+.skills-container .inner-skills .education-skills .title h3{
+    color: #333;
+    font-size: 26px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.skills-container .inner-skills .education-skills .body{
+    font-size: 18px;
+}
 /* ************* dark mode ************ */
 .portfolio-container.dark .skills-container .inner-skills .title-header h3{
    color: #FDB813;
@@ -954,10 +977,21 @@ h1{
     background-color: #151515;
 }
 .portfolio-container.dark .skills-container .inner-skills  .content .content-item .inner-content-item{
-    border: 1px solid #202020;
+    border: 1px solid transparent;
 }
 .portfolio-container.dark .skills-container .inner-skills  .content .content-item .inner-content-item .ratings{
     background-color: #202020;
+}
+.portfolio-container.dark .skills-container .inner-skills .education-skills .date{
+    color: #FDB813;
+    border: 1px solid #FDB813;
+    background-color: #151515;
+}
+.portfolio-container.dark .skills-container .inner-skills .education-skills .title h3{
+    color: #ccc;
+}
+.portfolio-container.dark .skills-container .inner-skills .education-skills .body{
+    color: #7b7b7b;
 }
 @media only screen and (max-width: 1400px){
     .skills-container .inner-skills{

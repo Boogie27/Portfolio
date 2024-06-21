@@ -18,95 +18,106 @@ const Skills = () => {
             title: "HTML",
             image: "html.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 90,
         },
         {
             title: "CSS",
             image: "css.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 80,
         },
         {
             title: "JAVASCRIPT",
             image: "html.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 100,
         },
         {
             title: "Jquery",
             image: "jquery.webp",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 100,
         },
         {
             title: "PHP",
             image: "php.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 100,
         },
         {
             title: "LARAVEL",
             image: "laravel.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 80,
         },
         {
             title: "REACT",
             image: "react.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 70,
         },
         {
             title: "NodeJS",
             image: "nodejs.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 100,
         },
         {
             title: "MongoDB",
             image: "mongo-db.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 70,
         },
         {
             title: "RESTAPI",
             image: "rest-api.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 50,
         },
         {
             title: "Redux",
             image: "redux.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 60,
         },
         {
             title: "Git",
             image: "git.png",
             duration: "2021 - 2024",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             rating: 80,
         },
     ] 
+
+    const qualifications = [
+        {
+            title: "Teesside University",
+            date: "2021 - 2023",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+        },
+        {
+            title: "Yaba College of Technology",
+            date: "2021 - 2023",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+        },
+        {
+            title: "Frontend Developer",
+            date: "2021 - 2023",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+        },
+        {
+            title: "Backend Developer",
+            date: "2021 - 2023",
+            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+        },
+    ]
 
 
   return (
     <div className="skills-container">
         <div className="inner-skills">
             <TitleHeader header={header}/>
+            <Qualifications qualifications={qualifications}/>
             <Content mySkils={mySkils}/>
-            <ContentRatings/>
         </div>
     </div>
   )
@@ -138,7 +149,7 @@ const Content = ({mySkils}) => {
             <Row className="show-grid">
                 {
                     mySkils.map((skill, index) => (
-                        <ContentItem  key={index} text={skill.text} rate={skill.rating} title={skill.title} image={skill.image} date={skill.duration}/>
+                        <ContentItem  key={index} rate={skill.rating} title={skill.title} image={skill.image}/>
                     ))
                 }
             </Row>
@@ -150,21 +161,19 @@ const Content = ({mySkils}) => {
 
 
 
-const ContentItem = ({title, text, image, date, rate}) => {
+const ContentItem = ({title, image, rate}) => {
     return (
-        <Col xs={12} sm={12} md={6} lg={4} xl={4}>
+        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
             <div className="content-item">
                 <div className="inner-content-item">
-                    <div className="date">
-                        <span>{date}</span>
-                    </div>
-                    <div className="icon">
-                        <img src={icon(image)} alt={title}/>
-                    </div>
-                    <div className="title">
-                        <h3>{title}</h3>
-                    </div>
-                    <div className="description">{ text ? (HTMLReactParser(text)) : null }</div>
+                   <div className="top">
+                        <div className="icon">
+                            <img src={icon(image)} alt={title}/>
+                        </div>
+                        <div className="title">
+                            <h3>{title}</h3>
+                        </div>
+                   </div>
                     <div className="ratings">
                        <div style={{ width: `${rate}%` }} className="bar"></div> 
                     </div>
@@ -177,15 +186,37 @@ const ContentItem = ({title, text, image, date, rate}) => {
 
 
 
-const ContentRatings = () => {
+const Qualifications = ({qualifications}) => {
     return (
-        <div className="content">
-           
+        <div className="education-skills">
+            <Row className="show-grid">
+                { qualifications.map((qualification, index) => (<QualificationItems key={index} qualification={qualification}/>))}
+            </Row>
         </div>
     )
 }
 
 
+
+
+const QualificationItems = ({qualification}) => {
+    return (
+        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+            <div className="content">
+                { qualification.date ? (<div className="date">{qualification.date}</div>) : null }
+                {
+                    qualification.title ? (
+                        <div className="title">
+                            <h3>{qualification.title}</h3>
+                        </div>
+                    ) : null
+                }
+                {
+                    qualification.text ? (<div className="body">{HTMLReactParser(qualification.text)}</div> ) : null }
+            </div>
+        </Col>
+    )
+}
 
 
 
