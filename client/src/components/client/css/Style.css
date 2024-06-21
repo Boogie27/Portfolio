@@ -359,6 +359,7 @@ h1{
 }
 .banner-container .content-right img{
     width: 100%;
+    user-select: none;
     border-radius: 100px;
     border-top: 10px solid #333;
     border-bottom: 10px solid #333;
@@ -561,6 +562,7 @@ h1{
 }
 .about-us-container .inner-about-us .content-right .image img{
     width: 100%;
+    user-select: none;
 }
 .about-us-container .inner-about-us .content-right .bottom-content{
     z-index: 10;
@@ -894,6 +896,7 @@ h1{
 }
 .skills-container .inner-skills  .content .content-item .icon img{
     width: 70px;
+    user-select: none;
 }
 .skills-container .inner-skills  .content .content-item .date{
     width: 100%;
@@ -1112,7 +1115,7 @@ h1{
 .portfolio-content-container .inner-portfolio-content .portfolio-content-item .item-count{
     top: 0px;
     right: 0px;
-    color: #fff;
+    color: #333;
     padding: 5px 10px;
     position: absolute;
     font-weight: bold;
@@ -1162,7 +1165,6 @@ h1{
     height: 100%;
     cursor: pointer;
     user-select: none;
-    object-fit: contain;
 }
 .portfolio-content-container .inner-portfolio-content .portfolio-pupup .direction{
     top: 0px;
@@ -1251,6 +1253,9 @@ h1{
         font-size: 40px;
         text-align: center;
     }
+    .portfolio-content-container .inner-portfolio-content .portfolio-pupup .image img{
+       object-fit: contain;
+    }
 }
 /* *************** TESTIMONIAL SECTION ************* */
 .testimonial-container{
@@ -1293,6 +1298,7 @@ h1{
     z-index: 10;
     width:  100px;
     height: 100px;
+    user-select: none;
     position: relative;
     text-align: center;
     border-radius: 50%;
@@ -1301,6 +1307,7 @@ h1{
 }
 .testimonial-container .inner-testimonial .testimonial-slider-frame .testimoni-content-item ul li{
     margin: 20px 0px;
+    user-select: none;
 }
 .testimonial-container .inner-testimonial .testimonial-slider-frame .testimoni-content-item ul li.ratings span.rate{
     color: #555;
