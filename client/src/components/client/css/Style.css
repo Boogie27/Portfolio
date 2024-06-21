@@ -92,9 +92,15 @@ h1{
     background-color: #151515;
     border-bottom: 1px solid #212121;
  }
+ .portfolio-container.dark .top-navigation-container .inner-navigation .navigation-left .title{
+    color: #ccc;
+ }
 .portfolio-container.dark .top-navigation-container .inner-navigation .icon.moon,
 .portfolio-container.dark .top-navigation-container .inner-navigation .icon:hover{
     color: #FDB813;
+}
+.portfolio-container.dark  .top-navigation-container .inner-navigation .navigation-middle ul li a{
+    color: #ccc;
 }
 @media only screen and (max-width: 1400px){
     .top-navigation-container .inner-navigation{
@@ -1253,6 +1259,10 @@ h1{
         font-size: 40px;
         text-align: center;
     }
+    .portfolio-content-container .inner-portfolio-content .portfolio-pupup .image{
+        width: 95%;
+        height: 35%;
+    }
     .portfolio-content-container .inner-portfolio-content .portfolio-pupup .image img{
        object-fit: contain;
     }
@@ -1318,6 +1328,7 @@ h1{
 .testimonial-container .inner-testimonial .testimonial-slider-frame .testimoni-content-item ul li .star{
     color: #ccc;
     font-size: 16px;
+    margin-right: 5px;
 }
 .testimonial-container .inner-testimonial .testimonial-slider-frame .testimoni-content-item ul li .star.active{
     color: #FDB813;

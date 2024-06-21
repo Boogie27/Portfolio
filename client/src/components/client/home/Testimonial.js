@@ -47,7 +47,7 @@ const Testimonial = () => {
             image: "",
             job_title: "Software Developer",
             text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 5
+            ratings: 2
         },
         {
             name: "charles anonye",
@@ -140,11 +140,11 @@ const SliderContentItem = ({item}) => {
                 <li className="ratings">
                     <span className="rate">Ratings: </span>
                     <span>
-                        <FontAwesomeIcon className="star active" icon={faStar} />
-                        <FontAwesomeIcon className="star active" icon={faStar} />
-                        <FontAwesomeIcon className="star active" icon={faStar} />
-                        <FontAwesomeIcon className="star" icon={faStar} />
-                        <FontAwesomeIcon className="star" icon={faStar} />
+                        {
+                           [...Array(5)].map((current, index) => (
+                            <FontAwesomeIcon key={index} className={`star ${ index < item.ratings ? 'active' : '' }`} icon={faStar} /> 
+                        ))
+                        }
                     </span>
                 </li>
                 <li className="title-header">
