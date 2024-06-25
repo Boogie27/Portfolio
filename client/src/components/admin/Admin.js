@@ -1,5 +1,5 @@
 import './css/Style.css'
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Navigation from './navigation/Navigation'
 import DashBoard from './dashboard/DashBoard'
@@ -30,6 +30,9 @@ import { fetchUser } from '../redux/admin/UserSlice'
 
 const Admin = () => {
     const navigate = useNavigate()
+    const preloaderRef = useRef(null)
+    const setThemeAutoRef = useRef(null)
+    const fetchLoggedInUserRef = useRef(null)
     const [theme, setTheme] = useState('dark')
     const [user, setUser] = useState('')
     const [isLoggedIn, setIsLoggedIn] = useState(true)
@@ -54,43 +57,47 @@ const Admin = () => {
         setIsLoading({ state: state, text: text})
     }
 
-    useEffect(() => {
-        preloader(false, '')
-
-        // set theme when page loads
-        const setThemeAuto = () => {
+    // set theme when page loads
+    const setThemeAuto = () => {
         let pageTheme = Cookies.get('Eloquent-theme')
-            if(pageTheme){
-                return setTheme(pageTheme)
-            }
+        if(pageTheme){
+            return setTheme(pageTheme)
         }
-        setThemeAuto()
+    }
 
-        // check if user is loggedin
-       const fetchLoggedInUser = () => {
-            let token = Cookies.get('Eloquent_token')
-            if(token){
-                Axios.get(url(`/api/admin/fetch-active-user/${token}`)).then((response) => {
-                    const data = response.data
-                    if(data.status === 'error'){
-                        alertNotification('error', data.message)
-                        return navigate('/dashboard/login')
-                    }else if(data.status === 'ok'){
-                        setIsLoggedIn(true)
-                        setUser(data.user)
-                        dispatch(fetchUser(data.user))
-                        alertNotification('sucess', 'Login successful!')
-                    }
-                    return preloader(false)
-                }).catch(error => {
-                    preloader(false)
-                    console.log(error)
-                })
-            }else{
-                navigate('/dashboard/login')
-            }
-       }
-       fetchLoggedInUser()
+    // check if user is loggedin
+    const fetchLoggedInUser = () => {
+        let token = Cookies.get('Eloquent_token')
+        if(token){
+            Axios.get(url(`/api/admin/fetch-active-user/${token}`)).then((response) => {
+                const data = response.data
+                if(data.status === 'error'){
+                    alertNotification('error', data.message)
+                    return navigate('/dashboard/login')
+                }else if(data.status === 'ok'){
+                    setIsLoggedIn(true)
+                    setUser(data.user)
+                    dispatch(fetchUser(data.user))
+                    alertNotification('sucess', 'Login successful!')
+                }
+                return preloader(false)
+            }).catch(error => {
+                preloader(false)
+                console.log(error)
+            })
+        }else{
+            navigate('/dashboard/login')
+        }
+    }
+
+       preloaderRef.current = preloader
+       setThemeAutoRef.current = setThemeAuto
+       fetchLoggedInUserRef.current = fetchLoggedInUser
+
+    useEffect(() => {
+        preloaderRef.current()
+        setThemeAutoRef.current()
+        fetchLoggedInUserRef.current()
     }, [])
 
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Axios from 'axios'
-import { url } from '../../../File'
+// import Axios from 'axios'
+// import { url } from '../../../File'
 
 
 

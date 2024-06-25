@@ -161,7 +161,7 @@ const PortfolioContent = ({myPortfolios, portfolioState, togglePupUp}) => {
     return (
         <div className="portfolio-content">
             <Row className="show-grid">
-                { myPortfolios.map((item, index) => (<ContentItem portfolioState={portfolioState} togglePupUp={togglePupUp} item={item}/>))}
+                { myPortfolios.map((item, index) => (<ContentItem key={index} portfolioState={portfolioState} togglePupUp={togglePupUp} item={item}/>))}
             </Row>
         </div>
     )

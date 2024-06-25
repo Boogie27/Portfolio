@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import { auth_image } from '../../../File'
+import { useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faToggleOn,
@@ -24,6 +23,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Login = ({ setIsLoggedIn, preloader, alertNotification }) => {
     const navigate = useNavigate()
+    const detectKeyPressRef = useRef()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -119,9 +119,11 @@ const Login = ({ setIsLoggedIn, preloader, alertNotification }) => {
 
 
 
+    detectKeyPressRef.current = detectKeyPress
 
     useEffect(() => {
-        document.addEventListener('keydown', detectKeyPress, true) //login user when enter key is pressed
+        
+        document.addEventListener('keydown', detectKeyPressRef.current(), true) //login user when enter key is pressed
     }, [])
 
   return (
@@ -170,10 +172,10 @@ export default Login
 
 
 
-const BackgroundImage = () => {
-    return (
-        <div className="image">
-            <img src={auth_image('key.webp')} alt='login'/>
-        </div>
-    )
-}
+// const BackgroundImage = () => {
+//     return (
+//         <div className="image">
+//             <img src={auth_image('key.webp')} alt='login'/>
+//         </div>
+//     )
+// }

@@ -125,6 +125,9 @@ h1{
 .admin-container.dark .top-navigation-container .inner-navigation .navigation-middle ul li a{
     color: #ccc;
 }
+.admin-container.dark .top-navigation-container .inner-navigation .navigation-left .title{
+    color: #ccc;
+}
 @media only screen and (max-width: 1400px){
     .top-navigation-container .inner-navigation{
         width: 90%;
@@ -807,7 +810,10 @@ h1{
 .services-container{
     padding: 100px 0px;
 }
-
+/* ************** dark mode *********** */
+.admin-container.dark .services-container{
+    background-color: rgb(14, 14, 14);
+}
 
 /* ************ LOGIN SECTION **************** */
 .auth-container{

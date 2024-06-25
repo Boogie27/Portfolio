@@ -28,6 +28,8 @@ const Banner = ({ user, preloader, alertNotification }) => {
   
     const imageRef = useRef()
     const descriptionRef = useRef(null)
+    const homeBannerRef = useRef()
+
     const [formState, setFormState] = useState(false)
     const [name, setName] = useState('')
     const [cvLink, setCvLink] = useState('')
@@ -88,36 +90,36 @@ const Banner = ({ user, preloader, alertNotification }) => {
         })
     }
 
-    
+    const getHomeBanners = () => {
+        let token = Cookies.get('Eloquent_token')
+        if(token){
+            preloader(true, 'Loading, please wait...')
+            Axios.get(url(`/api/admin/fetch-home-banners/${token}`)).then((response) => {
+                const data = response.data
+                if(data.status === 'ok'){
+                    let banner = data.content
+                    setName(banner.name)
+                    setImage(banner.image)
+                    setCvLink(banner.cv_link)
+                    setFirstHeader(banner.first_header)
+                    setSecondHeader(banner.second_header)
+                    setSpanHeader(banner.span_header)
+                    setDescription(banner.description)
+                    dispatch(fetchHomeBanners(banner))
+                    preloader(false)
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        }
+    }
+
+    homeBannerRef.current = getHomeBanners
 
     useEffect(() => {
         window.scrollTo(0, 0) // page scroll to top
-
-        let token = Cookies.get('Eloquent_token')
-        if(token){
-            const getHomeBanners = () => {
-                preloader(true, 'Loading, please wait...')
-                Axios.get(url(`/api/admin/fetch-home-banners/${token}`)).then((response) => {
-                    const data = response.data
-                    if(data.status === 'ok'){
-                        let banner = data.content
-                        setName(banner.name)
-                        setImage(banner.image)
-                        setCvLink(banner.cv_link)
-                        setFirstHeader(banner.first_header)
-                        setSecondHeader(banner.second_header)
-                        setSpanHeader(banner.span_header)
-                        setDescription(banner.description)
-                        dispatch(fetchHomeBanners(banner))
-                        preloader(false)
-                    }
-                }).catch(error => {
-                    console.log(error)
-                })
-            }
-            getHomeBanners()
-        }
-    }, [dispatch])
+        homeBannerRef.current()
+    }, [])
 
 
     const initErrorAlert = () => {

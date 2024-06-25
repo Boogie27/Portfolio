@@ -1,12 +1,12 @@
 import Axios from 'axios'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
   faDownload,
 } from '@fortawesome/free-solid-svg-icons'
-import { user_image, userImage, url } from '../../../File'
+import { userImage, url } from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchHomeBanners } from '../../redux/admin/BannerSlice'
 import HTMLReactParser from 'html-react-parser'
@@ -22,24 +22,26 @@ const Banner = () => {
   const dispatch = useDispatch()
   const homeBanners = useSelector(state => state.homeBanners.homeBanners)
 
+  const homeBannerRef = useRef()
 
+  const getHomeBanners = () => {
+    Axios.get(url('/api/client/fetch-home-banners')).then((response) => {
+        const data = response.data
+        if(data.status === 'ok'){
+            let banner = data.content
+            console.log(data.content)
+            dispatch(fetchHomeBanners(banner))
+        }
+    }).catch(error => {
+        console.log(error)
+    })
+}
+
+  homeBannerRef.current = getHomeBanners
 
   useEffect(() => {
     window.scrollTo(0, 0) // page scroll to top
-
-    const getHomeBanners = () => {
-        Axios.get(url('/api/client/fetch-home-banners')).then((response) => {
-            const data = response.data
-            if(data.status === 'ok'){
-                let banner = data.content
-                console.log(data.content)
-                dispatch(fetchHomeBanners(banner))
-            }
-        }).catch(error => {
-            console.log(error)
-        })
-    }
-    getHomeBanners()
+    homeBannerRef.current()
 }, [])
 
   return (

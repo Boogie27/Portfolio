@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
@@ -14,8 +14,9 @@ import { getServiceHeader } from '../../redux/admin/ServiceSlice'
 const ServiceHeader = ({preloader, alertNotification }) => {
      // redux store
      const dispatch = useDispatch()
-     const serviceHeaders = useSelector(state => state.serviceHeaders.serviceHeaders)
+     const serviceHeader = useSelector(state => state.serviceHeaders.serviceHeaders)
 
+     const serviceHeaderRef = useRef(null)
 
     const [title, setTitle] = useState('')
     const [firstHeader, setFirstHeader] = useState('')
@@ -114,28 +115,30 @@ const ServiceHeader = ({preloader, alertNotification }) => {
         setSecondHeaderAlert('')
     }
 
+    // fetch service header
+    const FetchServiceHeader = () => {
+        preloader(true, 'Loading, please wait...')
+        Axios.get(url('/api/admin/fetch-services-header')).then((response) => {
+            const data = response.data
+            if(data.status === 'ok'){
+                let content = data.serviceHeader
+                setTitle(content.title)
+                setFirstHeader(content.first_header)
+                setSecondHeader(content.second_header)
+                dispatch(getServiceHeader(content))
+            }
+            preloader(false)
+        }).catch(error => {
+            preloader(false)
+            console.log(error)
+        })
+    }
+
+    serviceHeaderRef.current = FetchServiceHeader
 
     useEffect(() => {
         window.scrollTo(0, 0) // page scroll to top
-
-        const FetchServiceHeader = () => {
-            preloader(true, 'Loading, please wait...')
-            Axios.get(url('/api/admin/fetch-services-header')).then((response) => {
-                const data = response.data
-                if(data.status === 'ok'){
-                    let content = data.serviceHeader
-                    setTitle(content.title)
-                    setFirstHeader(content.first_header)
-                    setSecondHeader(content.second_header)
-                    dispatch(getServiceHeader(content))
-                }
-                preloader(false)
-            }).catch(error => {
-                preloader(false)
-                console.log(error)
-            })
-        }
-        FetchServiceHeader()
+        serviceHeaderRef.current()
     }, [])
 
     return (
