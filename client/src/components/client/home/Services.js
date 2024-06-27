@@ -1,10 +1,8 @@
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Axios from 'axios'
-import { useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { url } from '../../../File'
-import { useDispatch, useSelector } from 'react-redux'
-import { getServiceHeader } from '../../redux/admin/ServiceSlice'
 import HTMLReactParser from 'html-react-parser'
 
 
@@ -13,9 +11,8 @@ import HTMLReactParser from 'html-react-parser'
 
 
 const Services = () => {
-   // redux store
-   const dispatch = useDispatch()
-   const serviceHeaders = useSelector(state => state.serviceHeaders.serviceHeaders)
+    const FetchServiceHeaderRef = useRef(null)
+    const [serviceHeaders, setServiceHeaders] = useState([])
 
    const services = [
     {
@@ -33,23 +30,23 @@ const Services = () => {
    ]
 
 
-
-        useEffect(() => {
-            window.scrollTo(0, 0) // page scroll to top
-
-            const FetchServiceHeader = () => {
-                Axios.get(url('/api/cleint/fetch-services-header')).then((response) => {
-                    const data = response.data
-                    if(data.status === 'ok'){
-                        let content = data.serviceHeader
-                        dispatch(getServiceHeader(content))
-                    }
-                }).catch(error => {
-                    console.log(error)
-                })
+   const FetchServiceHeader = () => {
+        Axios.get(url('/api/cleint/fetch-services-header')).then((response) => {
+            const data = response.data
+            if(data.status === 'ok'){
+                setServiceHeaders(data.serviceHeader)
             }
-                FetchServiceHeader()
-            }, [dispatch])
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    FetchServiceHeaderRef.current = FetchServiceHeader
+
+    useEffect(() => {
+        window.scrollTo(0, 0) // page scroll to top
+        FetchServiceHeaderRef.current()
+    }, [])
 
   return (
     <div className="services-container">

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 
-const ServiceSchema  = new mongoose.Schema({
+const ServiceHeaderSchema  = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -12,7 +12,11 @@ const ServiceSchema  = new mongoose.Schema({
         type: String,
         required: true
     },
-    text: {
+    first_header: {
+        type: String,
+        required: true
+    },
+    second_header: {
         type: String,
         required: true
     },
@@ -32,6 +36,6 @@ const ServiceSchema  = new mongoose.Schema({
 
 
 
-const ServiceModel = mongoose.model("services", ServiceSchema)
+const ServiceHeaderModel = mongoose.model("service_headers", ServiceHeaderSchema)
 
-module.exports =  ServiceModel
+module.exports =  ServiceHeaderModel

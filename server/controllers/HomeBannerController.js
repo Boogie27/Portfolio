@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 const HomeBannerModel = require('../models/HomeBannerModel')
 const AsyncHandler = require('express-async-handler')
 const { today } = require('../data')
-const { createUpload } = require('../helper/Image')
+const { FileUpload } = require('../helper/Image')
 
 
 
@@ -211,7 +211,35 @@ const UploadHomeBanner = AsyncHandler(async (req, res) => {
 
 
 const CheckIfServerIsReady = AsyncHandler(async (request, response) => {
-    return response.send({status: 'ok'})
+    if(true){
+        setTimeout(() => {
+            return response.send({status: 'ok'})
+        }, 6000)
+    }
+})
+
+
+
+
+
+
+const UploadImageFile = AsyncHandler(async (request, response) => {
+    const size = 1000  
+    const imageFile = request.files.image
+    const types = ['jpg', 'png', 'jpeg', 'svg']
+    const destination = path.join(__dirname, '../public/asset/image/users/');
+
+    const upload = FileUpload({
+        size: size,
+        types: types,
+        file: imageFile,
+        name: 'user-image',
+        destination: destination
+    })
+    if(upload.status == true){
+        return response.send({status: true})
+    }
+    return response.send({error: 'Something went wrong, try again!'})
 })
 
 
@@ -226,14 +254,8 @@ const CheckIfServerIsReady = AsyncHandler(async (request, response) => {
 
 
 
-
-
-
-
-
-
-
 module.exports = { 
+    UploadImageFile,
     AddHomeBanner,
     FetchHomeBanner,
     UploadHomeBanner,

@@ -1,5 +1,6 @@
 import React from 'react'
 import  ServiceHeader from './ServiceHeader'
+import  ServiceBody from './ServiceBody'
 
 
 
@@ -8,6 +9,7 @@ const Services = ({preloader, alertNotification }) => {
     <div className="services-container">
         <TitleHeader/>
         <ServiceHeader preloader={preloader} alertNotification={alertNotification}/>
+        <ServiceBody alertNotification={alertNotification} preloader={preloader}/>
     </div>
   )
 }

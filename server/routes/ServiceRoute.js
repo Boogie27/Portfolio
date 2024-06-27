@@ -2,9 +2,12 @@
 const express = require('express')
 const router = express.Router()
 const {
+    AddNewService,
+    FetchUserServices,
     FetchServiceHeader,
     UpdateServiceHeader,
     FetchClientServiceHeader,
+    ToggleUserServicesFeature,
 } = require('../controllers/ServiceController')
 
 
@@ -14,6 +17,11 @@ const {
 // admin services route
 router.get('/api/admin/fetch-services-header', FetchServiceHeader)
 router.post('/api/admin/update-services-header', UpdateServiceHeader)
+router.post('/api/admin/add-new-service', AddNewService)
+router.get('/api/admin/fetch-user-services/:token', FetchUserServices)
+router.post('/api/admin/toggle-user-services-feature', ToggleUserServicesFeature)
+
+
 
 
 

@@ -350,7 +350,7 @@ h1{
     background-color: #fff;
 }
 .top-title-content{
-    width: 70%;
+    width: 95%;
     height: 80px;
     margin: 0 auto;
     display: flex;
@@ -387,15 +387,12 @@ h1{
     color: #333;
     font-size: 14px;
 }
-@media only screen and (max-width: 1400px){
-    .top-title-content{
-        width: 90%;
-    }
+.table-content-container tbody tr td.table-data-icon .icon{
+    cursor: pointer;
+    font-size: 22px;
 }
-@media only screen and (max-width: 1200px){
-    .top-title-content{
-        width: 95%;
-    }
+.table-content-container tbody tr td.table-data-icon .icon.active{
+    color: #FDB813;
 }
 /* ************* dark mode *********** */
 .admin-container.dark .table-content-container{
@@ -463,7 +460,9 @@ h1{
 .table-drop-down .drop-down ul li:hover{
     background-color: #eeeeee;
 }
-
+.table-drop-down:hover .drop-down{
+    display: block;
+}
 /* *********** dark mode ******* */
 .admin-container.dark .table-drop-down .drop-down{
     background-color: #252525;
@@ -508,7 +507,6 @@ h1{
     background-color: #fff;
 }
 .app-content-form .content-form .form .title-header{
-    margin-bottom: 50px;
     position: relative;
 }
 .app-content-form .content-form .form .title-header h3{
@@ -641,7 +639,7 @@ h1{
     margin: 50px 0px;
 }
 .main-content-container .content-form{
-    width: 70%;
+    width: 95%;
     margin: 0 auto;
     padding: 50px 20px;
     border-radius: 10px;
@@ -744,7 +742,7 @@ h1{
 .admin-container.dark .dashboard-banner-container .banner-image-container .inner-banner-image .image .icon:hover{
     background-color: #252525a0;
 }
-@media only screen and (max-width: 1400px){
+/* @media only screen and (max-width: 1400px){
     .main-content-container .content-form,
     .dashboard-banner-container .banner-image-container{
         width: 90%;
@@ -758,7 +756,7 @@ h1{
     .dashboard-banner-container .banner-image-container .image-container{
         width: 90%;
     }
-}
+} */
 @media only screen and (max-width: 767px){
     .main-content-container .content-form,
     .dashboard-banner-container .banner-image-container .image-container{

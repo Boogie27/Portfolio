@@ -7,6 +7,7 @@ const {
     UploadHomeBanner,
     FetchClientHomeBanner,
     CheckIfServerIsReady,
+    UploadImageFile,
 } = require('../controllers/HomeBannerController')
 
 
@@ -17,6 +18,10 @@ const {
 router.get('/api/admin/fetch-home-banners/:token', FetchHomeBanner)
 router.post('/api/admin/upload-home-banner-image', UploadHomeBanner)
 router.post('/api/admin/add-home-client-banner', AddHomeBanner)
+
+// example file upload
+router.post('/api/admin/upload-image-link', UploadImageFile)
+
 
 
 

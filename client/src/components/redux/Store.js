@@ -1,8 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import bannerReducer from './admin/BannerSlice'
-import serviceReducer from './admin/ServiceSlice'
 import userReducer from './admin/UserSlice'
-
+import serviceReducer from './admin/ServiceSlice'
 
 
 
@@ -18,7 +17,7 @@ const store = configureStore({
     reducer: {
         userReducer: userReducer,
         homeBanners: bannerReducer,
-        serviceHeaders: serviceReducer,
+        services: serviceReducer
     }
 })
 

@@ -4,20 +4,11 @@ import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
 import Axios from 'axios'
 import { url } from '../../../File'
-import { useDispatch, useSelector } from 'react-redux'
-import { getServiceHeader } from '../../redux/admin/ServiceSlice'
-
-
 
 
 
 const ServiceHeader = ({preloader, alertNotification }) => {
-     // redux store
-     const dispatch = useDispatch()
-     const serviceHeader = useSelector(state => state.serviceHeaders.serviceHeaders)
-
-     const serviceHeaderRef = useRef(null)
-
+    const serviceHeaderRef = useRef(null)
     const [title, setTitle] = useState('')
     const [firstHeader, setFirstHeader] = useState('')
     const [secondHeader, setSecondHeader] = useState('')
@@ -48,7 +39,9 @@ const ServiceHeader = ({preloader, alertNotification }) => {
                 alertNotification('error', data.message)
             }else if(data.status === 'ok'){
                 alertNotification('success', 'Updated sucessfully!')
-                dispatch(getServiceHeader(data.newBanner))
+                setTitle(data.newBanner.title)
+                setFirstHeader(data.newBanner.first_header)
+                setSecondHeader(data.newBanner.second_header)
                 preloader(false)
             }
             preloader(false)
@@ -125,7 +118,6 @@ const ServiceHeader = ({preloader, alertNotification }) => {
                 setTitle(content.title)
                 setFirstHeader(content.first_header)
                 setSecondHeader(content.second_header)
-                dispatch(getServiceHeader(content))
             }
             preloader(false)
         }).catch(error => {

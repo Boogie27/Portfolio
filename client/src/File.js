@@ -1,5 +1,5 @@
 
-import Axios from 'axios'
+import Moment from "moment";
 
 
 
@@ -36,6 +36,15 @@ const ClientUrl = (string = null) => {
 }
 
 
+
+const DateTime = (time, format) => {
+    // example of format "dddd h:mma D MMM YYYY"
+    let x = ''
+    if(time && format){
+        x =  Moment(time).format(format)
+    }
+    return x
+}
 
 
 
@@ -91,6 +100,7 @@ export {
     url,
     icon,
     page,
+    DateTime,
     curentURL,
     auth_image,
     userImage,

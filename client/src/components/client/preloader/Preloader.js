@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Axios from 'axios'
 import { url } from '../../../File'
 
@@ -8,10 +8,10 @@ import { url } from '../../../File'
 import React from 'react'
 
 const Preloader = () => {
+    const serverREaderRef = useRef()
     const [preloader, setPreloader] = useState(true)
 
-
-    useEffect(() => {
+    const CheckIFServerIsReady = () => {
         Axios.get(url('/api/client/check-server-ready')).then((response) => {
             const data = response.data
             if(data.status === 'ok'){
@@ -20,13 +20,19 @@ const Preloader = () => {
         }).catch(error => {
             console.log(error)
         })
+    }
 
-        // remove preloader
-        const removerPreloader = () => {
-            setTimeout(() => {
-                setPreloader(false)
-            }, 3000)
-        }
+    // remove preloader
+    const removerPreloader = () => {
+        setTimeout(() => {
+            setPreloader(false)
+        }, 3000)
+    }
+
+    serverREaderRef.current = CheckIFServerIsReady
+    
+    useEffect(() => {
+        serverREaderRef.current()
     }, [])
 
 
