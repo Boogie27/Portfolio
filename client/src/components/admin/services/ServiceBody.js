@@ -5,16 +5,16 @@ import { useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faPen,
-    faEye,
     faTrash,
-    faEllipsis,
     faToggleOn,
-    faToggleOff
+    faToggleOff,
+    faFolderOpen
 } from '@fortawesome/free-solid-svg-icons'
 import { url, DateTime } from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserServices, toggleUserServicesFeature } from '../../redux/admin/ServiceSlice'
 import AddService from './AddService'
+import EditService from './EditService'
 import DeleteUserService from './DeleteUserService'
 
 
@@ -32,9 +32,17 @@ const ServiceBody = ({alertNotification, preloader}) => {
     let token = Cookies.get('Eloquent_token')
     const [deleteFormState, setDeleteFormState] = useState({state: false, _id: ''})
     const [addFormState, setAddFormState] = useState(false)
-
+    const [editFormState, setEditFormState] = useState({state: false, service: []})
+    
+    // toggle add form modal
     const toggleAddForm = (state) => {
         setAddFormState(state)
+    }
+
+
+    // toggle edit form modal
+    const toggleEditForm = (state=false, _id='') => {
+        setEditFormState({state: state, _id: _id})
     }
 
 
@@ -96,8 +104,9 @@ const ServiceBody = ({alertNotification, preloader}) => {
     return (
         <div>
         <TitleHeader toggleAddForm={toggleAddForm}/>
-        <ContentTable services={services} toggleFeature={toggleFeature} deleteService={deleteService}/>
+        <ContentTable services={services} toggleFeature={toggleFeature} deleteService={deleteService} toggleEditForm={toggleEditForm}/>
         <AddService addFormState={addFormState} toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
+        {editFormState.state ? (<EditService editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
         <DeleteUserService deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
         </div>
     )
@@ -130,7 +139,7 @@ const TitleHeader = ({toggleAddForm}) => {
 }
 
 
-const ContentTable = ({services, toggleFeature, deleteService}) => {
+const ContentTable = ({services, toggleFeature, deleteService, toggleEditForm}) => {
     return (
         <div className="table-content-container">
             <table className="table table-hover">
@@ -145,16 +154,31 @@ const ContentTable = ({services, toggleFeature, deleteService}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {services.map((service, index) => (<ContentItem key={index} service={service} deleteService={deleteService} toggleFeature={toggleFeature}/>))}
+                    {services.map((service, index) => (<ContentItem key={index} service={service} toggleEditForm={toggleEditForm} deleteService={deleteService} toggleFeature={toggleFeature}/>))}
+                    
                 </tbody>
             </table>
+            { services.length === 0 ? (<TableEmpty/>) : null }
         </div>
     )
 }
 
 
 
-const ContentItem = ({service, toggleFeature, deleteService}) => {
+const TableEmpty = () => {
+    return (
+        <div className="empty-table">
+            <div className="empty-icon">
+                <FontAwesomeIcon  className="icon" icon={faFolderOpen} />
+            </div>
+            <div className="text">There are no items yets!</div>
+        </div>
+    )
+}
+
+
+
+const ContentItem = ({service, toggleFeature, deleteService, toggleEditForm}) => {
     return (
         <tr>
             <td>{service.title}</td>
@@ -171,7 +195,7 @@ const ContentItem = ({service, toggleFeature, deleteService}) => {
                 </div>
             </td>
             <td>
-                <FontAwesomeIcon  className="icon" icon={faPen} />
+                <FontAwesomeIcon  onClick={() => toggleEditForm(true, service._id)} className="icon" icon={faPen} />
             </td>
             <td>
                 <FontAwesomeIcon onClick={() => deleteService(service._id)} className="icon" icon={faTrash} />
@@ -184,26 +208,3 @@ const ContentItem = ({service, toggleFeature, deleteService}) => {
 
 
 
-// const ContentDropDown = ({service, deleteService}) => {
-//     return (
-//         <div className="table-drop-down">
-//             <FontAwesomeIcon className="icon" icon={faEllipsis} />
-//             <div className="drop-down">
-//                 <ul>
-//                     <li>
-//                         <FontAwesomeIcon  className="icon" icon={faPen} />
-//                         <span>Edit</span>
-//                     </li>
-//                     <li>
-//                         <FontAwesomeIcon  className="icon" icon={faEye} />
-//                         <span>View</span>
-//                     </li>
-//                     <li onClick={() => deleteService(service._id)}>
-//                         <FontAwesomeIcon  className="icon" icon={faTrash} />
-//                         <span>Delete</span>
-//                     </li>
-//                 </ul>
-//             </div>
-//         </div>
-//     )
-// }

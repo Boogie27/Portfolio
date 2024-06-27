@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { useEffect, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,8 +7,6 @@ import {
   faDownload,
 } from '@fortawesome/free-solid-svg-icons'
 import { userImage, url } from '../../../File'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchHomeBanners } from '../../redux/admin/BannerSlice'
 import HTMLReactParser from 'html-react-parser'
 
 
@@ -18,9 +16,7 @@ import HTMLReactParser from 'html-react-parser'
 
 
 const Banner = () => {
-  // redux store
-  const dispatch = useDispatch()
-  const homeBanners = useSelector(state => state.homeBanners.homeBanners)
+  const [homeBanners, setHomeBanners] = useState([])
 
   const homeBannerRef = useRef()
 
@@ -29,8 +25,7 @@ const Banner = () => {
         const data = response.data
         if(data.status === 'ok'){
             let banner = data.content
-            console.log(data.content)
-            dispatch(fetchHomeBanners(banner))
+            setHomeBanners(banner)
         }
     }).catch(error => {
         console.log(error)

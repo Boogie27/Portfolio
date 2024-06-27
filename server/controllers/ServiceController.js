@@ -138,7 +138,7 @@ const AddNewService = AsyncHandler(async (request, response) => {
 
     const exists = await UserModel.findOne({ _id: userToken.string._id })
     if(!exists){
-        return response.send({status: 'error', message: 'Login user to perform this action'})
+        return response.send({status: 'error', message: 'Login to perform this action'})
     }
 
     const content = {
@@ -179,9 +179,9 @@ const validate_service_input = (input) => {
     } else if(input.text.length < 3){
         failed = true
         textAlert = "*Must be minimum of 3 characters"
-    }else if(input.text.length > 100){
+    }else if(input.text.length > 1000){
         failed = true
-        textAlert = "*Must be maximum of 100 characters"
+        textAlert = "*Must be maximum of 1000 characters"
     }
 
     if(failed === true){
@@ -193,6 +193,39 @@ const validate_service_input = (input) => {
     }
 }
 
+
+// update user services
+const UpdateUserServices = AsyncHandler(async (request, response) => {
+    const input = request.body
+    const userToken = jwt.verify(input.token, env.SECRET_KEY) //check if user token exists
+    if(!userToken){
+        return response.send({status: 'error', message: 'Login user to perform this action'})
+    }
+    const validation = validate_service_input(input)
+    if(validation){
+        return response.send({status: 'input-error', validationError: validation})
+    }
+    const userExists = await UserModel.findOne({ _id: userToken.string._id })
+    if(!userExists){
+        return response.send({status: 'error', message: 'Login to perform this action'})
+    }
+    const exists = await ServiceModel.findOne({_id: input._id, user_id: userToken.string._id }).exec()
+    if(!exists){
+        return response.send({status: 'error', message: 'User Service does not exist'})
+    }
+    const service = {
+        title: input.title,
+        text: input.text,
+        updated_at: today()
+    }
+    const update = await ServiceModel.findOneAndUpdate({_id: exists._id}, {$set: service}).exec()
+    if(update){
+
+        const service = await ServiceModel.findOne({ _id: exists._id })
+        return response.send({status: 'ok', service: service})
+    }
+    return response.send({status: 'error', message: 'Something went wrong, try again!'})
+})
 
 
 
@@ -265,7 +298,7 @@ const DeleteUserServices = AsyncHandler(async (request, response) => {
 
 // ****************************** CLEITN SECTION*********************************
 
-//   fetch admin services
+//   fetch client services header
 const FetchClientServiceHeader = AsyncHandler(async (request, response) => {
     const content = await ServiceheaderModel.findOne({is_featured: 1}).exec()
     if(content){
@@ -276,7 +309,14 @@ const FetchClientServiceHeader = AsyncHandler(async (request, response) => {
 
 
 
-
+//   fetch client services
+const FetchClientServices = AsyncHandler(async (request, response) => {
+    const services = await ServiceModel.find({is_featured: 1}).exec()
+    if(services.length){
+        return response.send({status: 'ok', services: services})
+    }
+    return response.send({status: 'empty', services: [] })
+})
 
 
 
@@ -290,6 +330,8 @@ module.exports = {
     FetchServiceHeader,
     UpdateServiceHeader,
     DeleteUserServices,
+    UpdateUserServices,
+    FetchClientServices,
     FetchClientServiceHeader,
     ToggleUserServicesFeature,
 }

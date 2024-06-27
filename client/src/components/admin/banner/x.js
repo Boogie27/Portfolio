@@ -375,3 +375,38 @@ const AddBannerForm = ({
         </div>
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// const ContentDropDown = ({service, deleteService}) => {
+//     return (
+//         <div className="table-drop-down">
+//             <FontAwesomeIcon className="icon" icon={faEllipsis} />
+//             <div className="drop-down">
+//                 <ul>
+//                     <li>
+//                         <FontAwesomeIcon  className="icon" icon={faPen} />
+//                         <span>Edit</span>
+//                     </li>
+//                     <li>
+//                         <FontAwesomeIcon  className="icon" icon={faEye} />
+//                         <span>View</span>
+//                     </li>
+//                     <li onClick={() => deleteService(service._id)}>
+//                         <FontAwesomeIcon  className="icon" icon={faTrash} />
+//                         <span>Delete</span>
+//                     </li>
+//                 </ul>
+//             </div>
+//         </div>
+//     )
+// }

@@ -400,6 +400,15 @@ h1{
 .table-content-container tbody tr td.table-data-icon .icon.active{
     color: #FDB813;
 }
+.table-content-container .empty-table{
+    padding: 50px 0px;
+    text-align: center;
+    font-size: 18px;
+}
+.table-content-container .empty-table .empty-icon .icon{
+    color: #555;
+    font-size: 60px;
+}
 /* ************* dark mode *********** */
 .admin-container.dark .table-content-container{
     background-color: #1a1a1a;
@@ -429,6 +438,10 @@ h1{
 }
 .admin-container.dark  .top-title-content .title-header h3{
     color: #ccc;
+}
+.admin-container.dark  .table-content-container .empty-table .text{
+    color: #7a7a7a;
+    font-size: 16px;
 }
 /* *************** TABLE DROPDOWN SECTION *********** */
 .table-drop-down{
@@ -1018,8 +1031,7 @@ h1{
     color: #fff;
     border: none;
     padding: 10px;
-    font-size: 20px;
-    font-weight: 600;
+    font-size:16px;
     text-align: center;
     border-radius: 3px;
     transition: all 0.3s ease;

@@ -9,8 +9,8 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
 import { url } from '../../../File'
-import { useDispatch } from 'react-redux'
-import { AddUserServices } from '../../redux/admin/ServiceSlice'
+import { useDispatch, useSelector} from 'react-redux'
+import { UpdateUserServices } from '../../redux/admin/ServiceSlice'
 
 
 
@@ -19,19 +19,21 @@ import { AddUserServices } from '../../redux/admin/ServiceSlice'
 
 
 
-const AddService = ({addFormState, toggleAddForm, alertNotification}) => {
+const EditService = ({editFormState, toggleEditForm, alertNotification}) => {
     // react hooks
     const dispatch = useDispatch()
-
+    const services = useSelector(state => state.services.services)
+    const service = services.find(service => service._id === editFormState._id)
+   
     let token = Cookies.get('Eloquent_token')
-    const [title, setTitle] = useState('')
-    const [text, setText] = useState('')
+    const [title, setTitle] = useState(service.title)
+    const [text, setText] = useState(service.text)
     const [button, setButton] = useState(false)
 
     const [titleAlert, setTitleAlert] = useState('')
     const [textAlert, setTextAlert] = useState('')
 
-    const addNewService = () => {
+    const EditUserService = () => {
         if(token){
             initErrorAlert() //initialize form input error alert
             const validate = validate_input(title, text)
@@ -39,17 +41,18 @@ const AddService = ({addFormState, toggleAddForm, alertNotification}) => {
             const content = {
                 title: title,
                 text: text,
-                token: token
+                token: token,
+                _id: service._id
             }
             setButton(true)
-            Axios.post(url('/api/admin/add-new-service'), content).then((response) => {
+            Axios.post(url('/api/admin/edit-user-services'), content).then((response) => {
                 const data = response.data
                 if(data.status === 'input-error'){
                     inputErrorForBackend(data.validationError)
                 }else if(data.status === 'error'){
                     alertNotification('error', data.message)
                 }else if(data.status === 'ok'){
-                    dispatch(AddUserServices(data.service))
+                    dispatch(UpdateUserServices(data.service))
                     initFormInput() //init fields
                     toggleForm(false)
                 }
@@ -64,9 +67,8 @@ const AddService = ({addFormState, toggleAddForm, alertNotification}) => {
 
     // close add form
     const toggleForm = (state) => {
-        toggleAddForm(state)
+        toggleEditForm(state)
         initErrorAlert()
-        initFormInput()
     }
 
     //  initialize form input error
@@ -120,11 +122,11 @@ const inputErrorForBackend = (error) => {
 }
 
     return (
-        <div className={`app-content-form ${addFormState ? 'active' : ''}`}>
+        <div className={`app-content-form ${editFormState.state ? 'active' : ''}`}>
             <div className="content-form">
                <div className="form">
                     <div className="title-header">
-                        <h3>ADD NEW SERVICES</h3>
+                        <h3>EDIT SERVICES</h3>
                         <FontAwesomeIcon onClick={() => toggleForm(false) } className="icon" icon={faTimes} />
                     </div>
                     
@@ -148,7 +150,7 @@ const inputErrorForBackend = (error) => {
                                         button ? (
                                             <button type="button">PLEASE WAIT...</button>
                                         ) : (
-                                            <button onClick={() => addNewService()} type="button">ADD SERVICE</button>
+                                            <button onClick={() => EditUserService()} type="button">EDIT SERVICE</button>
                                         )
                                     }
                                     
@@ -163,4 +165,4 @@ const inputErrorForBackend = (error) => {
 }
 
 
-export default AddService
+export default EditService

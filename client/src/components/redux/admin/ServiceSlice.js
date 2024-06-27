@@ -33,6 +33,12 @@ const serviceSlice = createSlice({
         deleteUserServices: (state, action) => {
             const _id = action.payload._id
             state.services = state.services.filter(service => service._id !== _id)
+        },
+        UpdateUserServices: (state, action) => {
+            if(state.services !== undefined){    
+                const index = state.services.findIndex(service => service._id === action.payload._id)
+                state.services[index] = action.payload
+            }
         }
     }
 })
@@ -45,6 +51,7 @@ export const {
     fetchUserServices,
     AddUserServices,
     deleteUserServices,
+    UpdateUserServices,
     toggleUserServicesFeature,
 } = serviceSlice.actions
 export default serviceSlice.reducer

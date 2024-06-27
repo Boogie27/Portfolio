@@ -11,26 +11,29 @@ import HTMLReactParser from 'html-react-parser'
 
 
 const Services = () => {
+    const FetchUserServicesRef = useRef(null)
     const FetchServiceHeaderRef = useRef(null)
+    const [services, setServices] = useState([])
     const [serviceHeaders, setServiceHeaders] = useState([])
 
-   const services = [
-    {
-        title: "Web design",
-        text: "Nemo design enim ipsam voluptatem quim voluptas sit aspernatur aut odit auting fugit sed thisnquia consequuntur magni dolores eos designer heresm qu"
-    },
-    {
-        title: "Web Development",
-        text: "Nemo design enim ipsam voluptatem quim voluptas sit aspernatur aut odit auting fugit sed thisnquia consequuntur magni dolores eos designer heresm qu"
-    },
-    {
-        title: "Mentoship",
-        text: "Nemo design enim ipsam voluptatem quim voluptas sit aspernatur aut odit auting fugit sed thisnquia consequuntur magni dolores eos designer heresm qu"
-    },
-   ]
+//    const services = [
+//     {
+//         title: "Web design",
+//         text: "Nemo design enim ipsam voluptatem quim voluptas sit aspernatur aut odit auting fugit sed thisnquia consequuntur magni dolores eos designer heresm qu"
+//     },
+//     {
+//         title: "Web Development",
+//         text: "Nemo design enim ipsam voluptatem quim voluptas sit aspernatur aut odit auting fugit sed thisnquia consequuntur magni dolores eos designer heresm qu"
+//     },
+//     {
+//         title: "Mentoship",
+//         text: "Nemo design enim ipsam voluptatem quim voluptas sit aspernatur aut odit auting fugit sed thisnquia consequuntur magni dolores eos designer heresm qu"
+//     },
+//    ]
 
 
-   const FetchServiceHeader = () => {
+    // fetch user service header
+    const FetchServiceHeader = () => {
         Axios.get(url('/api/cleint/fetch-services-header')).then((response) => {
             const data = response.data
             if(data.status === 'ok'){
@@ -41,10 +44,25 @@ const Services = () => {
         })
     }
 
+    // fetch user services
+    const FetchUserServices = () => {
+        Axios.get(url('/api/cleint/fetch-services')).then((response) => {
+            const data = response.data
+            console.log(data.services)
+            if(data.status === 'ok'){
+                setServices(data.services)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    FetchUserServicesRef.current = FetchUserServices
     FetchServiceHeaderRef.current = FetchServiceHeader
 
     useEffect(() => {
         window.scrollTo(0, 0) // page scroll to top
+        FetchUserServicesRef.current()
         FetchServiceHeaderRef.current()
     }, [])
 

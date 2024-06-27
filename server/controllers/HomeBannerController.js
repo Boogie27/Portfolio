@@ -214,7 +214,7 @@ const CheckIfServerIsReady = AsyncHandler(async (request, response) => {
     if(true){
         setTimeout(() => {
             return response.send({status: 'ok'})
-        }, 6000)
+        }, 5000)
     }
 })
 
