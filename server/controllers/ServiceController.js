@@ -23,7 +23,13 @@ const UpdateServiceHeader = AsyncHandler(async (request, response) => {
     if(validation){
         return response.send({status: 'input-error', validationError: validation})
     }
-    let exists = await ServiceheaderModel.findOne().exec()
+    const userToken = jwt.verify(input.token, env.SECRET_KEY) //check if user token exists
+    if(!userToken){
+        return response.send({status: 'error', message: 'Login user to perform this action'})
+    }
+
+    const user_id = userToken.string._id
+    let exists = await ServiceheaderModel.findOne({user_id: user_id}).exec()
     if(exists){
         const updateContent = {
             title: input.title,
@@ -38,6 +44,7 @@ const UpdateServiceHeader = AsyncHandler(async (request, response) => {
         }
     }else{
         const content = {
+            user_id: user_id,
             title: input.title,
             first_header: input.firstHeader,
             second_header: input.secondHeader,

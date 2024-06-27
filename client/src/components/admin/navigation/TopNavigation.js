@@ -10,12 +10,18 @@ import {
 
 
 
-const TopNavigation = ({ theme, toggleAppTheme, toggleNavigation}) => {
+const TopNavigation = ({ theme, toggleAppTheme, toggleNavigation, setAppState}) => {
+
+  const toggleApp = (state) => {
+    setAppState(state) // switch app state between client and admin
+  }
+
+
   return (
     <div className="top-navigation-container">
         <div className="inner-navigation">
-            <NavigationLeft/>
-            <NavigationMiddle/>
+            <NavigationLeft toggleApp={toggleApp}/>
+            <NavigationMiddle toggleApp={toggleApp}/>
             <NavigationRight theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
         </div>
     </div>
@@ -30,10 +36,10 @@ export default TopNavigation
 
 
 
-const NavigationLeft = () => {
+const NavigationLeft = ({toggleApp}) => {
     return (
       <div className="navigation-left">
-        <NavLink to="/">
+        <NavLink onClick={() => toggleApp('client')} to="/">
           <div className="logo"></div>
           <div className="title">Dash<span>board</span></div>
         </NavLink>
@@ -43,27 +49,27 @@ const NavigationLeft = () => {
 
 
 
-const NavigationMiddle = () => {
+const NavigationMiddle = ({toggleApp}) => {
     return (
       <div className="navigation-middle">
         <ul>
             <li>
-              <NavLink to="/dashboard/banner">Banner</NavLink>
+              <NavLink onClick={() => toggleApp('admin')} to="/dashboard/banner">Banner</NavLink>
             </li>
             <li>
-              <NavLink to="/dashboard">Dashboard</NavLink>
+              <NavLink onClick={() => toggleApp('admin')} to="/dashboard">Dashboard</NavLink>
             </li>
             <li>
-              <NavLink to="/">About</NavLink>
+              <NavLink onClick={() => toggleApp('admin')} to="/">About</NavLink>
             </li>
             <li>
-              <NavLink to="/dashboard/services">Services</NavLink>
+              <NavLink onClick={() => toggleApp('admin')} to="/dashboard/services">Services</NavLink>
             </li>
             <li>
-              <NavLink to="/">Projects</NavLink>
+              <NavLink onClick={() => toggleApp('admin')} to="/">Projects</NavLink>
             </li>
             <li>
-              <NavLink to="/">Contact</NavLink>
+              <NavLink onClick={() => toggleApp('admin')} to="/">Contact</NavLink>
             </li>
         </ul>
       </div>

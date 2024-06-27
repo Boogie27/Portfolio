@@ -188,10 +188,11 @@ const ContentItem = ({service, toggleFeature, deleteService, toggleEditForm}) =>
             </td>
             <td>
                 <div>
-                    <b>Created at:</b> {DateTime(service.created_at, 'Do MMMM YYYY | h:mma')}
+                    <b>Updated at:</b> {DateTime(service.updated_at, 'Do MMMM YYYY | h:mma')}
+                    
                 </div>
-                <div>
-                    Updated at: {DateTime(service.updated_at, 'Do MMMM YYYY | h:mma')}
+                <div className="dim">
+                    <b>Created at:</b> {DateTime(service.created_at, 'Do MMMM YYYY | h:mma')}
                 </div>
             </td>
             <td>

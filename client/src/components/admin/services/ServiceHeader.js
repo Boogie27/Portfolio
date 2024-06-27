@@ -4,6 +4,15 @@ import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
 import Axios from 'axios'
 import { url } from '../../../File'
+import Cookies from 'js-cookie'
+
+
+
+
+
+
+
+
 
 
 
@@ -19,37 +28,41 @@ const ServiceHeader = ({preloader, alertNotification }) => {
     const [secondHeaderAlert, setSecondHeaderAlert] = useState('')
 
 
-
+    let token = Cookies.get('Eloquent_token')
     const addNewBanner = () => {
-        initErrorAlert() //initialize form input error alert
-        const validate = validate_input(title, firstHeader, secondHeader)
-        if(validate === false) return 
-        const content = {
-            title: title,
-            firstHeader: firstHeader,
-            secondHeader: secondHeader,
-        }
-        setButton(true)
-        preloader(true, 'Please wait...')
-        Axios.post(url('/api/admin/update-services-header'), content).then((response) => {
-            const data = response.data
-            if(data.status === 'input-error'){
-                inputErrorForBackend(data.validationError)
-            }else if(data.status === 'error'){
-                alertNotification('error', data.message)
-            }else if(data.status === 'ok'){
-                alertNotification('success', 'Updated sucessfully!')
-                setTitle(data.newBanner.title)
-                setFirstHeader(data.newBanner.first_header)
-                setSecondHeader(data.newBanner.second_header)
-                preloader(false)
+        if(token){
+            initErrorAlert() //initialize form input error alert
+            const validate = validate_input(title, firstHeader, secondHeader)
+            if(validate === false) return 
+            const content = {
+                title: title,
+                token: token,
+                firstHeader: firstHeader,
+                secondHeader: secondHeader,
             }
-            preloader(false)
-            return setButton(false)
-        }).catch(error => {
-            setButton(false)
-            console.log(error)
-        })
+        
+            setButton(true)
+            preloader(true, 'Please wait...')
+            Axios.post(url('/api/admin/update-services-header'), content).then((response) => {
+                const data = response.data
+                if(data.status === 'input-error'){
+                    inputErrorForBackend(data.validationError)
+                }else if(data.status === 'error'){
+                    alertNotification('error', data.message)
+                }else if(data.status === 'ok'){
+                    alertNotification('success', 'Updated sucessfully!')
+                    setTitle(data.newBanner.title)
+                    setFirstHeader(data.newBanner.first_header)
+                    setSecondHeader(data.newBanner.second_header)
+                }
+                preloader(false)
+                return setButton(false)
+            }).catch(error => {
+                setButton(false)
+                preloader(false)
+                console.log(error)
+            })
+        }
     }
 
 

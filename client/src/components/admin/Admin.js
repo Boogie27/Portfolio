@@ -28,7 +28,7 @@ import { fetchUser } from '../redux/admin/UserSlice'
 
 
 
-const Admin = () => {
+const Admin = ({setAppState}) => {
     const navigate = useNavigate()
     const preloaderRef = useRef(null)
     const setThemeAutoRef = useRef(null)
@@ -104,7 +104,7 @@ const Admin = () => {
   return (
     <div className={`admin-container ${theme}`}>
         { isLoading.state ? (<Preloader text={isLoading.text}/>) : null }
-        { isLoggedIn ? (<Navigation theme={theme} setTheme={setTheme}/>) : null }
+        { isLoggedIn ? (<Navigation theme={theme} setTheme={setTheme} setAppState={setAppState}/>) : null }
         <Routes>
             <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}>
                 <Route path="/dashboard" element={<DashBoard/>}/>

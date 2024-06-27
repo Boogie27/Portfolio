@@ -7,7 +7,7 @@ import Cookies from 'js-cookie'
 
 
 
-const Navigation = ({ theme, setTheme }) => {
+const Navigation = ({ theme, setTheme, setAppState}) => {
   const [sideNav, setSideNav] = useState(false)
 
 
@@ -24,7 +24,7 @@ const Navigation = ({ theme, setTheme }) => {
     
   return (
     <div className="main-navigation">
-      <TopNavigation theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
+      <TopNavigation theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme} setAppState={setAppState}/>
       <SideNavigation theme={theme} sideNav={sideNav} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
     </div>
   )

@@ -11,12 +11,17 @@ import { NavLink } from 'react-router-dom'
 
 
 
-const TopNavigation = ({ theme, toggleAppTheme, toggleNavigation}) => {
+const TopNavigation = ({ theme, toggleAppTheme, toggleNavigation, setAppState}) => {
+  const toggleApp = (state) => {
+    setAppState(state)
+  }
+
+  
   return (
     <div className="top-navigation-container">
         <div className="inner-navigation">
             <NavigationLeft/>
-            <NavigationMiddle/>
+            <NavigationMiddle toggleApp={toggleApp}/>
             <NavigationRight theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
         </div>
     </div>
@@ -44,13 +49,13 @@ const NavigationLeft = () => {
 
 
 
-const NavigationMiddle = () => {
+const NavigationMiddle = ({toggleApp}) => {
     return (
       <div className="navigation-middle">
         <ul>
             <li>Home</li>
             <li>
-              <NavLink to="/dashboard">Dashboard</NavLink>
+              <NavLink onClick={() => toggleApp('admin')} to="/dashboard">Dashboard</NavLink>
             </li>
             <li>About</li>
             <li>Services</li>

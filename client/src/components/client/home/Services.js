@@ -48,7 +48,6 @@ const Services = () => {
     const FetchUserServices = () => {
         Axios.get(url('/api/cleint/fetch-services')).then((response) => {
             const data = response.data
-            console.log(data.services)
             if(data.status === 'ok'){
                 setServices(data.services)
             }

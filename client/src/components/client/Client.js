@@ -11,7 +11,7 @@ import Preloader from './preloader/Preloader'
 
 
 
-const Client = () => {
+const Client = ({setAppState}) => {
     const [theme, setTheme] = useState('dark')
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const Client = () => {
   return (
     <div className={`portfolio-container ${theme}`}>
         <Preloader/>
-        <Navigation theme={theme} setTheme={setTheme}/>
+        <Navigation theme={theme} setTheme={setTheme} setAppState={setAppState}/>
             <Routes>
                 <Route path="/" element={<Home/>}/>
             </Routes>

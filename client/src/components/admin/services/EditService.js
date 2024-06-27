@@ -53,6 +53,7 @@ const EditService = ({editFormState, toggleEditForm, alertNotification}) => {
                     alertNotification('error', data.message)
                 }else if(data.status === 'ok'){
                     dispatch(UpdateUserServices(data.service))
+                    alertNotification('success', 'Updated successfully!')
                     initFormInput() //init fields
                     toggleForm(false)
                 }

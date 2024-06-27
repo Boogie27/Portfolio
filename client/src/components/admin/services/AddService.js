@@ -50,6 +50,7 @@ const AddService = ({addFormState, toggleAddForm, alertNotification}) => {
                     alertNotification('error', data.message)
                 }else if(data.status === 'ok'){
                     dispatch(AddUserServices(data.service))
+                    alertNotification('success', 'Service added successfully!')
                     initFormInput() //init fields
                     toggleForm(false)
                 }
