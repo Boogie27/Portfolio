@@ -6,6 +6,7 @@ const {
     FetchUserServices,
     FetchServiceHeader,
     UpdateServiceHeader,
+    DeleteUserServices,
     FetchClientServiceHeader,
     ToggleUserServicesFeature,
 } = require('../controllers/ServiceController')
@@ -20,6 +21,7 @@ router.post('/api/admin/update-services-header', UpdateServiceHeader)
 router.post('/api/admin/add-new-service', AddNewService)
 router.get('/api/admin/fetch-user-services/:token', FetchUserServices)
 router.post('/api/admin/toggle-user-services-feature', ToggleUserServicesFeature)
+router.post('/api/admin/delete-user-services', DeleteUserServices)
 
 
 

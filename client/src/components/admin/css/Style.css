@@ -387,7 +387,13 @@ h1{
     color: #333;
     font-size: 14px;
 }
+.table-content-container tbody tr td .icon{
+    color: #656565;
+    cursor: pointer;
+    font-size: 18px;
+}
 .table-content-container tbody tr td.table-data-icon .icon{
+    color: #656565;
     cursor: pointer;
     font-size: 22px;
 }
@@ -749,7 +755,7 @@ h1{
     }
 }
 @media only screen and (max-width: 992px){
-    .main-content-container .content-form,
+    .main-content-container .content-form,table-data-icon
     .dashboard-banner-container .banner-image-container{
         width: 95%;
     }
@@ -951,17 +957,128 @@ h1{
         border: 1px solid #323232;
     }
 }
+/* *********** FORM ACTION MODAL ********** */
+.form-action-modal{
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.654);
+}
+.form-action-modal .inner-form-action{
+    width: 50%;
+    padding: 20px;
+    position: relative;
+    border-radius: 5px;
+    background-color: #fff;
+}
+.form-action-modal .inner-form-action .title-header{
+    padding: 0px;
+    margin: 10px 0px;
+}
+.form-action-modal .inner-form-action .title-header h3{
+    color: #333;
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+}
+.form-action-modal .inner-form-action .body{
+    color: #333;
+    font-size: 18px;
+    text-align: center;
+}
+.form-action-modal .inner-form-action .title-header .icon{
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.3s ease;
+    background-color: #EB5757;
+}
+.form-action-modal .inner-form-action .title-header .icon:hover{
+    animation: btnSpinner 0.3s linear;
+}
+.form-action-modal .inner-form-action .button{
+    margin-top: 10px;
+}
+.form-action-modal .inner-form-action .button button{
+    width: 100%;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    border: 2px solid #EB5757;
+    background-color: #EB5757;
+}
+.form-action-modal .inner-form-action .button button:hover{
+    background-color: #fd7b7b;
+}
+@media only screen and (max-width: 1200px){
+    .form-action-modal .inner-form-action{
+        width: 70%;
+    }
+}
+@media only screen and (max-width: 992px){
+    .form-action-modal .inner-form-action{
+        width: 90%;
+    }
+}
+@media only screen and (max-width: 767px){
+    .form-action-modal .inner-form-action{
+        width: 95%;
+    }
+    .form-action-modal .inner-form-action .button button{
+        font-size: 16px;
+    }
+    .form-action-modal .inner-form-action .body{
+        font-size: 16px;
+    }
+    .form-action-modal .inner-form-action .title-header h3{
+        font-size: 20px;
+    }
+}
+@media only screen and (max-width: 398px){
+    .form-action-modal .inner-form-action .button button{
+        font-size: 14px;
+    }
+    .form-action-modal .inner-form-action .body{
+        font-size: 14px;
+    }
+    .form-action-modal .inner-form-action .title-header h3{
+        font-size: 18px;
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
+/* *********** dark mode ************ */
+.admin-container.dark .form-action-modal .inner-form-action{
+    background-color: #242424;
+    border: 1px solid #323232;
+}
+.admin-container.dark .form-action-modal .inner-form-action .title-header h3{
+    color: #ccc;
+}
+.admin-container.dark .form-action-modal .inner-form-action .body{
+    color: #8d8d8d;
+}
+.admin-container.dark .form-action-modal .inner-form-action .button button:hover{
+    background-color: #ff545483;
+}
 
 
 

@@ -215,10 +215,14 @@ const FetchUserServices = AsyncHandler(async (request, response) => {
 
 // toggle user services featured
 const ToggleUserServicesFeature = AsyncHandler(async (request, response) => {
-    const _id = request.body._id
-    const exists = await ServiceModel.findOne({ _id: _id })
+    const { _id, token } = request.body
+    const userToken = jwt.verify(token, env.SECRET_KEY) //check if user token exists
+    if(!userToken){
+        return response.send({status: 'error', message: 'Login user to perform this action'})
+    }
+    const exists = await ServiceModel.findOne({ _id: _id, user_id:  userToken.string._id}).exec()
     if(!exists){
-        return response.send({status: 'error', message: 'Service does not exist'})
+        return response.send({status: 'error', message: 'Either Service does not exist or you need to login'})
     }
     const featured = exists.is_featured == 1 ? 0 : 1
     const update = await ServiceModel.findOneAndUpdate({_id: exists._id}, {$set: {is_featured: featured}}).exec()
@@ -234,6 +238,24 @@ const ToggleUserServicesFeature = AsyncHandler(async (request, response) => {
 
 
 
+
+// delete user services
+const DeleteUserServices = AsyncHandler(async (request, response) => {
+    const { _id, token } = request.body
+    const userToken = jwt.verify(token, env.SECRET_KEY) //check if user token exists
+    if(!userToken){
+        return response.send({status: 'error', message: 'Login user to perform this action'})
+    }
+    const exists = await ServiceModel.findOne({ _id: _id, user_id:  userToken.string._id}).exec()
+    if(!exists){
+        return response.send({status: 'error', message: 'Either Service does not exist or you need to login'})
+    }
+    const deleteService = await ServiceModel.findByIdAndDelete({_id, _id})
+    if(deleteService){
+        return response.send({status: 'ok', deleteService: deleteService})
+    }
+    return response.send({status: 'error', message: 'Something went wrong, try again!'})
+})
 
 
 
@@ -267,6 +289,7 @@ module.exports = {
     FetchUserServices,
     FetchServiceHeader,
     UpdateServiceHeader,
+    DeleteUserServices,
     FetchClientServiceHeader,
     ToggleUserServicesFeature,
 }
