@@ -21,11 +21,18 @@ const Navigation = ({ theme, setTheme, setAppState}) => {
     const toggleNavigation = () => {
       setSideNav(!sideNav)
     }
+
+    const toggleApp = (state) => {
+      setSideNav(false)
+      setAppState(state) // switch app state between client and admin
+    }
+  
+  
     
   return (
     <div className="main-navigation">
-      <TopNavigation theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme} setAppState={setAppState}/>
-      <SideNavigation theme={theme} sideNav={sideNav} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
+      <TopNavigation theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme} toggleApp={toggleApp}/>
+      <SideNavigation theme={theme} toggleApp={toggleApp} sideNav={sideNav} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
     </div>
   )
 }

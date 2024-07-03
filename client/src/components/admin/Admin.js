@@ -10,13 +10,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import Preloader from './preloader/Preloader'
 import Services from './services/Services'
 import Login from './auth/Login'
+import AboutMe from './about/AboutMe'
+import Contact from './contact/Contact'
 import { url } from '../../File'
 import { useNavigate } from 'react-router-dom'
 import Axios from 'axios'
 import ProtectedRoutes from './utility/ProtectedRoutes'
 import { useDispatch } from 'react-redux'
 import { fetchUser } from '../redux/admin/UserSlice'
-import AboutMe from './about/AboutMe'
+
 
 
 
@@ -108,6 +110,7 @@ const Admin = ({setAppState}) => {
         <Routes>
             <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}>
                 <Route path="/dashboard" element={<DashBoard/>}/>
+                <Route path="/dashboard/contact-us" element={<Contact preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/about" element={<AboutMe preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/services" element={<Services preloader={preloader} alertNotification={alertNotification}/> }/>
                 <Route path="/dashboard/banner" element={<Banner user={user} preloader={preloader} alertNotification={alertNotification}/>}/>

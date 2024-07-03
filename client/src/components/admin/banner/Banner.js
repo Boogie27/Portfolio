@@ -236,6 +236,7 @@ const Banner = ({ user, preloader, alertNotification }) => {
                     }
                 }).catch(error => {
                     console.log(error)
+                    alertNotification('error', 'Something went wrong!')
                 })
             }
         }
@@ -321,7 +322,7 @@ const ContentBanner = ({
                             </Col>
                             <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                                 <label>Span Header:</label>
-                                <input type="text" onChange={(e) => setSpanHeader(e.target.value)} value={spanHeader} className="form-control" placeholder="Enter Span Header"/>
+                                <input type="text" onChange={(e) => setSpanHeader(e.target.value)} value={spanHeader} className="form-control span" placeholder="Enter Span Header"/>
                                 <FormInputAlert alert={spanHeaderAlert}/>
                             </Col>
                         </Row>

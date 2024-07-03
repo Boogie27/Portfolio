@@ -25,6 +25,10 @@ const UpdateUserAbout = AsyncHandler(async (request, response) => {
         return response.send({status: 'error', message: 'Login user to perform this action'})
     }
     const user_id = userToken.string._id
+    const userExists = await UserModel.findOne({_id: user_id}).exec()
+    if(!userExists){
+        return response.send({status: 'error', error: 'Login user to perform this action'})
+    }
     let exists = await About.findOne({user_id: user_id}).exec()
     if(exists){
         const updateContent = {

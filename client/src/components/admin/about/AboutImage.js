@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import Cookies from 'js-cookie'
-import { url, userImage, userDemoImage} from '../../../File'
-import { useState, useEffect, useRef } from 'react'
+import { url, userImage } from '../../../File'
+import { useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faPen,
@@ -15,9 +15,7 @@ import {
 const AboutImage = ({image, setImage, preloader, alertNotification}) => {
     
     const imageRef = useRef(null)
-    const user_image = 'demo.png'
     let token = Cookies.get('Eloquent_token')
-
 
     const clearFileInput = () => {
         return imageRef.current.value = '';
@@ -65,7 +63,7 @@ const AboutImage = ({image, setImage, preloader, alertNotification}) => {
                         image.length ? (
                             <div className="image">
                                 <FontAwesomeIcon onClick={() => uploadAboutImage()} className="icon edit" icon={faPen} />
-                                <img src={userImage(image ? image : userDemoImage)} alt={image ? image : userDemoImage}/>
+                                <img src={userImage(image)} alt={image}/>
                             </div>
                         ) : (
                             <div className="image-container">

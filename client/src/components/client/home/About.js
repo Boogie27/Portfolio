@@ -101,11 +101,10 @@ const ContentLeft = ({aboutMe}) => {
 
 
 const ContentRight = ({aboutMe}) => {
-    const image = aboutMe.image ? aboutMe.image : 'demo.png'
     return (
         <div className="content-right">
             <div className="image">
-                <img src={userImage(image)} alt="about-us"/>
+                <img src={userImage(aboutMe.image)} alt="about-us"/>
             </div>
             <div className="bottom-content">
                 <ul>

@@ -10,13 +10,7 @@ import {
 
 
 
-const TopNavigation = ({ theme, toggleAppTheme, toggleNavigation, setAppState}) => {
-
-  const toggleApp = (state) => {
-    setAppState(state) // switch app state between client and admin
-  }
-
-
+const TopNavigation = ({ theme, toggleAppTheme, toggleNavigation, toggleApp}) => {
   return (
     <div className="top-navigation-container">
         <div className="inner-navigation">
@@ -54,22 +48,22 @@ const NavigationMiddle = ({toggleApp}) => {
       <div className="navigation-middle">
         <ul>
             <li>
-              <NavLink onClick={() => toggleApp('admin')} to="/dashboard/banner">Banner</NavLink>
-            </li>
-            <li>
               <NavLink onClick={() => toggleApp('admin')} to="/dashboard">Dashboard</NavLink>
             </li>
             <li>
+              <NavLink onClick={() => toggleApp('admin')} to="/dashboard/banner">Banner</NavLink>
+            </li>
+            <li>
               <NavLink onClick={() => toggleApp('admin')} to="/dashboard/about">About</NavLink>
+            </li>
+            <li>
+              <NavLink onClick={() => toggleApp('admin')} to="/dashboard/skills">Skills</NavLink>
             </li>
             <li>
               <NavLink onClick={() => toggleApp('admin')} to="/dashboard/services">Services</NavLink>
             </li>
             <li>
               <NavLink onClick={() => toggleApp('admin')} to="/dashboard/project">Projects</NavLink>
-            </li>
-            <li>
-              <NavLink onClick={() => toggleApp('admin')} to="/dashboard/contact-us">Contact</NavLink>
             </li>
         </ul>
       </div>

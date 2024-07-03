@@ -51,12 +51,14 @@ const DateTime = (time, format) => {
 
 
 const user_image = (string) => {
-    return ClientUrl('/asset/image/users/' + string)
+    const image = string ? string : userDemoImage
+    return ClientUrl('/asset/image/users/' + image)
 }
 
 
 const userImage = (string) => {
-    return url('/public/asset/image/users/' + string)
+    const image = string ? string : userDemoImage
+    return url('/public/asset/image/users/' + image)
 }
 
 

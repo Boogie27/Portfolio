@@ -13,6 +13,9 @@ const HomeBannerRoutes = require('./routes/HomeBannerRoutes')
 const ServiceRoute = require('./routes/ServiceRoute') 
 const UserRoute = require('./routes/UserRoute') 
 const AboutRoute = require('./routes/AboutRoute') 
+const ContactRoute = require('./routes/ContactRoute') 
+
+
 
 
 
@@ -36,6 +39,7 @@ app.use(HomeBannerRoutes)
 app.use(ServiceRoute)
 app.use(UserRoute)
 app.use(AboutRoute)
+app.use(ContactRoute)
 
 
 // serve static image from users folder in the server to frontend

@@ -230,6 +230,18 @@ h1{
     overflow-Y: auto;
     padding: 0px 10px;
 }
+.side-navigation-container .side-navigation-body .side-nav-content ul{
+    padding: 50px 0px;
+}
+.side-navigation-container .side-navigation-body .side-nav-content ul li{
+    cursor: pointer;
+    padding: 10px 10px; 
+    transition: all 0.3s ease;
+}
+.side-navigation-container .side-navigation-body .side-nav-content ul li:hover{
+    font-weight: bold;
+    background-color: #f6f6f6;
+}
 .side-navigation-container .side-navigation-body .side-nav-content::-webkit-scrollbar{
     width: 0px;
     background: transparent;
@@ -378,6 +390,23 @@ h1{
 .top-title-content .button button:hover{
     background-color: #333333d1;
     border: 3px solid #333;
+}
+.top-title-content .right-button a{
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    padding: 10px 30px;
+    border-radius: 5px;
+    background-color: #333;
+    border: 3px solid #333;
+    transition: all 0.3s ease;
+}
+.top-title-content .right-button a:hover{
+    background-color: #333333d1;
+    border: 3px solid #333;
+}
+.top-title-content .right-button .icon{
+    margin: 0px 5px;
 }
 .table-content-container{
     width: 95%;
@@ -679,7 +708,7 @@ h1{
     background-color: #fff;
 }
 .main-content-container .content-form .form .form-group{
-    margin-bottom: 20px;
+    margin: 20px 0px;
 }
 .main-content-container .content-form .icon-toggle{
     top: 3px;
@@ -705,10 +734,18 @@ h1{
     font-weight: 500;
     padding: 15px 10px;
     border-radius: 0px;
+    border: 1px solid #e0e0e0;
 }
 .main-content-container .content-form .form input::placeholder,
 .main-content-container .content-form .form textarea::placeholder{
     color: #bcbcbc;
+}
+.main-content-container .content-form .form input.span{
+    color: #FDB813;
+}
+.main-content-container .content-form .form input:focus,
+.main-content-container .content-form .form textarea:focus{
+    border: 1px solid #FDB813;
 }
 .main-content-container .content-form .form .form-button button{
     border: none;
@@ -777,6 +814,10 @@ h1{
 .admin-container.dark .main-content-container .content-form .form textarea::placeholder{
     color: #595959;
 }
+.admin-container.dark .main-content-container .content-form .form input:focus,
+.admin-container.dark .main-content-container .content-form .form textarea:focus{
+    border: 1px solid #4d3601;
+}
 .admin-container.dark  .dashboard-banner-container .banner-image-container .inner-banner-image .image,
 .admin-container.dark  .dashboard-banner-container .banner-image-container .inner-banner-image .image img{
     background-color: transparent;
@@ -787,21 +828,12 @@ h1{
 .admin-container.dark .dashboard-banner-container .banner-image-container .inner-banner-image .image .icon:hover{
     background-color: #252525a0;
 }
-/* @media only screen and (max-width: 1400px){
-    .main-content-container .content-form,
-    .dashboard-banner-container .banner-image-container{
-        width: 90%;
-    }
-}
 @media only screen and (max-width: 992px){
-    .main-content-container .content-form,table-data-icon
     .dashboard-banner-container .banner-image-container{
         width: 95%;
     }
-    .dashboard-banner-container .banner-image-container .image-container{
-        width: 90%;
-    }
-} */
+}
+
 @media only screen and (max-width: 767px){
     .main-content-container .content-form,
     .dashboard-banner-container .banner-image-container .image-container{
@@ -813,7 +845,7 @@ h1{
 }
 @media only screen and (max-width: 567px){
     .main-content-container .content-form .form .form-button button{
-        width: 100%;
+        min-width: 100%;
     }
 }
 /* ************ PRELOADER SECTION ********* */

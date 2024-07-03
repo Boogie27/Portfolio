@@ -1,7 +1,7 @@
 import Banner from './Banner'
 import Services from './Services'
 import About from './About'
-import GetInTouch from './GetInTouch'
+import ContactMe from './ContactMe'
 import Skills from './Skills'
 import Portfolio from './Portfolio'
 import Testimonial from './Testimonial'
@@ -16,7 +16,7 @@ const Home = () => {
       <Banner/>
       <Services/>
       <About/>
-      <GetInTouch/>
+      <ContactMe/>
       <Skills/>
       <Portfolio/>
       <Testimonial/>
