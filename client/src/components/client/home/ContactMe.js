@@ -22,7 +22,10 @@ import FormInputAlert from '../alert/FormInputAlert'
 
 
 
-const ContactMe = () => {
+
+
+
+const ContactMe = ({ loader, alertNotification }) => {
     const FetchContactMeRef = useRef()
     const [contactMe, setContactMe] = useState({})
 
@@ -154,6 +157,8 @@ const ContentRight = ({contactMe}) => {
         }
         const validate = validate_input(content)
         if(validate === false) return 
+
+
     }
     
 

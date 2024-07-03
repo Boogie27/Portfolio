@@ -10,13 +10,13 @@ import Testimonial from './Testimonial'
 
 
 
-const Home = () => {
+const Home = ({ loader, alertNotification }) => {
   return (
     <div>
       <Banner/>
       <Services/>
       <About/>
-      <ContactMe/>
+      <ContactMe loader={loader} alertNotification={alertNotification}/>
       <Skills/>
       <Portfolio/>
       <Testimonial/>
