@@ -16,7 +16,7 @@ import Axios from 'axios'
 import ProtectedRoutes from './utility/ProtectedRoutes'
 import { useDispatch } from 'react-redux'
 import { fetchUser } from '../redux/admin/UserSlice'
-
+import AboutMe from './about/AboutMe'
 
 
 
@@ -108,6 +108,7 @@ const Admin = ({setAppState}) => {
         <Routes>
             <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}>
                 <Route path="/dashboard" element={<DashBoard/>}/>
+                <Route path="/dashboard/about" element={<AboutMe preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/services" element={<Services preloader={preloader} alertNotification={alertNotification}/> }/>
                 <Route path="/dashboard/banner" element={<Banner user={user} preloader={preloader} alertNotification={alertNotification}/>}/>
             </Route>

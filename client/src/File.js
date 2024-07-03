@@ -11,6 +11,8 @@ let productionServerURL = 'https://server.eloquent.com'
 
 
 
+const userDemoImage = 'demo.png' // demo user image
+
 
 // server url 
 const url = (string = null) => { 
@@ -106,5 +108,6 @@ export {
     userImage,
     preloader,
     user_image,
+    userDemoImage,
     portfolio_img,
 }

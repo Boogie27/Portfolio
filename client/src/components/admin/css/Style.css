@@ -681,6 +681,17 @@ h1{
 .main-content-container .content-form .form .form-group{
     margin-bottom: 20px;
 }
+.main-content-container .content-form .icon-toggle{
+    top: 3px;
+    color: #555;
+    margin: 0px 10px;
+    font-size: 30px;
+    position: relative;
+    cursor: pointer;
+}
+.main-content-container .content-form .icon-toggle.active{
+    color: #FDB813;
+}
 .main-content-container .content-form .form .form-group label{
     color: #555;
     font-weight: 600;

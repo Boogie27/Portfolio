@@ -43,7 +43,7 @@ const DeleteUserService = ({deleteFormState, setDeleteFormState, alertNotificati
                 const data = response.data
                 if(data.status === 'ok'){
                     dispatch(deleteUserServices(data.deleteService))
-                    alertNotification('warning', 'Deleted successfully!')
+                    alertNotification('success', 'Deleted successfully!')
                 }else{
                     alertNotification('error', data.message)
                 }

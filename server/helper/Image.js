@@ -32,7 +32,7 @@ const FileUpload = (file) => {
                 return console.log(error)
             }
         })
-        return { status: true}
+        return { status: true, newName: newName}
     }
     return { status: 'error'}
 }
@@ -49,7 +49,22 @@ const RandomString = (string) => {
 
 
 
+
+const RemoveFile = (filePath) => {
+    fs.stat(filePath, function (error, stats) {
+        if (error) {
+            return console.error(error)
+        }
+        fs.unlink(filePath, function(error){
+            if(error) return console.log(error)
+            console.log('file deleted successfully')
+        });  
+    });
+}
+
+
 module.exports = {
     FileUpload,
+    RemoveFile,
     RandomString,
 }

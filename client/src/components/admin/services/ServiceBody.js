@@ -129,7 +129,7 @@ const TitleHeader = ({toggleAddForm}) => {
     return (
         <div className="top-title-content">
             <div className="title-header">
-                <h3>OUR SERVICES</h3>
+                <h3>MY SERVICES</h3>
             </div>
             <div className="button">
                 <button onClick={() => toggleAddForm(true) } type="button">Add Services</button>

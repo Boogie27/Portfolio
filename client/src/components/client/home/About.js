@@ -1,3 +1,5 @@
+import Axios from 'axios'
+import { useEffect, useState, useRef } from 'react'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -5,7 +7,7 @@ import {
   faDownload,
   faLayerGroup
 } from '@fortawesome/free-solid-svg-icons'
-import { user_image } from '../../../File'
+import { userImage, url } from '../../../File'
 import HTMLReactParser from 'html-react-parser'
 
 
@@ -13,18 +15,40 @@ import HTMLReactParser from 'html-react-parser'
 
 
 const About = () => {
+    const FetchUserAboutRef = useRef()
+    const [aboutMe, setAboutMe] = useState([])
 
-    const aboutMe = {
-        title: "About Me",
-        header: "Transforming visions into exceptional",
-        span: "portfolios",
-        text: "Nemo design enim ipsam voluptatem quim voluptas sit aspernatur aut odit auting fugit sed thisnquia consequuntur magni dolores eos designer heresm qui ratione",
-        image: "2.jpg",
-        activity: "Coding and exercising exercising exercising"
+    // const aboutMe = {
+    //     title: "About Me",
+    //     header: "Transforming visions into exceptional",
+    //     span: "portfolios",
+    //     text: "Nemo design enim ipsam voluptatem quim voluptas sit aspernatur aut odit auting fugit sed thisnquia consequuntur magni dolores eos designer heresm qui ratione",
+    //     image: "2.jpg",
+    //     activity: "Coding and exercising exercising exercising"
+    // }
+
+
+
+    // fetch service header
+    const FetchUserAbout = () => {
+        Axios.get(url('/api/cleint/fetch-client-about')).then((response) => {
+            const data = response.data
+            if(data.status === 'ok'){
+                setAboutMe(data.about)
+            }else if(data.status === 'error'){
+                console.log(data.error)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
+    FetchUserAboutRef.current = FetchUserAbout
 
-
+    useEffect(() => {
+        window.scrollTo(0, 0) // page scroll to top
+        FetchUserAboutRef.current()
+    }, [])
 
 
     return (
@@ -77,10 +101,11 @@ const ContentLeft = ({aboutMe}) => {
 
 
 const ContentRight = ({aboutMe}) => {
+    const image = aboutMe.image ? aboutMe.image : 'demo.png'
     return (
         <div className="content-right">
             <div className="image">
-                <img src={user_image(aboutMe.image)} alt="about-us"/>
+                <img src={userImage(image)} alt="about-us"/>
             </div>
             <div className="bottom-content">
                 <ul>
