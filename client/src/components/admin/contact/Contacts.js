@@ -122,7 +122,7 @@ const Contacts = ({preloader, alertNotification}) => {
         <div className="dashboard-banner-container">
             <TitleHeader/>
             <ContentTable contacts={contacts} toggleMessageForm={toggleMessageForm} toggleDeleteForm={toggleDeleteForm}/>
-            { messsageForm ? (<MessageContent message={message} toggleMessageForm={toggleMessageForm}/>) : null }
+            { messsageForm ? (<MessageContent message={message} toggleDeleteForm={toggleDeleteForm} toggleMessageForm={toggleMessageForm}/>) : null }
             <DeleteContactForm deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
         </div>
     )
@@ -162,7 +162,7 @@ const ContentTable = ({contacts, toggleMessageForm, toggleDeleteForm}) => {
                         <th scope="col">Message</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Country</th>
-                        <th scope="col">Created at</th>
+                        <th scope="col">Sent on</th>
                         <th scope="col">Reply</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -216,7 +216,7 @@ const ContentItem = ({contact, toggleMessageForm, toggleDeleteForm}) => {
 
 
 
-const MessageContent = ({message, toggleMessageForm}) => {
+const MessageContent = ({message, toggleDeleteForm, toggleMessageForm}) => {
     return (
         <div className="float-container-content">
             <div onClick={() => toggleMessageForm(false)} className="dark-skin"></div>
@@ -236,7 +236,7 @@ const MessageContent = ({message, toggleMessageForm}) => {
                             {message.message ? (HTMLReactParser(message.message)) : 'Empty'}
                         </li>
                         <li className="button">
-                            <button className="delete">Delete</button>
+                            <button onClick={() => toggleDeleteForm(true, message._id)} className="delete">Delete</button>
                             <button className="reply">Reply</button>
                         </li>
                    </ul>

@@ -39,7 +39,8 @@ h1{
 }
 /* ********* APP SECTION ************ */
 .admin-container{
-    height: 100vh;
+    max-height: 100%;
+    min-height: 100vh;
     background-color: #f8f8f8;
 }
 .admin-container.dark{
@@ -489,7 +490,7 @@ h1{
     background-color: rgba(0, 0, 0, 0.654);
 }
 .float-container-content .content-body{
-    width: 80%;
+    width: 60%;
     height: 60%;
     z-index: 30;
     padding: 20px;
@@ -609,6 +610,23 @@ h1{
 }
 .admin-container.dark .table-content-container tbody tr td .dim{
     color: #4a4a4a;
+}
+.admin-container.dark .float-container-content .content-body{
+    background-color: #1a1a1a;
+    border: 1px solid #232323;
+}
+.admin-container.dark .float-container-content .content-body .message-content ul li span{
+    color: #7a7a7a;
+}
+.admin-container.dark .float-container-content .content-body .message-content ul li{
+    color: #6b6b6b;
+}
+.admin-container.dark .float-container-content .content-body .title-header h3{
+    color: #989898;
+}
+.admin-container.dark .float-container-content .content-body .message-content ul li.button button:hover{
+    color: #FDB813;
+    background-color: #fdb71333;
 }
 @media only screen and (max-width: 1400px){
     .float-container-content .content-body{
