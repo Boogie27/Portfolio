@@ -39,7 +39,7 @@ h1{
 }
 /* ********* APP SECTION ************ */
 .admin-container{
-    height: 100%;
+    height: 100vh;
     background-color: #f8f8f8;
 }
 .admin-container.dark{
@@ -416,10 +416,18 @@ h1{
     color: #333;
     font-size: 14px;
 }
-.table-content-container tbody tr td .icon{
+.table-content-container tbody tr{
+    background-color: red;
+}
+.table-content-container tbody tr.seen{
+    background-color: #fff;
+}
+.table-content-container tbody tr td .icon,
+.table-content-container tbody tr td .icon.delete{
     color: #656565;
     cursor: pointer;
     font-size: 18px;
+    transition: all 0.3s ease;
 }
 .table-content-container tbody tr td .dim{
     color: #a8a8a8;
@@ -429,6 +437,7 @@ h1{
     cursor: pointer;
     font-size: 22px;
 }
+
 .table-content-container tbody tr td.table-data-icon .icon.active{
     color: #FDB813;
 }
@@ -440,6 +449,129 @@ h1{
 .table-content-container .empty-table .empty-icon .icon{
     color: #555;
     font-size: 60px;
+}
+.table-content-container td button.reply-message{
+    border: 0px;
+    color: #fff;
+    font-size: 12px;
+    padding: 3px 20px;
+    border-radius: 3px;
+    background-color: rgb(59, 166, 59);
+    border: 2px solid rgb(86, 206, 86);
+    transition: all 0.3s ease;
+}
+.table-content-container tbody tr td .icon.delete:hover{
+    color: rgb(179, 0, 0);
+}
+.table-content-container td button.reply-message:hover{
+    color: #fff;
+    background-color: rgba(0, 128, 0, 0.522);
+}
+.float-container-content {
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.float-container-content .dark-skin{
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    width: 100%;
+    height: 100vh;
+    display: block;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.654);
+}
+.float-container-content .content-body{
+    width: 80%;
+    height: 60%;
+    z-index: 30;
+    padding: 20px;
+    position: relative;
+    border-radius: 3px;
+    background-color: #fff;
+}
+.float-container-content .content-body .title-header{
+    position: relative;
+    margin-bottom: 50px;
+}
+.float-container-content .content-body .title-header h3{
+    top: 20px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 500;
+    position: relative;
+}
+.float-container-content .content-body .title-header .icon.cancel{
+    top: 0px;
+    right: 0px;
+    color: #fff;
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.3s ease;
+    background-color: #EB5757;
+}
+.float-container-content .content-body .title-header .icon.cancel:hover{
+    animation: btnSpinner 0.3s linear;
+}
+.float-container-content .content-body .message-content {
+    margin: 20px 0px;
+}
+.float-container-content .content-body .message-content ul li{
+    margin: 10px 0px;
+}
+.float-container-content .content-body .message-content ul li.message{
+    width: 100%;
+    height: 200px;
+    overflow-Y: auto;
+}
+.float-container-content .content-body .message-content ul li.message::-webkit-scrollbar{
+    width: 5px;
+    background: #bfbfbf;
+    border-radius: 10px;
+}
+.float-container-content .content-body .message-content ul li.message::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #929292;
+}
+.float-container-content .content-body .message-content ul li span{
+    font-weight: 600;
+}
+.float-container-content .content-body .message-content ul li.button{
+    right: 20px;
+    bottom: 10px;
+    position: absolute;
+}
+.float-container-content .content-body .message-content ul li.button button{
+    border: 0px;
+    color: #FDB813;
+    font-size: 16px;
+    padding: 5px 30px;
+    margin-left: 15px;
+    font-weight: bold;
+    background-color: transparent;
+    border: 2px solid #FDB813;
+    transition: all 0.3s ease;
+}
+.float-container-content .content-body .message-content ul li.button button.reply{
+    color: #fff;
+    background-color: #FDB813;
+}
+.float-container-content .content-body .message-content ul li.button button:hover{
+    color: #333;
+    background-color: #fdb71333;
 }
 /* ************* dark mode *********** */
 .admin-container.dark .table-content-container{
@@ -477,6 +609,26 @@ h1{
 }
 .admin-container.dark .table-content-container tbody tr td .dim{
     color: #4a4a4a;
+}
+@media only screen and (max-width: 1400px){
+    .float-container-content .content-body{
+        width: 80%;
+        height: 80%;
+    }
+}
+@media only screen and (max-width: 992px){
+    .float-container-content .content-body{
+        width: 95%;
+        height: 90%;
+    }
+    .float-container-content .content-body .message-content ul li.message{
+        height: 300px;
+    }
+}
+@media only screen and (max-width: 567px){
+    .float-container-content .content-body .message-content ul li.message{
+        font-size: 14px;
+    }
 }
 /* *************** TABLE DROPDOWN SECTION *********** */
 .table-drop-down{

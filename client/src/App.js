@@ -9,7 +9,7 @@ import { useState, useEffect, useRef } from 'react'
 
 function App() {
   const toggelAppStateRef = useRef(null)
-  const [appState, setAppState] = useState('client')
+  const [appState, setAppState] = useState('')
 
   // set app to client or admin
   const toggleAppState = () => {
@@ -28,9 +28,8 @@ function App() {
 
   return (
     <div className="main-app">
-        {
-            appState === 'admin' ? (<Admin setAppState={setAppState}/>) : (<Client setAppState={setAppState}/>)
-        }
+        { appState === 'admin' ? (<Admin setAppState={setAppState}/>) : null }
+        { appState === 'client' ? (<Client setAppState={setAppState}/>) : null }
     </div>
   );
 }

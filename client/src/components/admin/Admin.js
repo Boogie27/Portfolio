@@ -11,7 +11,8 @@ import Preloader from './preloader/Preloader'
 import Services from './services/Services'
 import Login from './auth/Login'
 import AboutMe from './about/AboutMe'
-import Contact from './contact/Contact'
+import Contacts from './contact/Contacts'
+import ContactHeader from './contact/ContactHeader'
 import { url } from '../../File'
 import { useNavigate } from 'react-router-dom'
 import Axios from 'axios'
@@ -110,7 +111,8 @@ const Admin = ({setAppState}) => {
         <Routes>
             <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}>
                 <Route path="/dashboard" element={<DashBoard/>}/>
-                <Route path="/dashboard/contact-us" element={<Contact preloader={preloader} alertNotification={alertNotification}/>}/>
+                <Route path="/dashboard/contacts" element={<Contacts preloader={preloader} alertNotification={alertNotification}/>}/>
+                <Route path="/dashboard/contact-header" element={<ContactHeader preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/about" element={<AboutMe preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/services" element={<Services preloader={preloader} alertNotification={alertNotification}/> }/>
                 <Route path="/dashboard/banner" element={<Banner user={user} preloader={preloader} alertNotification={alertNotification}/>}/>

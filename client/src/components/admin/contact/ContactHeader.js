@@ -7,9 +7,11 @@ import { url } from '../../../File'
 import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
+    faEye,
     faToggleOn,
     faToggleOff,
 } from '@fortawesome/free-solid-svg-icons'
+import { NavLink } from 'react-router-dom'
 
 
 
@@ -19,10 +21,39 @@ import {
 
 
 
+const ContactHeader = ({ image, setImage, preloader, alertNotification }) => {
+    return (
+      <div className="dashboard-banner-container">
+        <TitleHeader/>
+        <ContactContent image={image} setImage={setImage} preloader={preloader} alertNotification={alertNotification}/>
+      </div>
+    )
+  }
+  
+  export default ContactHeader
 
 
 
-const ContactHeader = ({preloader, alertNotification, image, setImage }) => {
+
+  const TitleHeader = () => {
+    return (
+        <div className="top-title-content">
+            <div className="title-header">
+                <h3>CONTACT ME</h3>
+            </div>
+            <div className="right-button">
+                <NavLink to="/dashboard/contacts">
+                    <FontAwesomeIcon className="icon" icon={faEye} />View Contacts
+                </NavLink>
+            </div>
+        </div>
+    )
+  }
+
+
+
+
+const ContactContent = ({preloader, alertNotification, image, setImage }) => {
     const FetchContactHeaderRef = useRef()
     let token = Cookies.get('Eloquent_token')
 
@@ -271,5 +302,3 @@ const ContactHeader = ({preloader, alertNotification, image, setImage }) => {
     )
 }
 
-
-export default ContactHeader

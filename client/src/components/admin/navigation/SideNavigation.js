@@ -40,7 +40,7 @@ const SideNavigation = ({ theme, sideNav, toggleNavigation, toggleApp, toggleApp
                 <NavLink onClick={() => toggleApp('admin')} to="/dashboard/services">Services</NavLink>
               </li>
               <li>
-                <NavLink onClick={() => toggleApp('admin')} to="/dashboard/contact-us">Contact Header</NavLink>
+                <NavLink onClick={() => toggleApp('admin')} to="/dashboard/contact-header">Contact Header</NavLink>
               </li>
               <li>
                 <NavLink onClick={() => toggleApp('admin')} to="/dashboard/contacts">Contacts <span className="bg-danger badge">{unseenContacts}</span></NavLink>

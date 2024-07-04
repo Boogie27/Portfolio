@@ -62,7 +62,7 @@ const ContactMe = ({ loader, alertNotification }) => {
 
   return (
     <Fragment>
-        { contactMe ? ( <ContactMeContent contactMe={contactMe}/>) : null }
+        { contactMe ? ( <ContactMeContent alertNotification={alertNotification} loader={loader} contactMe={contactMe}/>) : null }
     </Fragment>
   )
 }
@@ -71,7 +71,7 @@ export default ContactMe
 
 
 
-const ContactMeContent = ({contactMe}) => {
+const ContactMeContent = ({contactMe, alertNotification, loader}) => {
     return (
         <div className="get-in-touch-container">
         <div className="inner-get-in-touch">
@@ -80,7 +80,7 @@ const ContactMeContent = ({contactMe}) => {
                         <ContentLeft contactMe={contactMe}/>
                     </Col>
                     <Col xs={12} sm={12} md={12} lg={12} xl={6}>
-                        <ContentRight contactMe={contactMe}/>
+                        <ContentRight alertNotification={alertNotification} loader={loader} contactMe={contactMe}/>
                     </Col>
                 </Row>
             </div>
@@ -134,17 +134,19 @@ const BottomContent = ({counter, description, icon}) => {
 
 
 
-const ContentRight = ({contactMe}) => {
+const ContentRight = ({contactMe, alertNotification, loader}) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
+    const [country, setCountry] = useState('')
     const [message, setMessage] = useState('')
     const [button, setButton] = useState(false)
 
     const [nameAlert, setNameAlert] = useState('')
     const [emailAlert, setEmailAlert] = useState('')
     const [phoneAlert, setPhoneAlert] = useState('')
+    const [countryAlert, setCountryAlert] = useState('')
     const [messageAlert, setMessageAlert] = useState('')
 
     const SubmitContact = () => {
@@ -153,12 +155,41 @@ const ContentRight = ({contactMe}) => {
             name: name,
             email: email,
             phone: phone,
+            country: country,
             message: message,
         }
         const validate = validate_input(content)
         if(validate === false) return 
+        setButton(true)
+        loader(true, 'Sending message, Please wait...')
+        Axios.post(url('/api/admin/send-client-contact-message'), content).then((response) => {
+            const data = response.data
+            if(data.status === 'input-error'){
+                inputErrorForBackend(data.validationError)
+            }else if(data.status === 'error'){
+                alertNotification('error', data.message)
+            }else if(data.status === 'ok'){
+                initInput()
+                alertNotification('success', 'Message sent sucessfully!')
+            }
+            loader(false)
+            return setButton(false)
+        }).catch(error => {
+            setButton(false)
+            loader(false)
+            console.log(error)
+            alertNotification('error', 'Something went wrong!')
+        })
 
+    }
 
+    // initialize input fields
+    const initInput = () => {
+        setName('')
+        setEmail('')
+        setPhone('')
+        setCountry('')
+        setMessage('')
     }
     
 
@@ -166,6 +197,8 @@ const ContentRight = ({contactMe}) => {
     const validate_input = (input) => {
         let failed = false;
         initErrorAlert()
+        const phoneRegex = /^[+]?[\s./0-9]*[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/g // Regular expression for digits with optional + ( ) sign
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/; // Regular expression for validating email
 
         if(input.name.length === 0){
             failed = true
@@ -180,6 +213,9 @@ const ContentRight = ({contactMe}) => {
         if(input.email.length === 0){
             failed = true
             setEmailAlert(`*Email field is required`)
+        }else if(!emailRegex.test(input.email)){
+            failed = true
+            setEmailAlert(`*Invalid email format`)
         }
         if(input.phone.length === 0){
             failed = true
@@ -190,6 +226,16 @@ const ContentRight = ({contactMe}) => {
         }else if(input.phone.length > 15){
             failed = true
             setPhoneAlert(`*Must be maximum of 15 characters`)
+        }else if(!phoneRegex.test(input.phone)){
+            failed = true
+            setPhoneAlert(`*Phone number is invalid`)
+        }
+        if(input.country.length === 0){
+            failed = true
+            setCountryAlert(`*Country field is required`)
+        }else if(input.country.length > 100){
+            failed = true
+            setCountryAlert(`*Must be maximum of 100 characters`)
         }
         if(input.message.length === 0){
             failed = true
@@ -197,9 +243,9 @@ const ContentRight = ({contactMe}) => {
         } else if(input.message.length < 3){
             failed = true
             setMessageAlert(`*Must be minimum of 20 characters`)
-        }else if(input.message.length > 50){
+        }else if(input.message.length > 5000){
             failed = true
-            setMessageAlert(`*Must be maximum of 3000 characters`)
+            setMessageAlert(`*Must be maximum of 5000 characters`)
         }
         if(failed === true){
             return false
@@ -213,6 +259,7 @@ const ContentRight = ({contactMe}) => {
         setNameAlert(error.name)
         setEmailAlert(error.email)
         setPhoneAlert(error.phone)
+        setCountryAlert(error.country)
         setMessageAlert(error.header)
     }
 
@@ -220,6 +267,7 @@ const ContentRight = ({contactMe}) => {
         setNameAlert('')
         setEmailAlert('')
         setPhoneAlert('')
+        setCountryAlert('')
         setMessageAlert('')
     }
 
@@ -241,6 +289,10 @@ const ContentRight = ({contactMe}) => {
                     <div className="form-group">
                         <FormInputAlert alert={phoneAlert}/>
                         <input type="text" onChange={(e) => setPhone(e.target.value)} value={phone} className="form-control" placeholder="Enter Phone"/>
+                    </div>
+                    <div className="form-group">
+                        <FormInputAlert alert={countryAlert}/>
+                        <input type="text" onChange={(e) => setCountry(e.target.value)} value={country} className="form-control" placeholder="Enter Country"/>
                     </div>
                     <div className="form-group">
                         <FormInputAlert alert={messageAlert}/>
