@@ -26,7 +26,7 @@ const Navigation = ({ theme, setTheme, setAppState, alertNotification}) => {
         if(data.status === 'error'){
             alertNotification('error', data.message)
         }else if(data.status === 'ok'){
-          
+          setTheme(data.theme)
           Cookies.set('Eloquent-admin-theme', data.theme, { expires: 7 })
         }
       }).catch(error => {

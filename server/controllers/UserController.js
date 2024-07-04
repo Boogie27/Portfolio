@@ -143,8 +143,8 @@ const ToggleAdminUserAppTheme = AsyncHandler(async (request, response) => {
     if(!exists){
         return response.send({status: 'error', message: 'Login admin to perform that action!'})
     }
-    const theme = exists.theme == 'dark' ? 'light' : 'dark'
-    const update = await UserModel.findOneAndUpdate({_id: exists._id}, {$set: { theme:  theme }}).exec()
+    const theme = exists.admin_theme == 'dark' ? 'light' : 'dark'
+    const update = await UserModel.findOneAndUpdate({_id: exists._id}, {$set: { admin_theme:  theme }}).exec()
     if(update){
         return response.send({status: 'ok', theme: theme})
     }
