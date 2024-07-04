@@ -112,9 +112,9 @@ const Login = ({ setIsLoggedIn, preloader, alertNotification }) => {
     }
 
     const detectKeyPress = (e) => {
-        if(e.key === 'Enter' && !button){
-            LoginUser()
-        }
+        // if(e.key === 'Enter' && !button){
+        //     LoginUser()
+        // }
     }
 
 

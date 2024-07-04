@@ -37,6 +37,7 @@ const LoginAdminUser = AsyncHandler(async (request, response) => {
                 first_name: loginUser.first_name,
                 last_name: loginUser.last_name,
                 middle_name: loginUser.middle_name,
+                email: loginUser.email,
                 address: loginUser.address,
                 postcode: loginUser.postcode,
                 town: loginUser.town,
@@ -132,10 +133,29 @@ const FetchLoginAdminUser = AsyncHandler(async (request, response) => {
 
 
 
+const ToggleAdminUserAppTheme = AsyncHandler(async (request, response) => {
+    const { token } = request.body
+    const userToken = jwt.verify(token, env.SECRET_KEY)
+    if(!userToken){
+        return response.send({status: 'error', message: 'Login to perform that action!'})
+    }
+    const exists = await UserModel.findOne({ email: userToken.string.email, is_active: 1 })
+    if(!exists){
+        return response.send({status: 'error', message: 'Login admin to perform that action!'})
+    }
+    const theme = exists.theme == 'dark' ? 'light' : 'dark'
+    const update = await UserModel.findOneAndUpdate({_id: exists._id}, {$set: { theme:  theme }}).exec()
+    if(update){
+        return response.send({status: 'ok', theme: theme})
+    }
+    return response.send({status: 'error', message: 'Something went wront, try again!'})
+})
+
 
 
 
 module.exports = { 
     LoginAdminUser,
     FetchLoginAdminUser,
+    ToggleAdminUserAppTheme,
 }

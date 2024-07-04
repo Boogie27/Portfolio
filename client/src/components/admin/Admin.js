@@ -62,7 +62,7 @@ const Admin = ({setAppState}) => {
 
     // set theme when page loads
     const setThemeAuto = () => {
-        let pageTheme = Cookies.get('Eloquent-theme')
+        let pageTheme = Cookies.get('Eloquent-admin-theme')
         if(pageTheme){
             return setTheme(pageTheme)
         }
@@ -80,6 +80,7 @@ const Admin = ({setAppState}) => {
                 }else if(data.status === 'ok'){
                     setIsLoggedIn(true)
                     setUser(data.user)
+                    setTheme(data.user.theme)
                     dispatch(fetchUser(data.user))
                     alertNotification('sucess', 'Login successful!')
                 }
@@ -107,7 +108,7 @@ const Admin = ({setAppState}) => {
   return (
     <div className={`admin-container ${theme}`}>
         { isLoading.state ? (<Preloader text={isLoading.text}/>) : null }
-        { isLoggedIn ? (<Navigation theme={theme} setTheme={setTheme} setAppState={setAppState}/>) : null }
+        { isLoggedIn ? (<Navigation theme={theme} setTheme={setTheme} setAppState={setAppState} alertNotification={alertNotification}/>) : null }
         <Routes>
             <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}>
                 <Route path="/dashboard" element={<DashBoard/>}/>
