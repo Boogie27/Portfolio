@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
@@ -10,7 +10,7 @@ import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
 import { url } from '../../../File'
 import { useDispatch } from 'react-redux'
-import { AddUserServices } from '../../redux/admin/ServiceSlice'
+import { AddUserSkill } from '../../redux/admin/SkillSlice'
 
 
 
@@ -19,38 +19,44 @@ import { AddUserServices } from '../../redux/admin/ServiceSlice'
 
 
 
-const AddService = ({addFormState, toggleAddForm, alertNotification}) => {
+const AddSkills = ({addFormState, toggleAddForm, alertNotification}) => {
     // react hooks
     const dispatch = useDispatch()
-
+    const imageRef = useRef(null)
     let token = Cookies.get('Eloquent_token')
     const [title, setTitle] = useState('')
-    const [text, setText] = useState('')
+    const [rating, setRating] = useState('')
+    const [image, setImage] = useState('')
     const [button, setButton] = useState(false)
 
     const [titleAlert, setTitleAlert] = useState('')
-    const [textAlert, setTextAlert] = useState('')
+    const [ratingAlert, setRatingAlert] = useState('')
 
-    const addNewService = () => {
+    const addNewSkills = () => {
         if(token){
-            initErrorAlert() //initialize form input error alert
-            const validate = validate_input(title, text)
-            if(validate === false) return 
             const content = {
                 title: title,
-                text: text,
+                rating: rating,
                 token: token
             }
+            initErrorAlert() //initialize form input error alert
+            const validate = validate_input(content)
+            if(validate === false) return 
             setButton(true)
-            Axios.post(url('/api/admin/add-new-service'), content).then((response) => {
+            const formData = new FormData()
+            formData.append('image', image)
+            formData.append('title', title)
+            formData.append('rating', rating)
+            formData.append('token', token)
+            Axios.post(url('/api/admin/add-new-skills'), formData).then((response) => {
                 const data = response.data
                 if(data.status === 'input-error'){
                     inputErrorForBackend(data.validationError)
                 }else if(data.status === 'error'){
                     alertNotification('error', data.message)
                 }else if(data.status === 'ok'){
-                    dispatch(AddUserServices(data.service))
-                    alertNotification('success', 'Service added successfully!')
+                    dispatch(AddUserSkill(data.newSkill))
+                    alertNotification('success', 'Skill added successfully!')
                     initFormInput() //init fields
                     toggleForm(false)
                 }
@@ -62,71 +68,84 @@ const AddService = ({addFormState, toggleAddForm, alertNotification}) => {
         }
     }
 
+    // fetch image from input
+    const addRatingImage = (e) => {
+        const file = e.target.files
+        if(file && file.length > 0){
+            setImage(file[0])
+        }
+    }
+
+    // clear file input
+    const clearFileInput = () => {
+        return imageRef.current.value = '';
+    }
 
     // close add form
     const toggleForm = (state) => {
+        setImage('')
         toggleAddForm(state)
         initErrorAlert()
         initFormInput()
+        clearFileInput()
         setButton(false)
     }
 
     //  initialize form input error
    const initErrorAlert = () => {
         setTitleAlert('')
-        setTextAlert('')
+        setRatingAlert('')
     }
 
     //  initialize form input
     const initFormInput = () => {
         setTitle('')
-        setText('')
+        setRating('')
     }
 
-const validate_input = (title='', text='') => {
-    let failed = false;
-    initErrorAlert()
-
-    if(title.length === 0){
-        failed = true
-        setTitleAlert(`*Title field is required`)
-    } else if(title.length < 3){
-        failed = true
-        setTitleAlert(`*Must be minimum of 3 characters`)
-    }else if(title.length > 50){
-        failed = true
-        setTitleAlert(`*Must be maximum of 100 characters`)
+    // backen error message
+    const inputErrorForBackend = (error) => {
+        setTitleAlert(error.title)
+        setRatingAlert(error.rating)
     }
-    if(text.length === 0){
-        failed = true
-        setTextAlert(`*Text field is required`)
-    } else if(text.length < 3){
-        failed = true
-        setTextAlert(`*Must be minimum of 6 characters`)
-    }else if(text.length > 1000){
-        failed = true
-        setTextAlert(`*Must be maximum of 1000 characters`)
+
+    const validate_input = (input) => {
+        let failed = false;
+        initErrorAlert()
+
+        if(input.title.length === 0){
+            failed = true
+            setTitleAlert(`*Title field is required`)
+        } else if(input.title.length < 3){
+            failed = true
+            setTitleAlert(`*Must be minimum of 3 characters`)
+        }else if(input.title.length > 50){
+            failed = true
+            setTitleAlert(`*Must be maximum of 100 characters`)
+        }
+        if(input.rating.length === ''){
+            failed = true
+            setRatingAlert(`*Rating field is required`)
+        } else if(input.rating.length > 100){
+            failed = true
+            setRatingAlert(`*Must be maximum of 100 percent`)
+        }
+        if(failed === true){
+            return false
+        }else{
+            return true
+        }
     }
-    if(failed === true){
-        return false
-    }else{
-        return true
-    }
-}
 
 
 
-const inputErrorForBackend = (error) => {
-    setTitleAlert(error.title)
-    setTextAlert(error.text)
-}
 
     return (
         <div className={`app-content-form ${addFormState ? 'active' : ''}`}>
             <div className="content-form">
                <div className="form">
                     <div className="title-header">
-                        <h3>ADD NEW SERVICES</h3>
+                        <h3>ADD NEW SKILL</h3>
                         <FontAwesomeIcon onClick={() => toggleForm(false) } className="icon" icon={faTimes} />
                     </div>
                     
@@ -139,10 +158,14 @@ const inputErrorForBackend = (error) => {
                                     <FormInputAlert alert={titleAlert}/>
                                 </div>
                             </Col>
-                            <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                                <label>Text:</label>
-                                <textarea className="form-control" rows="4" cols="50" onChange={(e) => setText(e.target.value)} value={text} placeholder="Write Message..."></textarea>
-                                <FormInputAlert alert={textAlert}/>
+                            <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                                <label>Rating:</label>
+                                <input type="number" min="0" max="100" className="form-control" onChange={(e) => setRating(e.target.value)}  value={rating} placeholder="Enter Ratings"/>
+                                <FormInputAlert alert={ratingAlert}/>
+                            </Col>
+                            <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                                <label>Image:</label>
+                                <input type="file" className="form-control" ref={imageRef} onChange={addRatingImage}   placeholder="Upload Image"/>
                             </Col>
                             <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                                 <div className="form-button">
@@ -150,7 +173,7 @@ const inputErrorForBackend = (error) => {
                                         button ? (
                                             <button type="button">PLEASE WAIT...</button>
                                         ) : (
-                                            <button onClick={() => addNewService()} type="button">ADD SERVICE</button>
+                                            <button onClick={() => addNewSkills()} type="button">ADD SKILL</button>
                                         )
                                     }
                                     
@@ -165,4 +188,4 @@ const inputErrorForBackend = (error) => {
 }
 
 
-export default AddService
+export default AddSkills

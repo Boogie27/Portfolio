@@ -64,7 +64,7 @@ const userImage = (string) => {
 
 
 const icon = (string) => {
-    return ClientUrl('/asset/image/icon/' + string)
+    return url('/public/asset/image/icon/' + string)
 }
 
 

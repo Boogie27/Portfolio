@@ -14,6 +14,7 @@ const ServiceRoute = require('./routes/ServiceRoute')
 const UserRoute = require('./routes/UserRoute') 
 const AboutRoute = require('./routes/AboutRoute') 
 const ContactRoute = require('./routes/ContactRoute') 
+const SkillsRoute = require('./routes/SkillsRoute') 
 
 
 
@@ -22,6 +23,8 @@ const ContactRoute = require('./routes/ContactRoute')
 app.use(fileUpload())
 app.use(express.json())
 app.use(cors())
+
+
 
 
 
@@ -40,9 +43,11 @@ app.use(ServiceRoute)
 app.use(UserRoute)
 app.use(AboutRoute)
 app.use(ContactRoute)
+app.use(SkillsRoute)
 
 
-// serve static image from users folder in the server to frontend
+// serve static image from folders in the server to frontend
+app.use('/public/asset/image/icon/', express.static(path.join(__dirname, '/public/asset/image/icon')));
 app.use('/public/asset/image/users/', express.static(path.join(__dirname, '/public/asset/image/users')));
 
 

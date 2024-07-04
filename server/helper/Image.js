@@ -10,7 +10,7 @@ const FileUpload = (file) => {
     }
     const imageType = file.file.name.split('.').pop().toLowerCase()
     if(!file.types.includes(imageType)){
-        return { error: '*File type' + imageType + ' is not allowed'}
+        return { error: '*File type ' + imageType + ' is not allowed'}
     }
 
     const allowedFileSize = (file.size / 1000) * 1024 * 1024

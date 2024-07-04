@@ -17,73 +17,61 @@ const Skills = () => {
         {
             title: "HTML",
             image: "html.png",
-            duration: "2021 - 2024",
             rating: 90,
         },
         {
             title: "CSS",
             image: "css.png",
-            duration: "2021 - 2024",
             rating: 80,
         },
         {
             title: "JAVASCRIPT",
             image: "html.png",
-            duration: "2021 - 2024",
             rating: 100,
         },
         {
             title: "Jquery",
             image: "jquery.webp",
-            duration: "2021 - 2024",
             rating: 100,
         },
         {
             title: "PHP",
             image: "php.png",
-            duration: "2021 - 2024",
             rating: 100,
         },
         {
             title: "LARAVEL",
             image: "laravel.png",
-            duration: "2021 - 2024",
             rating: 80,
         },
         {
             title: "REACT",
             image: "react.png",
-            duration: "2021 - 2024",
             rating: 70,
         },
         {
             title: "NodeJS",
             image: "nodejs.png",
-            duration: "2021 - 2024",
             rating: 100,
         },
         {
             title: "MongoDB",
             image: "mongo-db.png",
-            duration: "2021 - 2024",
             rating: 70,
         },
         {
             title: "RESTAPI",
             image: "rest-api.png",
-            duration: "2021 - 2024",
             rating: 50,
         },
         {
             title: "Redux",
             image: "redux.png",
-            duration: "2021 - 2024",
             rating: 60,
         },
         {
             title: "Git",
             image: "git.png",
-            duration: "2021 - 2024",
             rating: 80,
         },
     ] 

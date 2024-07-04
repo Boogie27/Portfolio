@@ -19,7 +19,7 @@ import { UpdateUserServices } from '../../redux/admin/ServiceSlice'
 
 
 
-const EditService = ({editFormState, toggleEditForm, alertNotification}) => {
+const EditSkills = ({editFormState, toggleEditForm, alertNotification}) => {
     // react hooks
     const dispatch = useDispatch()
     const services = useSelector(state => state.services.services)
@@ -70,7 +70,6 @@ const EditService = ({editFormState, toggleEditForm, alertNotification}) => {
     const toggleForm = (state) => {
         toggleEditForm(state)
         initErrorAlert()
-        setButton(false)
     }
 
     //  initialize form input error
@@ -167,4 +166,4 @@ const inputErrorForBackend = (error) => {
 }
 
 
-export default EditService
+export default EditSkills

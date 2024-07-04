@@ -409,6 +409,12 @@ h1{
 .top-title-content .right-button .icon{
     margin: 0px 5px;
 }
+.table-content-container  tbody tr td .image{
+    width: 50px;
+}
+.table-content-container  tbody tr td .image img{
+    width: 100%;
+}
 .table-content-container{
     width: 95%;
     margin: 0 auto;
@@ -888,6 +894,11 @@ h1{
     position: relative;
     cursor: pointer;
 }
+.main-content-container .content-form .title-header h3{
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+}
 .main-content-container .content-form .icon-toggle.active{
     color: #FDB813;
 }
@@ -997,6 +1008,9 @@ h1{
 }
 .admin-container.dark .dashboard-banner-container .banner-image-container .inner-banner-image .image .icon:hover{
     background-color: #252525a0;
+}
+.admin-container.dark .main-content-container .content-form .title-header h3{
+    color: #9f9f9f;
 }
 @media only screen and (max-width: 992px){
     .dashboard-banner-container .banner-image-container{
