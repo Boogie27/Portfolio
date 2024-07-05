@@ -9,7 +9,6 @@ import Testimonial from './Testimonial'
 
 
 
-
 const Home = ({ loader, alertNotification }) => {
   return (
     <div>

@@ -411,6 +411,7 @@ h1{
 }
 .table-content-container  tbody tr td .image{
     width: 50px;
+    height: 50px;
 }
 .table-content-container  tbody tr td .image img{
     width: 100%;
@@ -442,7 +443,7 @@ h1{
 .table-content-container tbody tr td.table-data-icon .icon{
     color: #656565;
     cursor: pointer;
-    font-size: 22px;
+    font-size: 30px;
 }
 
 .table-content-container tbody tr td.table-data-icon .icon.active{
@@ -774,7 +775,8 @@ h1{
     font-weight: 600;
 }
 .app-content-form .content-form .form input,
-.app-content-form .content-form .form textarea{
+.app-content-form .content-form .form textarea,
+.app-content-form .content-form .form select{
     outline: none;
     box-shadow: none;
     color: #555;
@@ -786,6 +788,9 @@ h1{
 .app-content-form .content-form .form input::placeholder,
 .app-content-form .content-form .form textarea::placeholder{
     color: #bcbcbc;
+}
+.app-content-form .content-form .form .form-button{
+    margin-top: 30px;
 }
 .app-content-form .content-form .form .form-button button{
     border: none;
@@ -799,6 +804,38 @@ h1{
 .app-content-form .content-form .form .form-button button:hover{
     background-color: #fdb71370;
     border: 3px solid #FDB813;
+}
+.app-content-form .content-form .form .form-group .image-preview{
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px 0px;
+    text-align: center;
+    border-radius: 5px;
+    justify-content: center;
+    border: 1px solid #dcdcdc;
+}
+.app-content-form .content-form .form .form-group .image-preview img{
+    width: 100px;
+}
+.app-content-form .content-form .form .form-group .image-preview .icon{
+    font-size: 80px;
+    color: #ccc;
+}
+.app-content-form .content-form .form .form-group.form-toggle{
+    display: flex;
+    align-items: center;
+}
+.app-content-form .content-form .form .form-group .icon{
+    color: #333;
+    font-size: 30px;
+    margin: 0px 10px;
+    cursor: pointer;
+}
+.app-content-form .content-form .form .form-group .icon.active{
+    color: #FDB813;
 }
 /* ******************* dark mode ************** */
 .admin-container.dark .app-content-form .content-form .form{

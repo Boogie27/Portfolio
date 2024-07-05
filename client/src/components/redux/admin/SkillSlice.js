@@ -28,6 +28,12 @@ const skillSlice = createSlice({
             const _id = action.payload._id
             state.skills = state.skills.filter(skill => skill._id !== _id)
         },
+        UpdateUserSkill: (state, action) => {
+            if(state.skills !== undefined){    
+                const index = state.skills.findIndex(skill => skill._id === action.payload._id)
+                state.skills[index] = action.payload
+            }
+        }
     }
 })
 
@@ -39,6 +45,7 @@ export const {
     getUserSkills,
     AddUserSkill,
     deleteUserSkill,
+    UpdateUserSkill,
 } = skillSlice.actions
 export default skillSlice.reducer
 

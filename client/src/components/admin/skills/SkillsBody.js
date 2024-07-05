@@ -177,7 +177,7 @@ const SkillsBody = ({preloader, alertNotification}) => {
     return (
         <div className="dashboard-banner-container">
             <TitleHeader toggleAddForm={toggleAddForm}/>
-            <ContentTable skills={skills}  toggleDeleteForm={toggleDeleteForm}/>
+            <ContentTable skills={skills}  toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
             <AddSkills addFormState={addFormState} toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
             {editFormState.state ? (<EditSkills editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
             <DeleteContactForm deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
@@ -206,7 +206,7 @@ const TitleHeader = ({toggleAddForm}) => {
   }
 
 
-const ContentTable = ({skills, toggleDeleteForm}) => {
+const ContentTable = ({skills, toggleDeleteForm, toggleEditForm}) => {
     return (
         <div className="table-content-container">
             <table className="table table-hover">
@@ -222,7 +222,7 @@ const ContentTable = ({skills, toggleDeleteForm}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    { skills.map((skill, index) => (<ContentItem key={index} skill={skill} toggleDeleteForm={toggleDeleteForm}/>)) }
+                    { skills.map((skill, index) => (<ContentItem key={index} skill={skill} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
                 </tbody>
             </table>
             { skills.length === 0 ? (<TableEmpty/>) : null }
@@ -245,7 +245,7 @@ const TableEmpty = () => {
 
 
 
-const ContentItem = ({skill, toggleDeleteForm}) => {
+const ContentItem = ({skill, toggleEditForm, toggleDeleteForm}) => {
     return (
         <tr>
             <td>{skill.title}</td>
@@ -255,11 +255,10 @@ const ContentItem = ({skill, toggleDeleteForm}) => {
                 </div>
             </td>
             <td>{skill.rating}%</td>
-            <td>{skill.country}</td>
             <td>{DateTime(skill.created_at, 'Do MMMM YYYY | h:mma')}</td>
             <td>{DateTime(skill.updated_at, 'Do MMMM YYYY | h:mma')}</td>
             <td>
-                <FontAwesomeIcon  className="icon" icon={faPen} />
+                <FontAwesomeIcon onClick={() => toggleEditForm(true, skill._id)} className="icon" icon={faPen} />
             </td>
             <td>
                 <FontAwesomeIcon  onClick={() => toggleDeleteForm(true, skill._id)} className="icon delete" icon={faTrash} />

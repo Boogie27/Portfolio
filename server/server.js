@@ -15,7 +15,7 @@ const UserRoute = require('./routes/UserRoute')
 const AboutRoute = require('./routes/AboutRoute') 
 const ContactRoute = require('./routes/ContactRoute') 
 const SkillsRoute = require('./routes/SkillsRoute') 
-
+const QualificationRoute = require('./routes/QualificationRoute')
 
 
 
@@ -44,6 +44,7 @@ app.use(UserRoute)
 app.use(AboutRoute)
 app.use(ContactRoute)
 app.use(SkillsRoute)
+app.use(QualificationRoute)
 
 
 // serve static image from folders in the server to frontend

@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faTimes,
+    faCamera,
 } from '@fortawesome/free-solid-svg-icons'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -27,6 +28,7 @@ const AddSkills = ({addFormState, toggleAddForm, alertNotification}) => {
     const [title, setTitle] = useState('')
     const [rating, setRating] = useState('')
     const [image, setImage] = useState('')
+    const [imagePreview, setImagePreview] = useState('')
     const [button, setButton] = useState(false)
 
     const [titleAlert, setTitleAlert] = useState('')
@@ -37,7 +39,6 @@ const AddSkills = ({addFormState, toggleAddForm, alertNotification}) => {
             const content = {
                 title: title,
                 rating: rating,
-                token: token
             }
             initErrorAlert() //initialize form input error alert
             const validate = validate_input(content)
@@ -73,6 +74,7 @@ const AddSkills = ({addFormState, toggleAddForm, alertNotification}) => {
         const file = e.target.files
         if(file && file.length > 0){
             setImage(file[0])
+            setImagePreview(URL.createObjectURL(file[0]));
         }
     }
 
@@ -89,6 +91,7 @@ const AddSkills = ({addFormState, toggleAddForm, alertNotification}) => {
         initFormInput()
         clearFileInput()
         setButton(false)
+        setImagePreview('')
     }
 
     //  initialize form input error
@@ -150,37 +153,45 @@ const AddSkills = ({addFormState, toggleAddForm, alertNotification}) => {
                     </div>
                     
                     <div className="form-group">
-                        <Row className="show-grid">
-                            <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                                <div className="form-group">
-                                    <label>Title:</label>
-                                    <input type="text" onChange={(e) => setTitle(e.target.value)} value={title} className="form-control" placeholder="Enter title"/>
-                                    <FormInputAlert alert={titleAlert}/>
-                                </div>
-                            </Col>
-                            <Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                                <label>Rating:</label>
-                                <input type="number" min="0" max="100" className="form-control" onChange={(e) => setRating(e.target.value)}  value={rating} placeholder="Enter Ratings"/>
-                                <FormInputAlert alert={ratingAlert}/>
-                            </Col>
-                            <Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                                <label>Image:</label>
-                                <input type="file" className="form-control" ref={imageRef} onChange={addRatingImage}   placeholder="Upload Image"/>
-                            </Col>
-                            <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                                <div className="form-button">
-                                    { 
-                                        button ? (
-                                            <button type="button">PLEASE WAIT...</button>
-                                        ) : (
-                                            <button onClick={() => addNewSkills()} type="button">ADD SKILL</button>
-                                        )
-                                    }
-                                    
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
+                    <Row className="show-grid">
+                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                            <div className="form-group">
+                                <label>Title:</label>
+                                <input type="text" onChange={(e) => setTitle(e.target.value)} value={title} className="form-control" placeholder="Enter title"/>
+                                <FormInputAlert alert={titleAlert}/>
+                            </div>
+                        </Col>
+                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                            <label>Rating:</label>
+                            <input type="number" min="0" max="100" className="form-control" onChange={(e) => setRating(e.target.value)}  value={rating} placeholder="Enter Ratings"/>
+                            <FormInputAlert alert={ratingAlert}/>
+                        </Col>
+                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                            <label>Image preview:</label>
+                            <div className="image-preview">
+                                {
+                                    imagePreview ? (<img src={imagePreview} alt={'preview'}/>) : (<FontAwesomeIcon className="icon" icon={faCamera} />)
+                                }
+                            </div>
+                        </Col>
+                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                            <label>Image:</label>
+                            <input type="file" className="form-control" ref={imageRef} onChange={addRatingImage}   placeholder="Upload Image"/>
+                        </Col>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                            <div className="form-button">
+                                { 
+                                    button ? (
+                                        <button type="button">PLEASE WAIT...</button>
+                                    ) : (
+                                        <button onClick={() => addNewSkills()} type="button">ADD SKILL</button>
+                                    )
+                                }
+                                
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
                </div>
             </div>
         </div>

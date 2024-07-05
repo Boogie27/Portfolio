@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { url } from '../../../File'
 import { useDispatch } from 'react-redux'
-import { deleteUserSkill } from '../../redux/admin/SkillSlice'
+import { deleteUserQualification,  } from '../../redux/admin/QualificationSlice'
 
 
 
@@ -18,7 +18,7 @@ import { deleteUserSkill } from '../../redux/admin/SkillSlice'
 
 
 
-const DeleteContent = ({deleteFormState, setDeleteFormState, alertNotification}) => {
+const DeleteContactForm = ({deleteFormState, setDeleteFormState, alertNotification}) => {
     // react hooks
     const dispatch = useDispatch()
 
@@ -39,12 +39,12 @@ const DeleteContent = ({deleteFormState, setDeleteFormState, alertNotification})
                 _id: _id,
                 token: token
             }
-            setButton(false)
-            Axios.post(url('/api/admin/delete-user-skills'), content).then((response) => {
+            setButton(true)
+            Axios.post(url('/api/admin/delete-user-qualification'), content).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
-                    dispatch(deleteUserSkill(data.deleteSkill))
-                    alertNotification('success', 'Skill Deleted successfully!')
+                    dispatch(deleteUserQualification(data.qualification))
+                    alertNotification('success', 'Qualification Deleted successfully!')
                 }else{
                     alertNotification('error', data.message)
                 }
@@ -65,7 +65,7 @@ const DeleteContent = ({deleteFormState, setDeleteFormState, alertNotification})
     )
 }
 
-export default DeleteContent
+export default DeleteContactForm
 
 
 
@@ -75,18 +75,18 @@ const DeleteModal = ({toggleActionModal, button, deleteContact, deleteFormState}
         <div className="form-action-modal">
             <div className="inner-form-action">
                 <div className="title-header">
-                    <h3>Delete User Skill</h3>
+                    <h3>Delete User Qualification</h3>
                     <FontAwesomeIcon onClick={() => toggleActionModal()} className="icon" icon={faTimes} />
                 </div>
                 <div className="body">
-                    Do you wish to delete this skill?
+                    Do you wish to delete this qualification?
                 </div>
                 <div className="button">
                     {
                         button ? (
                             <button type="button">Please wait...</button>
                         ) : (
-                            <button onClick={() => deleteContact(deleteFormState._id)} type="button">Delete skill</button>
+                            <button onClick={() => deleteContact(deleteFormState._id)} type="button">Delete qualification</button>
                         )
                     }
                 </div>
