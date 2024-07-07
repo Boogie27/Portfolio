@@ -9,7 +9,7 @@ import {
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
-import { url } from '../../../File'
+import { url, icon } from '../../../File'
 import { useDispatch, useSelector} from 'react-redux'
 import { UpdateUserSkill } from '../../redux/admin/SkillSlice'
 
@@ -31,7 +31,7 @@ const EditSkills = ({editFormState, toggleEditForm, alertNotification}) => {
     const [title, setTitle] = useState(skill.title)
     const [rating, setRating] = useState(skill.rating)
     const [image, setImage] = useState(skill.image)
-    const [imagePreview, setImagePreview] = useState('')
+    const [imagePreview, setImagePreview] = useState(icon(skill.image))
     const [button, setButton] = useState(false)
 
     const [titleAlert, setTitleAlert] = useState('')

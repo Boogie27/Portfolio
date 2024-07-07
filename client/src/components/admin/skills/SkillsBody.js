@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faPen,
     faTrash,
-    faTimes,
     faFolderOpen,
+    faToggleOn,
 } from '@fortawesome/free-solid-svg-icons'
 import { url, DateTime, icon } from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
@@ -215,6 +215,7 @@ const ContentTable = ({skills, toggleDeleteForm, toggleEditForm}) => {
                         <th scope="col">Title</th>
                         <th scope="col">Image</th>
                         <th scope="col">rating</th>
+                        <th scope="col">Featured</th>
                         <th scope="col">Added on</th>
                         <th scope="col">Updated on</th>
                         <th scope="col">Edit</th>
@@ -255,6 +256,9 @@ const ContentItem = ({skill, toggleEditForm, toggleDeleteForm}) => {
                 </div>
             </td>
             <td>{skill.rating}%</td>
+            <td className="table-data-icon">
+                <FontAwesomeIcon className="icon" icon={faToggleOn} />
+            </td>
             <td>{DateTime(skill.created_at, 'Do MMMM YYYY | h:mma')}</td>
             <td>{DateTime(skill.updated_at, 'Do MMMM YYYY | h:mma')}</td>
             <td>

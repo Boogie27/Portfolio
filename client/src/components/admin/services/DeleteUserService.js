@@ -28,8 +28,9 @@ const DeleteUserService = ({deleteFormState, setDeleteFormState, alertNotificati
     // toggle close action modal
     const toggleActionModal = () => {
         if(button === false){
-            setDeleteFormState({ state: false, _id: ''})
+            return   setDeleteFormState({ state: false, _id: ''})
         }
+        setButton(false)
     }
 
     // delete user service
@@ -39,6 +40,7 @@ const DeleteUserService = ({deleteFormState, setDeleteFormState, alertNotificati
                 _id: _id,
                 token: token
             }
+            setButton(true)
             Axios.post(url('/api/admin/delete-user-services'), content).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
