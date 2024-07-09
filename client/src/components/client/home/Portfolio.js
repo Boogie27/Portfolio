@@ -53,7 +53,7 @@ const Portfolio = () => {
             ],
             from: "march 2021",
             to: "june 2024",
-            link: "/"
+            link: ""
         },
         {
             title: "Payizzy Website",
@@ -148,6 +148,8 @@ const Portfolio = () => {
         }
         return setTechnology({state: false, portfolio: ''})
     }
+
+
    
     return (
         <div className="portfolio-content-container">
@@ -293,31 +295,31 @@ const Technology = ({technology, toggleTechnology}) => {
                 <div className="body">
                     <ul>
                         <li><span>Title: </span>{portfolio.title}</li>
-                        <li>
+                        <li className="description">
                             <span>Description: </span>{portfolio.description ? HTMLReactParser(portfolio.description) : null }
                         </li>
                         <li>
                             <span>Technologies: </span>
                             <div className="tech">
-                                <span>
-                                    <FontAwesomeIcon className="icon" icon={faPuzzlePiece} /> React
-                                </span>
-                                <span>
-                                    <FontAwesomeIcon className="icon" icon={faPuzzlePiece} /> React
-                                </span>
-                                <span>
-                                    <FontAwesomeIcon className="icon" icon={faPuzzlePiece} /> React
-                                </span>
-                                <span>
-                                    <FontAwesomeIcon className="icon" icon={faPuzzlePiece} /> React
-                                </span>
+                                {
+                                    portfolio.technologies.map((tech, index) => (
+                                        <div>
+                                            <FontAwesomeIcon className="icon" icon={faPuzzlePiece} /> {tech}
+                                        </div>
+                                    ))
+                                }
                             </div>
                         </li>
-                        <li className="button">
-                            <NavLink to="/dashboard">
-                                <button>Visit website</button>
-                            </NavLink>
-                        </li>
+                        {
+                            portfolio.link ? (
+                                <li className="button">
+                                    <NavLink to={portfolio.link}>
+                                        <button>Visit website</button>
+                                    </NavLink>
+                                </li>
+                            ) : null
+                        }
+                        
                     </ul>
                 </div>
             </div>

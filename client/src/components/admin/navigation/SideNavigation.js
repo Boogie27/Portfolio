@@ -34,6 +34,9 @@ const SideNavigation = ({ theme, sideNav, toggleNavigation, toggleApp, toggleApp
                 <NavLink onClick={() => toggleApp('admin')} to="/dashboard/skills">Skills</NavLink>
               </li>
               <li>
+                <NavLink onClick={() => toggleApp('admin')} to="/dashboard/portfolio">Portfolio</NavLink>
+              </li>
+              <li>
                 <NavLink onClick={() => toggleApp('admin')} to="/dashboard/qualifications">Qualifications</NavLink>
               </li>
               <li>

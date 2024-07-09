@@ -1425,9 +1425,16 @@ h1{
 .portfolio-content-container .technologies-container .technoloy-inner .title-header .icon:hover{
     animation: btnSpinner 0.3s linear;
 }
+.portfolio-content-container .technologies-container .technoloy-inner .body{
+    height: 80vh;
+    overflow-Y: auto;
+}
 .portfolio-content-container .technologies-container .technoloy-inner .body li{
     color: #555;
     padding: 5px 0px;
+}
+.portfolio-content-container .technologies-container .technoloy-inner .body li.description{
+    margin: 10px 0px;
 }
 .portfolio-content-container .technologies-container .technoloy-inner .body li span{
     color: #333;
@@ -1436,11 +1443,20 @@ h1{
 .portfolio-content-container .technologies-container .technoloy-inner .body li .tech{
     margin: 10px 0px;
 }
-.portfolio-content-container .technologies-container .technoloy-inner .body li .tech  span{
+.portfolio-content-container .technologies-container .technoloy-inner .body::-webkit-scrollbar{
+    width: 5px;
+    background:  transparent;
+}
+.portfolio-content-container .technologies-container .technoloy-inner .body::-webkit-scrollbar-thumb {
+    background:  #e6e6e6;
+    border-radius: 10px;
+}
+.portfolio-content-container .technologies-container .technoloy-inner .body li .tech  div{
     padding: 5px 20px;
     margin: 7px 10px;
     border-radius: 3px;
-    background-color: #fdb71351;
+    display: inline-block;
+    background-color: #fdb71328;
     border: 1px solid #FDB813;
 }
 .portfolio-content-container .technologies-container .technoloy-inner li.button{
@@ -1492,11 +1508,27 @@ h1{
         width: 80%;
         height: 80%;
     }
+    .portfolio-content-container .technologies-container .technoloy-inner{
+        width: 70%;
+        height: 80vh;
+    }
+    .portfolio-content-container .technologies-container .technoloy-inner .body{
+        height: 55vh;
+    }
 }
 @media only screen and (max-width: 1200px){
     .portfolio-content-container .inner-portfolio-content .portfolio-pupup .image{
         width: 80%;
         height: 70%;
+    }
+    .portfolio-content-container .technologies-container .technoloy-inner{
+        width: 80%;
+    }
+    .portfolio-content-container .technologies-container .technoloy-inner .body li .tech{
+        height: 25vh;
+    }
+    .portfolio-content-container .technologies-container .technoloy-inner{
+        height: 80%;
     }
 }
 @media only screen and (max-width: 992px){
@@ -1513,6 +1545,10 @@ h1{
     .portfolio-content-container .inner-portfolio-content .portfolio-pupup .image{
         width: 90%;
         height: 70%;
+    }
+    .portfolio-content-container .technologies-container .technoloy-inner{
+        width: 90%;
+        height: 80%;
     }
 }
 
@@ -1534,6 +1570,15 @@ h1{
     .portfolio-content-container .inner-portfolio-content .portfolio-pupup .image img{
        object-fit: contain;
     }
+    .portfolio-content-container .technologies-container .technoloy-inner{
+        width: 95%;
+    }
+}
+@media only screen and (max-width: 567px){
+    
+}
+@media only screen and (max-width: 398px){
+    
 }
 /* *************** TESTIMONIAL SECTION ************* */
 .testimonial-container{
