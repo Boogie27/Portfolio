@@ -739,6 +739,7 @@ h1{
 }
 .app-content-form .content-form .form .title-header{
     position: relative;
+    margin: 20px 0px 50px 0px;
 }
 .app-content-form .content-form .form .title-header h3{
     color: #333;
@@ -747,7 +748,7 @@ h1{
     text-align: center;
 }
 .app-content-form .content-form .form .title-header .icon{
-    top: 0px;
+    top: -20px;
     right: 0px;
     display: block;
     width: 20px;

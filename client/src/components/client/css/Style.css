@@ -1237,6 +1237,7 @@ h1{
     height: 100px;
 }
 .portfolio-content-container .inner-portfolio-content .portfolio-content-item .image-bottom ul{
+    width: 100%;
     padding: 0px 20px;
 }
 .portfolio-content-container .inner-portfolio-content .portfolio-content-item .image-bottom ul li.title-header{
@@ -1251,6 +1252,7 @@ h1{
     text-transform: capitalize;
 }
 .portfolio-content-container .inner-portfolio-content .portfolio-content-item .image-bottom ul li{
+    width: 100%;
     line-height: 25px;
     position: relative;
 }
@@ -1263,6 +1265,23 @@ h1{
 }
 .portfolio-content-container .inner-portfolio-content .portfolio-content-item .image-bottom ul li a:hover{
     color: #FDB813;
+}
+.portfolio-content-container .inner-portfolio-content .portfolio-content-item .image-bottom ul li.technology-button{
+    text-align: right;
+}
+.portfolio-content-container .inner-portfolio-content .portfolio-content-item .image-bottom ul li.technology-button button{
+    border: none;
+    color: #ccc;
+    font-size: 16px;
+    background-color: transparent;
+}
+.portfolio-content-container .inner-portfolio-content .portfolio-content-item .image-bottom ul li.technology-button button:hover{
+    color: #FDB813;
+}
+.portfolio-content-container .inner-portfolio-content .portfolio-content-item .image-bottom ul li.technology-button .icon{
+    color: #FDB813;
+    margin: 0px 5px;
+    font-size: 22px;
 }
 .portfolio-content-container .inner-portfolio-content .portfolio-content-item .image-bottom ul li a::before{
     top: 5px;
@@ -1348,6 +1367,100 @@ h1{
 .portfolio-content-container .inner-portfolio-content .portfolio-pupup .direction .icon:hover{
     color: #FDB813;
     background-color: #fdb71333;
+}
+.portfolio-content-container .technologies-container{
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.portfolio-content-container .technologies-container .dark-skin{
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    width: 100%;
+    height: 100vh;
+    display: block;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.654);
+}
+.portfolio-content-container .technologies-container .technoloy-inner{
+    width: 60%;
+    height: 60%;
+    z-index: 30;
+    padding: 20px;
+    position: relative;
+    border-radius: 3px;
+    background-color: #fff;
+}
+.portfolio-content-container .technologies-container .technoloy-inner .title-header{
+    text-align: center;
+    position: relative;
+    margin-bottom: 30px;
+}
+.portfolio-content-container .technologies-container .technoloy-inner .title-header .icon{
+    top: -30px;
+    right: -10px;
+    color: #fff;
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.3s ease;
+    background-color: #EB5757;
+}
+@keyframes btnSpinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(180deg); }
+}
+.portfolio-content-container .technologies-container .technoloy-inner .title-header .icon:hover{
+    animation: btnSpinner 0.3s linear;
+}
+.portfolio-content-container .technologies-container .technoloy-inner .body li{
+    color: #555;
+    padding: 5px 0px;
+}
+.portfolio-content-container .technologies-container .technoloy-inner .body li span{
+    color: #333;
+    font-weight: bold;
+}
+.portfolio-content-container .technologies-container .technoloy-inner .body li .tech{
+    margin: 10px 0px;
+}
+.portfolio-content-container .technologies-container .technoloy-inner .body li .tech  span{
+    padding: 5px 20px;
+    margin: 7px 10px;
+    border-radius: 3px;
+    background-color: #fdb71351;
+    border: 1px solid #FDB813;
+}
+.portfolio-content-container .technologies-container .technoloy-inner li.button{
+    right: 20px;
+    bottom: 10px;
+    position: absolute;
+}
+.portfolio-content-container .technologies-container .technoloy-inner li.button button{
+    border: 0px;
+    color: #333;
+    font-size: 16px;
+    padding: 5px 30px;
+    margin-left: 15px;
+    font-weight: bold;
+    background-color: #FDB813;
+    border: 2px solid #FDB813;
+    transition: all 0.3s ease;
+}
+.portfolio-content-container .technologies-container .technoloy-inner li.button button:hover{
+    background-color: #c38902;
 }
 /* ************* dark mode ************* */
 .portfolio-container.dark .portfolio-content-container{

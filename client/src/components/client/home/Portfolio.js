@@ -5,11 +5,17 @@ import { NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
   faList,
+  faGears,
+  faTimes,
   faAngleLeft,
   faAngleRight,
   faGripVertical,
+  faPuzzlePiece,
 } from '@fortawesome/free-solid-svg-icons'
 import { portfolio_img } from '../../../File'
+import HTMLReactParser from 'html-react-parser'
+
+
 
 
 
@@ -19,6 +25,7 @@ import { portfolio_img } from '../../../File'
 const Portfolio = () => {
     const [image, setImage] = useState('')
     const [counter, setCounter] = useState(0)
+    const [technology, setTechnology] = useState({state: false, portfolio: ''})
     const [totalImages, setTotalImages] = useState([])
     const [popupState, setPopupState] = useState(false)
     const [portfolioState, setPortfolioState] = useState('grid')
@@ -40,6 +47,12 @@ const Portfolio = () => {
             image: [
                 "1.png", "2.png", "3.png", "5.jpg"
             ],
+            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            technologies: [
+                "React", "HTML", "CSS", "NodeJs"
+            ],
+            from: "march 2021",
+            to: "june 2024",
             link: "/"
         },
         {
@@ -47,6 +60,12 @@ const Portfolio = () => {
             image: [
                 "2.png", "4.png", "1.png", "5.jpg", "3.png"
             ],
+            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            technologies: [
+                "React", "HTML", "CSS", "NodeJs"
+            ],
+            from: "march 2021",
+            to: "june 2024",
             link: "/"
         },
         {
@@ -54,6 +73,12 @@ const Portfolio = () => {
             image: [
                 "3.png", "4.png", "2.png"
             ],
+            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            technologies: [
+                "React", "HTML", "CSS", "NodeJs"
+            ],
+            from: "march 2021",
+            to: "june 2024",
             link: "/"
         },
         {
@@ -61,12 +86,24 @@ const Portfolio = () => {
             image: [
                 "4.png", "5.jpg", "2.png", "1.png", "3.png"
             ],
+            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            technologies: [
+                "React", "HTML", "CSS", "NodeJs"
+            ],
+            from: "march 2021",
+            to: "june 2024",
             link: "/"
         },
         {
             title: "Payizzy Website",
             image: [
                 "5.jpg", "4.png", "3.png", "2.png", "1.png"
+            ],
+            from: "march 2021",
+            to: "june 2024",
+            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            technologies: [
+                "React", "HTML", "CSS", "NodeJs"
             ],
             link: "/"
         },
@@ -104,14 +141,22 @@ const Portfolio = () => {
         }
     }
 
+
+    const toggleTechnology = (state=false, portfolio='') => {
+        if(state && portfolio !== ''){
+           return setTechnology({state: state, portfolio: portfolio})
+        }
+        return setTechnology({state: false, portfolio: ''})
+    }
    
     return (
         <div className="portfolio-content-container">
             <div className="inner-portfolio-content">
                 <TitleHeader header={header}/>
                 <ShowMore portfolioState={portfolioState} togglePortfolioGrid={togglePortfolioGrid}/>
-                <PortfolioContent myPortfolios={myPortfolios} portfolioState={portfolioState} togglePupUp={togglePupUp}/>
+                <PortfolioContent myPortfolios={myPortfolios} toggleTechnology={toggleTechnology} portfolioState={portfolioState} togglePupUp={togglePupUp}/>
                 <PortfolioPupUp image={image}  toggleDirection={toggleDirection} popupState={popupState} togglePupUp={togglePupUp}/>
+                { technology.state && technology.portfolio ? (<Technology technology={technology} toggleTechnology={toggleTechnology}/>) : null }
             </div>
         </div>
   )
@@ -157,11 +202,11 @@ const TitleHeader = ({header}) => {
 
 
 
-const PortfolioContent = ({myPortfolios, portfolioState, togglePupUp}) => {
+const PortfolioContent = ({myPortfolios, portfolioState, togglePupUp, toggleTechnology}) => {
     return (
         <div className="portfolio-content">
             <Row className="show-grid">
-                { myPortfolios.map((item, index) => (<ContentItem key={index} portfolioState={portfolioState} togglePupUp={togglePupUp} item={item}/>))}
+                { myPortfolios.map((item, index) => (<ContentItem key={index} portfolioState={portfolioState} toggleTechnology={toggleTechnology} togglePupUp={togglePupUp} item={item}/>))}
             </Row>
         </div>
     )
@@ -171,7 +216,7 @@ const PortfolioContent = ({myPortfolios, portfolioState, togglePupUp}) => {
 
 
 
-const ContentItem = ({portfolioState, item, togglePupUp}) => {
+const ContentItem = ({portfolioState, item, togglePupUp, toggleTechnology}) => {
     let state = portfolioState === 'grid' ? 6 : 12
 
     return (
@@ -187,6 +232,12 @@ const ContentItem = ({portfolioState, item, togglePupUp}) => {
                         </li>
                         <li>
                             <NavLink to="/">Visit Website</NavLink>
+                        </li>
+                        <li className="technology-button">
+                            <button onClick={() => toggleTechnology(true, item)}>
+                                <FontAwesomeIcon className="icon" icon={faGears} />
+                                Technologies
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -211,6 +262,63 @@ const PortfolioPupUp = ({popupState, togglePupUp, image, toggleDirection}) => {
                 <div className="direction">
                     <FontAwesomeIcon onClick={() => toggleDirection('left')} className="icon" icon={faAngleLeft} />
                     <FontAwesomeIcon onClick={() => toggleDirection('right')} className="icon" icon={faAngleRight} />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+const Technology = ({technology, toggleTechnology}) => {
+    const portfolio = technology.portfolio
+
+    return (
+        <div className="technologies-container">
+            <div className="dark-skin"></div>
+            <div className="technoloy-inner">
+                <div className="title-header">
+                    <h3>TECHNOLOGIES</h3>
+                    <FontAwesomeIcon onClick={() => toggleTechnology(false)} className="icon" icon={faTimes} />
+                </div>
+                <div className="body">
+                    <ul>
+                        <li><span>Title: </span>{portfolio.title}</li>
+                        <li>
+                            <span>Description: </span>{portfolio.description ? HTMLReactParser(portfolio.description) : null }
+                        </li>
+                        <li>
+                            <span>Technologies: </span>
+                            <div className="tech">
+                                <span>
+                                    <FontAwesomeIcon className="icon" icon={faPuzzlePiece} /> React
+                                </span>
+                                <span>
+                                    <FontAwesomeIcon className="icon" icon={faPuzzlePiece} /> React
+                                </span>
+                                <span>
+                                    <FontAwesomeIcon className="icon" icon={faPuzzlePiece} /> React
+                                </span>
+                                <span>
+                                    <FontAwesomeIcon className="icon" icon={faPuzzlePiece} /> React
+                                </span>
+                            </div>
+                        </li>
+                        <li className="button">
+                            <NavLink to="/dashboard">
+                                <button>Visit website</button>
+                            </NavLink>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
