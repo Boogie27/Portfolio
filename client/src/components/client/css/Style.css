@@ -248,7 +248,7 @@ h1{
     width: 100%;
     height: 100vh;
 }
-.side-navigation-container .dark-skin{
+.side-navigation-container .table-content-container{
     top: 0px;
     left: 0px;
     z-index: 30;
@@ -1345,6 +1345,7 @@ h1{
     height: 100%;
     cursor: pointer;
     user-select: none;
+    object-fit: contain;
 }
 .portfolio-content-container .inner-portfolio-content .portfolio-pupup .direction{
     top: 0px;

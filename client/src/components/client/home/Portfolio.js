@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import Axios from 'axios'
+import { url } from '../../../File'
+import { useState, useEffect, useRef } from 'react'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { NavLink } from 'react-router-dom'
@@ -23,12 +25,18 @@ import HTMLReactParser from 'html-react-parser'
 
 
 const Portfolio = () => {
+    const FetchPortfoliosRef = useRef(null)
+    const FetchPortfolioHeaderRef = useRef(null)
+
     const [image, setImage] = useState('')
     const [counter, setCounter] = useState(0)
     const [technology, setTechnology] = useState({state: false, portfolio: ''})
     const [totalImages, setTotalImages] = useState([])
     const [popupState, setPopupState] = useState(false)
     const [portfolioState, setPortfolioState] = useState('grid')
+    const [portfolios, setPortfolios] = useState([])
+    const [portfolioHeader, setPortfolioHeader] = useState('')
+
 
     const togglePortfolioGrid = () => {
         let state = portfolioState === 'grid' ? 'list' : 'grid'
@@ -41,73 +49,114 @@ const Portfolio = () => {
         header_two: "heights with our portfolio expertise",
     }
 
-    const myPortfolios = [
-        {
-            title: "Payizzy Website",
-            image: [
-                "1.png", "2.png", "3.png", "5.jpg"
-            ],
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            technologies: [
-                "React", "HTML", "CSS", "NodeJs"
-            ],
-            from: "march 2021",
-            to: "june 2024",
-            link: ""
-        },
-        {
-            title: "Payizzy Website",
-            image: [
-                "2.png", "4.png", "1.png", "5.jpg", "3.png"
-            ],
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            technologies: [
-                "React", "HTML", "CSS", "NodeJs"
-            ],
-            from: "march 2021",
-            to: "june 2024",
-            link: "/"
-        },
-        {
-            title: "Payizzy Website",
-            image: [
-                "3.png", "4.png", "2.png"
-            ],
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            technologies: [
-                "React", "HTML", "CSS", "NodeJs"
-            ],
-            from: "march 2021",
-            to: "june 2024",
-            link: "/"
-        },
-        {
-            title: "Payizzy Website",
-            image: [
-                "4.png", "5.jpg", "2.png", "1.png", "3.png"
-            ],
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            technologies: [
-                "React", "HTML", "CSS", "NodeJs"
-            ],
-            from: "march 2021",
-            to: "june 2024",
-            link: "/"
-        },
-        {
-            title: "Payizzy Website",
-            image: [
-                "5.jpg", "4.png", "3.png", "2.png", "1.png"
-            ],
-            from: "march 2021",
-            to: "june 2024",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            technologies: [
-                "React", "HTML", "CSS", "NodeJs"
-            ],
-            link: "/"
-        },
-    ]
+    // const portfolios = [
+    //     {
+    //         title: "Payizzy Website",
+    //         image: [
+    //             "1.png", "2.png", "3.png", "5.jpg"
+    //         ],
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         technologies: [
+    //             "React", "HTML", "CSS", "NodeJs"
+    //         ],
+    //         from: "march 2021",
+    //         to: "june 2024",
+    //         link: ""
+    //     },
+    //     {
+    //         title: "Payizzy Website",
+    //         image: [
+    //             "2.png", "4.png", "1.png", "5.jpg", "3.png"
+    //         ],
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         technologies: [
+    //             "React", "HTML", "CSS", "NodeJs"
+    //         ],
+    //         from: "march 2021",
+    //         to: "june 2024",
+    //         link: "/"
+    //     },
+    //     {
+    //         title: "Payizzy Website",
+    //         image: [
+    //             "3.png", "4.png", "2.png"
+    //         ],
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         technologies: [
+    //             "React", "HTML", "CSS", "NodeJs"
+    //         ],
+    //         from: "march 2021",
+    //         to: "june 2024",
+    //         link: "/"
+    //     },
+    //     {
+    //         title: "Payizzy Website",
+    //         image: [
+    //             "4.png", "5.jpg", "2.png", "1.png", "3.png"
+    //         ],
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         technologies: [
+    //             "React", "HTML", "CSS", "NodeJs"
+    //         ],
+    //         from: "march 2021",
+    //         to: "june 2024",
+    //         link: "/"
+    //     },
+    //     {
+    //         title: "Payizzy Website",
+    //         image: [
+    //             "5.jpg", "4.png", "3.png", "2.png", "1.png"
+    //         ],
+    //         from: "march 2021",
+    //         to: "june 2024",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         technologies: [
+    //             "React", "HTML", "CSS", "NodeJs"
+    //         ],
+    //         link: "/"
+    //     },
+    // ]
+
+    
+    
+
+
+    // fetch portfolios  header
+    const FetchPortfolioHeader = () => {
+        Axios.get(url(`/api/fetch-client-user-portfolio-header`)).then((response) => {
+            const data = response.data
+            if(data.status === 'ok'){
+                setPortfolioHeader(data.portfolioHeader)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    // fetch portfolios 
+    const FetchPortfolios = () => {
+        Axios.get(url(`/api/fetch-client-user-portfolio`)).then((response) => {
+            const data = response.data
+            if(data.status === 'ok'){
+                setPortfolios(data.portfolios)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+
+
+
+    FetchPortfoliosRef.current = FetchPortfolios
+    FetchPortfolioHeaderRef.current = FetchPortfolioHeader
+
+    useEffect(() => {
+        window.scrollTo(0, 0) // page scroll to top
+        FetchPortfoliosRef.current()
+        FetchPortfolioHeaderRef.current()
+    }, [])
+
 
     
 
@@ -154,9 +203,9 @@ const Portfolio = () => {
     return (
         <div className="portfolio-content-container">
             <div className="inner-portfolio-content">
-                <TitleHeader header={header}/>
+                <TitleHeader portfolioHeader={portfolioHeader}/>
                 <ShowMore portfolioState={portfolioState} togglePortfolioGrid={togglePortfolioGrid}/>
-                <PortfolioContent myPortfolios={myPortfolios} toggleTechnology={toggleTechnology} portfolioState={portfolioState} togglePupUp={togglePupUp}/>
+                <PortfolioContent portfolios={portfolios} toggleTechnology={toggleTechnology} portfolioState={portfolioState} togglePupUp={togglePupUp}/>
                 <PortfolioPupUp image={image}  toggleDirection={toggleDirection} popupState={popupState} togglePupUp={togglePupUp}/>
                 { technology.state && technology.portfolio ? (<Technology technology={technology} toggleTechnology={toggleTechnology}/>) : null }
             </div>
@@ -187,13 +236,13 @@ const ShowMore = ({portfolioState, togglePortfolioGrid}) => {
 
 
 
-const TitleHeader = ({header}) => {
+const TitleHeader = ({portfolioHeader}) => {
     return (
         <div className="title-header">
-            <h3>{header.title}</h3>
+            <h3>{portfolioHeader.title}</h3>
             <div className="title">
-                { header.header_one ? (<h1>{header.header_one}</h1>) : null }
-                { header.header_two ? (<h1>{header.header_two}</h1>) : null }
+                { portfolioHeader.first_header ? (<h1>{portfolioHeader.first_header}</h1>) : null }
+                { portfolioHeader.second_header ? (<h1>{portfolioHeader.second_header}</h1>) : null }
             </div>
         </div>
     )
@@ -204,11 +253,11 @@ const TitleHeader = ({header}) => {
 
 
 
-const PortfolioContent = ({myPortfolios, portfolioState, togglePupUp, toggleTechnology}) => {
+const PortfolioContent = ({portfolios, portfolioState, togglePupUp, toggleTechnology}) => {
     return (
         <div className="portfolio-content">
             <Row className="show-grid">
-                { myPortfolios.map((item, index) => (<ContentItem key={index} portfolioState={portfolioState} toggleTechnology={toggleTechnology} togglePupUp={togglePupUp} item={item}/>))}
+                { portfolios.map((item, index) => (<ContentItem key={index}  item={item} portfolioState={portfolioState} toggleTechnology={toggleTechnology} togglePupUp={togglePupUp}/>))}
             </Row>
         </div>
     )
@@ -260,7 +309,7 @@ const PortfolioPupUp = ({popupState, togglePupUp, image, toggleDirection}) => {
         <div className={`portfolio-pupup ${popupState ? 'active' : ''}`}>
             <div onClick={() => togglePupUp(false)} className="dark-skin"></div>
             <div className="image">
-                <img src={portfolio_img(image)} alt={'1.png'}/>
+                <img src={portfolio_img(image)} alt={image}/>
                 <div className="direction">
                     <FontAwesomeIcon onClick={() => toggleDirection('left')} className="icon" icon={faAngleLeft} />
                     <FontAwesomeIcon onClick={() => toggleDirection('right')} className="icon" icon={faAngleRight} />
@@ -303,7 +352,7 @@ const Technology = ({technology, toggleTechnology}) => {
                             <div className="tech">
                                 {
                                     portfolio.technologies.map((tech, index) => (
-                                        <div>
+                                        <div key={index}>
                                             <FontAwesomeIcon className="icon" icon={faPuzzlePiece} /> {tech}
                                         </div>
                                     ))

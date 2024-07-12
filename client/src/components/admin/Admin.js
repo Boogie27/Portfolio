@@ -22,6 +22,8 @@ import { fetchUser } from '../redux/admin/UserSlice'
 import Skills from './skills/Skills'
 import Qualification from './qualification/Qualification'
 import Portfolio from './portfolio/Portfolio'
+import PortfolioDetail from './portfolio/PortfolioDetail'
+
 
 
 
@@ -112,6 +114,7 @@ const Admin = ({setAppState}) => {
         <Routes>
             <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}>
                 <Route path="/dashboard" element={<DashBoard/>}/>
+                <Route path="/dashboard/portfolio/detail/:_id" element={<PortfolioDetail preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/portfolio" element={<Portfolio preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/skills" element={<Skills preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/qualifications" element={<Qualification preloader={preloader} alertNotification={alertNotification}/>}/>

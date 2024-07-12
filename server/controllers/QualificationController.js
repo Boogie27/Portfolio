@@ -216,8 +216,8 @@ const UpdateUserQualification = AsyncHandler(async (request, response) => {
         const content = {
             user_id: user_id,
             title: input.title,
-            from: input.from,
-            to: input.to,
+            from: parseInt(input.from),
+            to: parseInt(input.to),
             text: input.text,
             is_featured: input.featured ? 1 : 0,
             updated_at: today()

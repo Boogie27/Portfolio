@@ -53,7 +53,8 @@ const RandomString = (string) => {
 const RemoveFile = (filePath) => {
     fs.stat(filePath, function (error, stats) {
         if (error) {
-            return console.error(error)
+            return console.error("File does not exists")
+            // return console.error(error)
         }
         fs.unlink(filePath, function(error){
             if(error) return console.log(error)

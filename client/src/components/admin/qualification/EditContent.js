@@ -196,7 +196,7 @@ const AddContent = ({editFormState, toggleEditForm, alertNotification}) => {
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                             <label>From:</label>
                             <div className="form-group">
-                                <select onChange={(e) => setFrom(e.target.value)} className="form-control">
+                                <select onChange={(e) => setFrom(e.target.value)} value={from} className="form-control">
                                     <option value="">Select Year</option>
                                     {years.map(year => (<option key={year} value={year}>{year}</option> ))}
                                 </select>
@@ -206,7 +206,7 @@ const AddContent = ({editFormState, toggleEditForm, alertNotification}) => {
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                             <label>To:</label>
                             <div className="form-group">
-                                <select onChange={(e) => setTo(e.target.value)} className="form-control">
+                                <select onChange={(e) => setTo(e.target.value)} value={to} className="form-control">
                                     <option value="">Select Year</option>
                                     {years.map(year => (<option key={year} value={year}>{year}</option> ))}
                                 </select>

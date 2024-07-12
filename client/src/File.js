@@ -69,7 +69,8 @@ const icon = (string) => {
 
 
 const portfolio_img = (string) => {
-    return ClientUrl('/asset/image/portfolio/' + string)
+    return url('/public/asset/image/portfolio/' + string)
+    // return ClientUrl('/asset/image/portfolio/' + string)
 }
 
 const preloader = (string) => {
@@ -100,6 +101,25 @@ const page = (string) => {
 }
 
 
+ // generate years
+ const generate_years = () => {
+    const years = [];
+    const stopYear = 1990
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear || 2024; // Default start year if not provided
+    for (let i = startYear; i >= stopYear; i--) {
+        years.push(i)
+    }
+    return years
+}
+
+
+
+const get_months = () => {
+    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    return month
+}
+
 export {
     url,
     icon,
@@ -109,7 +129,9 @@ export {
     auth_image,
     userImage,
     preloader,
+    get_months,
     user_image,
     userDemoImage,
     portfolio_img,
+    generate_years,
 }
