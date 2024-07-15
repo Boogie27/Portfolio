@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
+    faPen,
     faTimes,
     faCamera,
     faToggleOff,
@@ -29,6 +30,7 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
   const FetchUserPortfoliosRef = useRef(null)
 
   const imageRef = useRef(null)
+  const editImageRef = useRef(null)
   let token = Cookies.get('Eloquent_token')
   const [title, setTitle] = useState('')
   const [fromMonth, setFromMonth] = useState('')
@@ -36,6 +38,7 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
   const [toMonth, setToMonth] = useState('')
   const [toYear, setToYear] = useState('')
   const [images, setImages] = useState('')
+  const [index, setIndex] = useState('')
   const [featured, setFeatured] = useState(false)
   const [technology, setTechnology] = useState('')
   const [techs, setTechs] = useState([])
@@ -95,6 +98,7 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
                 setFromYear(portfolio.from_year)
                 setToMonth(portfolio.to_month)
                 setToYear(portfolio.to_year)
+                setFeatured(portfolio.is_featured)
                 setDescription(portfolio.description)
                 setTechs(portfolio.technologies)
                 alertNotification('success', 'Portfolio updated successfully!')
@@ -156,6 +160,7 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
   
   // clear image input field
   const clearFileInput = () => {
+    editImageRef.current.value = ''
     return imageRef.current.value = '';
   }
 
@@ -243,6 +248,7 @@ const validate_input = (input) => {
                 setToYear(portfolio.to_year)
                 setDescription(portfolio.description)
                 setTechs(portfolio.technologies)
+                setFeatured(portfolio.is_featured)
               }
               preloader(false)
           }).catch(error => {
@@ -279,7 +285,45 @@ const validate_input = (input) => {
             }
         }
 
+    // edit portfolio image
+    const editPortfolioImage = (e) => {
+        const file = e.target.files
+        if(token){
+            if(file && file.length > 0){
+                const formData = new FormData()
+                formData.append('_id', _id)
+                formData.append('index', index)
+                formData.append('token', token)
+                formData.append('image', file[0])
+                preloader(true, 'Editing image, Please wait...')
+                Axios.post(url('/api/admin/edit-user-portfolio-image'), formData).then((response) => {
+                  const data = response.data
+                  if(data.status === 'input-error'){
+                      inputErrorForBackend(data.validationError)
+                  }else if(data.status === 'error'){
+                      alertNotification('error', data.message)
+                  }else if(data.status === 'ok'){
+                    const updatedImage = data.updatedImage
+                    setIndex('')
+                    clearFileInput()
+                    setImages(images.map((image, index) => index === parseInt(updatedImage.index) ? updatedImage.imageName : image))
+                    alertNotification('success', 'Portfolio image edited successfully!')
+                  }
+                  return preloader(false)
+              }).catch(error => {
+                setIndex('')
+                preloader(false)
+                  console.log(error)
+              })
+            }
+        }
+    }
 
+    // toggle edit image input field
+    const toggleEditImage = (imageIndex) => {
+        setIndex(imageIndex)
+        return editImageRef.current.click()
+    }
 
   
   FetchUserPortfoliosRef.current = FetchUserPortfolios
@@ -387,7 +431,7 @@ const validate_input = (input) => {
                 </Row>
             </div>
         </div>
-        <PortfolioImages imageRef={imageRef} title={title} images={images} toggleDeleteForm={toggleDeleteForm} toggleImageInput={toggleImageInput} addPortfolioImage={addPortfolioImage}/>
+        <PortfolioImages imageRef={imageRef} title={title} images={images} editImageRef={editImageRef} toggleEditImage={toggleEditImage} editPortfolioImage={editPortfolioImage} toggleDeleteForm={toggleDeleteForm} toggleImageInput={toggleImageInput} addPortfolioImage={addPortfolioImage}/>
         <DeletePortfolioImage images={images} setImages={setImages} deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
       </div>
     </div>
@@ -409,7 +453,7 @@ const TitleHeader = ({title, _id, featured, toggleFeature}) => {
           </div>
           <div className="button">
                 <button onClick={() => toggleFeature(_id)} type="button">
-                    Feature Portfolio
+                    Feature Portfolio 
                     <FontAwesomeIcon  className={`icon ${featured ? 'active' : ''}`} icon={featured ? faToggleOn : faToggleOff}/>
                 </button>
             </div>
@@ -421,7 +465,7 @@ const TitleHeader = ({title, _id, featured, toggleFeature}) => {
 
 
 
-const PortfolioImages= ({ title, imageRef, images, addPortfolioImage, toggleImageInput, toggleDeleteForm}) => {
+const PortfolioImages= ({ title, imageRef, images, addPortfolioImage, editImageRef, editPortfolioImage, toggleEditImage, toggleImageInput, toggleDeleteForm}) => {
   return (
    <div className="portfolio-form-container">
       <div className="top-title-content">
@@ -431,7 +475,7 @@ const PortfolioImages= ({ title, imageRef, images, addPortfolioImage, toggleImag
       </div>
      <div className="portfolio-form-images">
        <Row className="show-grid">
-        { images.length ?  images.map((image, index) => (<ContentImage key={index} image={image} index={index} toggleDeleteForm={toggleDeleteForm}/>)) : null }
+        { images.length ?  images.map((image, index) => (<ContentImage key={index} image={image} index={index} editImageRef={editImageRef} toggleEditImage={toggleEditImage} editPortfolioImage={editPortfolioImage} toggleDeleteForm={toggleDeleteForm}/>)) : null }
           <Col xs={12} sm={12} md={6} lg={6} xl={4}>
             <div className="image-icon">
               <FontAwesomeIcon className="icon" onClick={() => toggleImageInput()} icon={faCamera} />
@@ -446,13 +490,15 @@ const PortfolioImages= ({ title, imageRef, images, addPortfolioImage, toggleImag
 
 
 
-const ContentImage = ({image, index, toggleDeleteForm}) => {
+const ContentImage = ({image, index, toggleDeleteForm, editImageRef, toggleEditImage, editPortfolioImage}) => {
   return (
     <Col xs={12} sm={12} md={6} lg={6} xl={4}>
       <div className="image">
         <img src={portfolio_img(image)} alt={image}/>
         <div className="action-botton">
-          <FontAwesomeIcon className="icon delete" onClick={() => toggleDeleteForm(true, index)} icon={faTimes} />
+          <FontAwesomeIcon onClick={() => toggleEditImage(index)} className="icon edit" icon={faPen} />
+          <FontAwesomeIcon onClick={() => toggleDeleteForm(true, index)} className="icon delete" icon={faTimes} />
+          <input type="file" className="form-control" ref={editImageRef} style={{ display: 'none'}} onChange={editPortfolioImage}   placeholder="Upload Image"/>
         </div>
       </div>
     </Col>

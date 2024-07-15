@@ -11,6 +11,7 @@ const {
     FetchPortfolioHeader,
     UpdateUserPortfolio,
     AddUserPortfolioImage,
+    EditUserPortfolioImage,
     DeleteUserPortfolioImage,
     FetchClientUserPortfolios,
     ToggleFeaturedUserPortfolio,
@@ -30,6 +31,7 @@ router.post('/api/admin/delete-user-portfolio', DeleteUserPortfolio)
 router.post('/api/admin/edit-user-portfolio', UpdateUserPortfolio)
 router.post('/api/admin/toggle-portfolio-feature', ToggleFeaturedUserPortfolio)
 router.post('/api/admin/add-user-portfolio-image', AddUserPortfolioImage)
+router.post('/api/admin/edit-user-portfolio-image', EditUserPortfolioImage)
 router.post('/api/admin/delete-user-portfolio-image', DeleteUserPortfolioImage)
 
 

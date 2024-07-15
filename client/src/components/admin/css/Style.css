@@ -1552,6 +1552,25 @@ h1{
 .portfolio-form-images .action-botton .icon.delete:hover{
     animation: btnSpinner 0.3s linear;
 }
+.portfolio-form-images .action-botton .icon.edit{
+    top: 40px;
+    right: 0px;
+    color: #fff;
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    transform: scale(1.03);
+    transition: all 0.3s ease;
+    background-color: #333333b1;
+}
+.portfolio-form-images .action-botton .icon.edit:hover{
+    transform: scale(1.15);
+}
 @media only screen and (max-width: 767px){
     .portfolio-form-images {
         padding: 0px;

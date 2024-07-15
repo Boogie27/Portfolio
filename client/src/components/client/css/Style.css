@@ -1501,6 +1501,20 @@ h1{
 .portfolio-container.dark .portfolio-content-container .inner-portfolio-content .show-more .button .icon:hover{
     color: #FDB813;
 }
+.portfolio-container.dark  .portfolio-content-container .technologies-container .technoloy-inner{
+    border: 1px solid #202020;
+    background-color: #151515;
+}
+.portfolio-container.dark .portfolio-content-container .technologies-container .technoloy-inner .body li span{
+    color: #969696;
+}
+.portfolio-container.dark .portfolio-content-container .technologies-container .technoloy-inner .body li{
+    color: #8a8a8a;
+}
+.portfolio-content-container .technologies-container .technoloy-inner .body li .tech  div{
+    background-color: #131312;
+    border: 1px solid #292929;
+}
 @media only screen and (max-width: 1400px){
     .portfolio-content-container .inner-portfolio-content{
         width: 90%;

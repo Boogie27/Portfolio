@@ -492,8 +492,62 @@ const AddUserPortfolioImage = AsyncHandler(async (request, response) => {
 
 
 
+// edit portfolio image
+const EditUserPortfolioImage = AsyncHandler(async (request, response) => {
+    try{
+        const { _id, index, token } = request.body
+        const userToken = jwt.verify(token, env.SECRET_KEY) //check if user token exists
+        if(!userToken){
+            return response.send({status: 'error', message: 'Login user to perform this action'})
+        }
+        const user_id = userToken.string._id
+        const exists = await PortfolioModel.findOne({ _id: _id, user_id:  user_id}).exec()
+        if(!exists){
+            return response.send({status: 'error', message: 'Either Portfolio does not exist or you need to login'})
+        }
 
+        const old_image = exists.image[index]
+        if(old_image){
+            const size = 1000;
+            let imageName = '';
+            const imageFile = request.files ? request.files.image : null;
+            const types = ['jpg', 'png', 'jpeg', 'svg', 'webp'];
+            const destination = path.join(__dirname, '../public/asset/image/portfolio/')
+            if (imageFile) {
+                const upload = FileUpload({
+                    size: size,
+                    types: types,
+                    file: imageFile,
+                    name: 'portfolio-image-',
+                    destination: destination
+                })
+    
+                if (upload.status) {
+                    imageName = upload.newName;
+                    const filePath = destination + old_image
+                    RemoveFile(filePath) // delete  existing old image from image portfolio folder
+                } else if(upload.error){
+                    return response.send({ status: 'error', message: upload.error })
+                }
+                exists.image[index] = imageName
+                const updateContent = {
+                    image: exists.image
+                }
+                const update = await PortfolioModel.findOneAndUpdate({_id: exists._id}, {$set: updateContent}).exec()
+                if (update) {
+                    const updatedImage = {index: index, imageName: imageName}
+                    return response.send({ status: 'ok', updatedImage: updatedImage });
+                } else {
+                    return response.send({ status: 'error', message: 'Something went wrong, try again!' });
+                }
+            }
+        }
 
+        return response.send({status: 'error', message: 'Something went wrong, try again!'})
+    }catch(error){
+        return response.send({ status: 'catch-error', catchError: error })
+    }
+})
 
 
 
@@ -591,6 +645,7 @@ module.exports = {
     FetchPortfolioHeader,
     UpdatePortfolioHeader,
     FetchUserPortfolios,
+    EditUserPortfolioImage,
     AddUserPortfolioImage,
     DeleteUserPortfolioImage,
     FetchClientUserPortfolios,
