@@ -17,6 +17,12 @@ h1{
     padding: 0px;
     list-style: none;
 }
+.star{
+    color: #ccc;
+}
+.star.active{
+    color: #FDB813;
+}
 /* ******* Jodit text editior */
 .jodit-workplace{
     color: #333;
@@ -791,6 +797,32 @@ h1{
 .app-content-form .content-form .form .form-group{
     margin-bottom: 20px;
 }
+.app-content-form .content-form .form .form-group .profile-image{
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    border-radius: 50%;
+    position: relative;
+    margin-bottom: 60px;
+    background-color: transparent;
+}
+.app-content-form .content-form .form .form-group .profile-image .icon{
+    right: 0px;
+    bottom: 10px;
+    color: #878787;
+    padding: 10px;
+    cursor:pointer;
+    font-size: 14px;
+    border-radius: 50px;
+    position: absolute;
+    background-color: #f5f5f5;
+}
+.app-content-form .content-form .form .form-group .profile-image img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: transparent;
+}
 .app-content-form .content-form .form .form-group label{
     color: #555;
     font-weight: 600;
@@ -845,6 +877,10 @@ h1{
     font-size: 80px;
     color: #ccc;
 }
+.app-content-form .content-form .form .form-group .rating .star{
+    cursor: pointer;
+    margin: 0px 5px;
+}
 .app-content-form .content-form .form .form-group.form-toggle{
     display: flex;
     align-items: center;
@@ -898,6 +934,10 @@ h1{
 .admin-container.dark .app-content-form .content-form .form textarea::placeholder{
     color: #595959;
 }
+.admin-container.dark .app-content-form .content-form .form .form-group .profile-image .icon{
+    color: #fff;
+    background-color: #41414192;
+}
 @media only screen and (max-width: 1400px){
     .app-content-form .content-form .form{
         height: 90%;
@@ -924,6 +964,10 @@ h1{
 @media only screen and (max-width: 567px){
     .app-content-form .content-form .form .form-button button{
         width: 100%;
+    }
+    .app-content-form .content-form .form .form-group .profile-image{
+        width: 100px;
+        height: 100px;
     }
 }
 

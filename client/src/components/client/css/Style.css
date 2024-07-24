@@ -1511,7 +1511,7 @@ h1{
 .portfolio-container.dark .portfolio-content-container .technologies-container .technoloy-inner .body li{
     color: #8a8a8a;
 }
-.portfolio-content-container .technologies-container .technoloy-inner .body li .tech  div{
+.portfolio-container.dark .portfolio-content-container .technologies-container .technoloy-inner .body li .tech  div{
     background-color: #131312;
     border: 1px solid #292929;
 }
@@ -1755,6 +1755,7 @@ h1{
 /* *************** FOOTER SECTION ************* */
 .footer-container {
     background-color: #f8f8f8;
+    border-top: 1px solid #ccc;
 }
 .footer-container .inner-footer{
     width: 70%;

@@ -50,20 +50,21 @@ const DateTime = (time, format) => {
 
 
 
-const user_image = (string) => {
+const user_image = (string='') => {
     const image = string ? string : userDemoImage
-    return ClientUrl('/asset/image/users/' + image)
+    // return ClientUrl('/asset/image/users/' + image)
+    return url('/public/asset/image/users/' + image)
 }
 
 
-const userImage = (string) => {
+const userImage = (string='') => {
     const image = string ? string : userDemoImage
     return url('/public/asset/image/users/' + image)
 }
 
 
 
-const icon = (string) => {
+const icon = (string='') => {
     return url('/public/asset/image/icon/' + string)
 }
 

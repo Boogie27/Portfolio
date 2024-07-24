@@ -10,7 +10,6 @@ const env = process.env
 const path = require('path');
 const fs = require('fs');
 const { FileUpload, RemoveFile } = require('../helper/Image')
-
 const { Validate } = require('../helper/Validation')
 
 
@@ -62,7 +61,6 @@ const UpdatePortfolioHeader = AsyncHandler(async (request, response) => {
         }
     }
     return response.send({status: 'error', message: 'Something went wront, try again!'})
-
 })
 
 
@@ -622,7 +620,6 @@ const FetchClientUserPortfolios = AsyncHandler(async (request, response) => {
 const FetchClientUserPortfolioHeader = AsyncHandler(async (request, response) => {
     try{
         const portfolioHeader = await PortfolioHeaderModel.findOne({is_featured: 1}).exec()
-        console.log(portfolioHeader)
         if(portfolioHeader){
             return response.send({status: 'ok', portfolioHeader: portfolioHeader})
         }

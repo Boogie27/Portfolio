@@ -53,7 +53,6 @@ const Qualifications = () => {
         Axios.get(url(`/api/admin/fetch-client-user-qualification`)).then((response) => {
             const data = response.data
             if(data.status === 'ok'){
-                console.log(data.qualifications)
                 setQualifications(data.qualifications)
             }
         }).catch(error => {

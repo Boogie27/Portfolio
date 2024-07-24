@@ -47,6 +47,10 @@ const userSchema  = new mongoose.Schema({
     client_theme: {
         type: String,
     },
+    token: {
+        type: String,
+        required: true
+    },
     is_active: {
         type: Number,
         required: true

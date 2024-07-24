@@ -1,3 +1,6 @@
+import { useState, useEffect, useRef, Fragment } from 'react'
+import Axios from 'axios'
+import { url } from '../../../File'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { user_image } from '../../../File'
@@ -35,10 +38,10 @@ const Testimonial = () => {
     }
 
 
-    const header = {
-        title: "CLIENTS REVIEW",
-        text: "My Testimonial",
-    }
+    // const testimonialHeader = {
+    //     title: "CLIENTS REVIEW",
+    //     text: "My Testimonial",
+    // }
 
 
     const myTestimonial = [
@@ -46,48 +49,80 @@ const Testimonial = () => {
             name: "charles anonye",
             image: "",
             job_title: "Software Developer",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             ratings: 2
         },
         {
             name: "charles anonye",
             image: "4.png",
             job_title: "Software Developer",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             ratings: 3
         },{
             name: "charles anonye",
             image: "5.png",
             job_title: "Software Developer",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             ratings: 4
         },
         {
             name: "charles anonye",
             image: "6.jpg",
             job_title: "Content Developer",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             ratings: 5
         },
         {
             name: "charles anonye",
             image: "7.jpg",
             job_title: "Software Developer",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
             ratings: 3
         },
     ]
 
 
 
+    const FetchTestimonialHeaderRef = useRef(null)
+    const [testimonialHeader, setTestimonialHeader] = useState([])
+
+
+    // fetch skills 
+    const FetchTestimonialHeader = () => {
+        Axios.get(url(`/api/client/fetch-client-user-testimonial-header`)).then((response) => {
+            const data = response.data
+            if(data.status === 'ok'){
+                console.log(data.testimonialHeader)
+                setTestimonialHeader(data.testimonialHeader)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+
+
+
+    FetchTestimonialHeaderRef.current = FetchTestimonialHeader
+
+    useEffect(() => {
+        window.scrollTo(0, 0) // page scroll to top
+        FetchTestimonialHeaderRef.current()
+    }, [])
 
   return (
-    <div className="testimonial-container">
-        <div className="inner-testimonial">
-            <TitleHeader header={header}/>
-            <TestimonialContent myTestimonial={myTestimonial} responsive={responsive}/>
-        </div>
-    </div>
+    <Fragment>
+       {
+            testimonialHeader && testimonialHeader.is_featured ? (
+                <div className="testimonial-container">
+                    <div className="inner-testimonial">
+                        <TitleHeader testimonialHeader={testimonialHeader}/>
+                        <TestimonialContent myTestimonial={myTestimonial} responsive={responsive}/>
+                    </div>
+                </div>
+            ) : null
+       }
+    </Fragment>
   )
 }
 
@@ -96,12 +131,12 @@ export default Testimonial
 
 
 
-const TitleHeader = ({header}) => {
+const TitleHeader = ({testimonialHeader}) => {
     return (
         <div className="title-header">
-            <h3>{header.title}</h3>
+            <h3>{testimonialHeader.title}</h3>
             <div className="title">
-                <h1>{header.text}</h1>
+                <h1>{testimonialHeader.header}</h1>
             </div>
         </div>
     )
@@ -155,7 +190,7 @@ const SliderContentItem = ({item}) => {
                     </h4>
                 </li>
                 <li className="description">
-                    { item.text ? (item.text) : null }
+                    { item.description ? (item.description) : null }
                     <FontAwesomeIcon className="icon" icon={faQuoteRight} />
                 </li>
             </ul>
