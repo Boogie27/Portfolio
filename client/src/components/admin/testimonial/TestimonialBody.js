@@ -1,18 +1,19 @@
 import Axios from 'axios'
 import Cookies from 'js-cookie'
-import { NavLink } from 'react-router-dom'
+import HTMLReactParser from 'html-react-parser'
 import { useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faPen,
     faTrash,
+    faTimes,
     faFolderOpen,
     faToggleOn,
     faToggleOff,
 } from '@fortawesome/free-solid-svg-icons'
 import { url, DateTime, user_image } from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserPortfolios, UpdateUserPortfolio } from '../../redux/admin/PortfolioSlice'
+import { getTestimonials, UpdateTestimonial } from '../../redux/admin/TestimonialSlice'
 import  DeleteTestimonial  from './DeleteTestimonial'
 import AddTestimonial from './AddTestimonial'
 import EditTestimonial from './EditTestimonial'
@@ -23,15 +24,17 @@ import EditTestimonial from './EditTestimonial'
 
 
 const TestimonialBody = ({preloader, alertNotification}) => {
-    const FetchUserPortfoliosRef = useRef(null)
+    const FetchTestimonialsRef = useRef(null)
     let token = Cookies.get('Eloquent_token')
     const [addFormState, setAddFormState] = useState(false)
+    const [testimonial, setTestimonial] = useState({})
+    const [testimonialModal, setTestimonialModal] = useState(false)
     const [deleteFormState, setDeleteFormState] = useState({state: false, _id: ''})
     const [editFormState, setEditFormState] = useState({state: false, service: []})
 
     // redux 
     const dispatch = useDispatch()
-    const portfolios = useSelector(state => state.portfolios.portfolios)
+    const testimonials = useSelector(state => state.testimonials.testimonials)
 
 
     // toggle delete message modal
@@ -50,6 +53,17 @@ const TestimonialBody = ({preloader, alertNotification}) => {
         setEditFormState({state: state, _id: _id})
     }
 
+    // populate testimonial modal
+    const toggleModal = (state=false, testimonial={}) => {
+        if(state === true){
+            console.log('yess')
+            setTestimonialModal(true)
+            setTestimonial(testimonial)
+        }else{
+            setTestimonial({})
+            setTestimonialModal(false)
+        }
+    }
 
     // toggle features
     const toggleFeature = (_id) => {
@@ -59,10 +73,10 @@ const TestimonialBody = ({preloader, alertNotification}) => {
                 token: token
             }
             preloader(true, 'Please wait...')
-            Axios.post(url('/api/admin/toggle-portfolio-feature'), content).then((response) => {
+            Axios.post(url('/api/admin/toggle-testimonial-feature'), content).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
-                    dispatch(UpdateUserPortfolio(data.updatedPortfolio))
+                    dispatch(UpdateTestimonial(data.testimonial))
                 }else if(data.status === 'error'){
                     alertNotification('error', data.message)
                 }else if(data.status === 'catch-error'){
@@ -77,12 +91,12 @@ const TestimonialBody = ({preloader, alertNotification}) => {
     }
 
     // fetch  user portfolio
-    const FetchUserPortfolios = () => {
+    const FetchTestimonials = () => {
         if(token){
-            Axios.get(url(`/api/admin/fetch-user-portfolios/${token}`)).then((response) => {
+            Axios.get(url(`/api/admin/fetch-user-testimonials/${token}`)).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
-                    dispatch(getUserPortfolios(data.portfolios))
+                    dispatch(getTestimonials(data.testimonials))
                 }
             }).catch(error => {
                 console.log(error)
@@ -93,71 +107,72 @@ const TestimonialBody = ({preloader, alertNotification}) => {
 
 
     
-    FetchUserPortfoliosRef.current = FetchUserPortfolios
+    FetchTestimonialsRef.current = FetchTestimonials
 
     useEffect(() => {
         window.scrollTo(0, 0) // page scroll to top
-        FetchUserPortfoliosRef.current()
+        FetchTestimonialsRef.current()
     }, [])
 
 
-    const testimonials = [
-        {
-            _id: 1,
-            name: "charles anonye",
-            image: "",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 2,
-            is_featured: 1,
-        },
-        {
-            _id: 1,
-            name: "charles anonye",
-            image: "4.png",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 3,
-            is_featured: 1,
-        },
-        {
-            _id: 3,
-            name: "charles anonye",
-            image: "5.png",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 4,
-            is_featured: 1,
-        },
-        {
-            _id: 4,
-            name: "charles anonye",
-            image: "6.jpg",
-            job_title: "Content Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 5,
-            is_featured: 1,
-        },
-        {
-            _id: 5,
-            name: "charles anonye",
-            image: "7.jpg",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 3,
-            is_featured: 1,
-        },
-    ]
+    // const testimonials = [
+    //     {
+    //         _id: 1,
+    //         name: "charles anonye",
+    //         image: "",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 2,
+    //         is_featured: 1,
+    //     },
+    //     {
+    //         _id: 1,
+    //         name: "charles anonye",
+    //         image: "4.png",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 3,
+    //         is_featured: 1,
+    //     },
+    //     {
+    //         _id: 3,
+    //         name: "charles anonye",
+    //         image: "5.png",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 4,
+    //         is_featured: 1,
+    //     },
+    //     {
+    //         _id: 4,
+    //         name: "charles anonye",
+    //         image: "6.jpg",
+    //         job_title: "Content Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 5,
+    //         is_featured: 1,
+    //     },
+    //     {
+    //         _id: 5,
+    //         name: "charles anonye",
+    //         image: "7.jpg",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 3,
+    //         is_featured: 1,
+    //     },
+    // ]
 
 
     
     return (
         <div className="dashboard-banner-container">
             <TitleHeader toggleAddForm={toggleAddForm}/>
-            <ContentTable testimonials={testimonials}  toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
+            <ContentTable testimonials={testimonials}  toggleModal={toggleModal} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
             <AddTestimonial addFormState={addFormState} toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
             {editFormState.state ? (<EditTestimonial editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
             <DeleteTestimonial deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
+            {testimonialModal ? (<TestimonialContent testimonial={testimonial} toggleModal={toggleModal}/>) : null }
         </div>
     )
 }
@@ -183,7 +198,7 @@ const TitleHeader = ({toggleAddForm}) => {
 }
 
 
-const ContentTable = ({testimonials, toggleDeleteForm, toggleFeature, toggleEditForm}) => {
+const ContentTable = ({testimonials, toggleDeleteForm, toggleModal, toggleFeature, toggleEditForm}) => {
     return (
         <div className="table-content-container">
             <table className="table table-hover">
@@ -200,7 +215,7 @@ const ContentTable = ({testimonials, toggleDeleteForm, toggleFeature, toggleEdit
                     </tr>
                 </thead>
                 <tbody>
-                    { testimonials.map((testimonial, index) => (<ContentItem key={index} testimonial={testimonial} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
+                    { testimonials.map((testimonial, index) => (<ContentItem key={index} testimonial={testimonial} toggleModal={toggleModal} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
                 </tbody>
             </table>
             { testimonials.length === 0 ? (<TableEmpty/>) : null }
@@ -223,21 +238,21 @@ const TableEmpty = () => {
 
 
 
-const ContentItem = ({testimonial, toggleEditForm, toggleFeature, toggleDeleteForm}) => {
+const ContentItem = ({testimonial, toggleEditForm, toggleModal, toggleFeature, toggleDeleteForm}) => {
     return (
         <tr>
-            <td>
-                <NavLink to={`/dashboard/testimonial/detail/${testimonial._id}`}>{testimonial.name}</NavLink>
+            <td >
+                <div onClick={() => toggleModal(true, testimonial)} className="name">
+                    {testimonial.name}
+                </div>
             </td>
             <td>
-                <NavLink to={`/dashboard/testimonial/detail/${testimonial._id}`}>
-                    <div className="image">
-                        <img src={user_image(testimonial.image)} alt={testimonial.image}/>
-                    </div>
-                </NavLink>
+                <div onClick={() => toggleModal(true, testimonial)} className="image">
+                    <img src={user_image(testimonial.image)} alt={testimonial.image}/>
+                </div>
             </td>
             <td>{testimonial.job_title}</td>
-            <td>{testimonial.ratings}</td>
+            <td>{testimonial.rating}</td>
             <td className="table-data-icon">
                 <FontAwesomeIcon onClick={() => toggleFeature(testimonial._id)} className={`icon ${testimonial.is_featured ? 'active' : ''}`} icon={testimonial.is_featured ? faToggleOn : faToggleOff}/>
             </td>
@@ -254,3 +269,45 @@ const ContentItem = ({testimonial, toggleEditForm, toggleFeature, toggleDeleteFo
 
 
 
+
+
+
+
+
+const TestimonialContent = ({testimonial, toggleModal}) => {
+    return (
+        <div className="float-container-content">
+            <div onClick={() => toggleModal(false)} className="dark-skin"></div>
+            <div className="content-body">
+                <div className="title-header">
+                    <h3>Testimonial Detail</h3>
+                    <FontAwesomeIcon onClick={() => toggleModal(false)}  className="icon cancel" icon={faTimes} />
+                </div>
+                <div className="message-content">
+                    <ul>
+                        <li>
+                            <div className="image">
+                                <img src={user_image(testimonial.image)} alt={testimonial.image}/>
+                            </div>
+                        </li>
+                        <li><span>Name:</span> {testimonial.name}</li>
+                        <li><span>Job Title:</span> {testimonial.job_title}</li>
+                        <li><span>Added on:</span> {DateTime(testimonial.created_at, 'Do MMMM YYYY | h:mma')}</li>
+                        <li><span>Updated on:</span> {DateTime(testimonial.updated_at, 'Do MMMM YYYY | h:mma')}</li>
+                        <li>
+                            <span>Featured:</span> 
+                            <FontAwesomeIcon className={`featured-icon ${testimonial.is_featured ? 'active' : ''}`} icon={testimonial.is_featured ? faToggleOn : faToggleOff}/>
+                        </li>
+                        <li className="message">
+                            <span>Description: </span>
+                            {testimonial.description ? (HTMLReactParser(testimonial.description)) : 'Empty'}
+                        </li>
+                        <li className="button">
+                            <button onClick={() => toggleModal(false)} className="delete">Close</button>
+                        </li>
+                   </ul>
+                </div>
+            </div>
+        </div>
+    )
+}

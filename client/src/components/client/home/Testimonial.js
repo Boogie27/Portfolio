@@ -44,50 +44,51 @@ const Testimonial = () => {
     // }
 
 
-    const myTestimonial = [
-        {
-            name: "charles anonye",
-            image: "",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 2
-        },
-        {
-            name: "charles anonye",
-            image: "4.png",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 3
-        },{
-            name: "charles anonye",
-            image: "5.png",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 4
-        },
-        {
-            name: "charles anonye",
-            image: "6.jpg",
-            job_title: "Content Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 5
-        },
-        {
-            name: "charles anonye",
-            image: "7.jpg",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 3
-        },
-    ]
+    // const testimonials = [
+    //     {
+    //         name: "charles anonye",
+    //         image: "",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         rating: 2
+    //     },
+    //     {
+    //         name: "charles anonye",
+    //         image: "4.png",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         rating: 3
+    //     },{
+    //         name: "charles anonye",
+    //         image: "5.png",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         rating: 4
+    //     },
+    //     {
+    //         name: "charles anonye",
+    //         image: "6.jpg",
+    //         job_title: "Content Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         rating: 5
+    //     },
+    //     {
+    //         name: "charles anonye",
+    //         image: "7.jpg",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         rating: 3
+    //     },
+    // ]
 
 
-
+    const FetchTestimonialsRef = useRef(null)
     const FetchTestimonialHeaderRef = useRef(null)
+    const [testimonials, setTestimonials] = useState([])
     const [testimonialHeader, setTestimonialHeader] = useState([])
 
 
-    // fetch skills 
+    // fetch testimonial header
     const FetchTestimonialHeader = () => {
         Axios.get(url(`/api/client/fetch-client-user-testimonial-header`)).then((response) => {
             const data = response.data
@@ -102,11 +103,27 @@ const Testimonial = () => {
 
 
 
+     // fetch testimonial s
+     const FetchTestimonials = () => {
+        Axios.get(url(`/api/client/fetch-client-user-testimonials`)).then((response) => {
+            const data = response.data
+            if(data.status === 'ok'){
+                console.log(data.testimonials)
+                setTestimonials(data.testimonials)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 
+
+
+    FetchTestimonialsRef.current = FetchTestimonials
     FetchTestimonialHeaderRef.current = FetchTestimonialHeader
 
     useEffect(() => {
         window.scrollTo(0, 0) // page scroll to top
+        FetchTestimonialsRef.current()
         FetchTestimonialHeaderRef.current()
     }, [])
 
@@ -117,7 +134,7 @@ const Testimonial = () => {
                 <div className="testimonial-container">
                     <div className="inner-testimonial">
                         <TitleHeader testimonialHeader={testimonialHeader}/>
-                        <TestimonialContent myTestimonial={myTestimonial} responsive={responsive}/>
+                        <TestimonialContent testimonials={testimonials} responsive={responsive}/>
                     </div>
                 </div>
             ) : null
@@ -145,7 +162,7 @@ const TitleHeader = ({testimonialHeader}) => {
 
 
 
-const TestimonialContent = ({ myTestimonial, responsive}) => {
+const TestimonialContent = ({ testimonials, responsive}) => {
     return (
         <div className="testimonial-slider-frame">
             <Carousel 
@@ -153,7 +170,7 @@ const TestimonialContent = ({ myTestimonial, responsive}) => {
             autoPlay={true}
             autoPlaySpeed={5000}
             responsive={responsive}>
-                { myTestimonial.map((item, index) => (<SliderContentItem key={index} item={item}/>)) }
+                { testimonials.map((item, index) => (<SliderContentItem key={index} item={item}/>)) }
             </Carousel>
         </div>
     )
@@ -173,11 +190,11 @@ const SliderContentItem = ({item}) => {
                     <img src={user_image(image)} alt={image}/>
                 </li>
                 <li className="ratings">
-                    <span className="rate">Ratings: </span>
+                    <span className="rate">Rating: </span>
                     <span>
                         {
                            [...Array(5)].map((current, index) => (
-                            <FontAwesomeIcon key={index} className={`star ${ index < item.ratings ? 'active' : '' }`} icon={faStar} /> 
+                            <FontAwesomeIcon key={index} className={`star ${ index < item.rating ? 'active' : '' }`} icon={faStar} /> 
                         ))
                         }
                     </span>

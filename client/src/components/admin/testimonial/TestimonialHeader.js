@@ -133,7 +133,6 @@ const TestimonialHeader = ({preloader, alertNotification }) => {
                 const data = response.data
                 if(data.status === 'ok'){
                     let content = data.testimonialHeader
-                    console.log(content)
                     setTitle(content.title)
                     setHeader(content.header)
                     setFeatured(content.is_featured)

@@ -566,6 +566,26 @@ h1{
 .float-container-content .content-body .message-content ul li{
     margin: 10px 0px;
 }
+.float-container-content .content-body .message-content ul li .featured-icon{
+    top: 3px;
+    font-size: 25px;
+    color: #b4b4b4;
+    margin: 0px 10px;
+    position: relative;
+}
+.float-container-content .content-body .message-content ul li .featured-icon.active{
+    color: #FDB813;
+}
+.float-container-content .content-body .message-content ul li .image{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+.float-container-content .content-body .message-content ul li .image img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
 .float-container-content .content-body .message-content ul li.message{
     width: 100%;
     height: 200px;
@@ -816,6 +836,14 @@ h1{
     border-radius: 50px;
     position: absolute;
     background-color: #f5f5f5;
+    border: 2px solid #fff;
+}
+.app-content-form .content-form .form .form-group .profile-image canvas{
+    width: 100%;
+    height: 100%;
+    display: none;
+    border-radius: 50%;
+    background-color: #f5f5f5;
 }
 .app-content-form .content-form .form .form-group .profile-image img{
     width: 100%;
@@ -966,8 +994,14 @@ h1{
         width: 100%;
     }
     .app-content-form .content-form .form .form-group .profile-image{
-        width: 100px;
-        height: 100px;
+        width: 200px;
+        height: 200px;
+    }
+}
+@media only screen and (max-width: 398px){
+    .app-content-form .content-form .form .form-group .profile-image{
+        width: 150px;
+        height: 150px;
     }
 }
 
@@ -1663,9 +1697,103 @@ h1{
         padding: 30px 60px;
     }
 }
-
-
-
+/* *************** CROPPER IMAGE SECTION ******** */
+.cropper-frame-container{
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+}
+.cropper-frame-container .dark-skin{
+    top: 0px;
+    left: 0px;
+    z-index: 40;
+    width: 100%;
+    height: 100vh;
+    display: block;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.377);
+}
+.cropper-frame-container .inner-cropper-frame{
+    width: 500px;
+    height: 60vh;
+    z-index: 40;
+    color: #333;
+    position: relative;
+    background-color: #fff;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+.cropper-frame-container .cropper-frame{
+    width: 100%;
+    height: 100%;
+    overflow-Y: auto;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+.cropper-frame-container .cropper-frame img{
+    width: 100%;
+    height: 100%;
+}
+.cropper-frame-container .cropper-frame::-webkit-scrollbar{
+    width: 0px;
+    background: transparent;
+}
+.cropper-frame-container .cropper-frame::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+.cropper-frame-container .inner-cropper-frame .button{
+    width: 100%;
+    background-color: #fff;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.cropper-frame-container .inner-cropper-frame .button button{
+    width: 50%;
+    color: #FDB813;
+    font-weight: 500;
+    padding: 5px 30px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    border: 2px solid transparent;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.cropper-frame-container .inner-cropper-frame .button button.cancel:hover{
+    border: 2px solid #FDB813;
+}
+.cropper-frame-container .inner-cropper-frame .button button.crop-image{
+    color: #fff;
+    border: 2px solid #FDB813;
+    background-color: #FDB813;
+   
+}
+.cropper-frame-container .inner-cropper-frame .button button.crop-image:hover{
+    background-color: #fdb7137d;
+}
+.cropper-frame-container .inner-cropper-frame canvas{
+    display: none;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+@media only screen and (max-width: 992px){
+    .cropper-frame-container .inner-cropper-frame{
+        width: 500px;
+        height: 70vh;
+    }
+}
+@media only screen and (max-width: 767px){
+    .cropper-frame-container .inner-cropper-frame{
+        width: 100%;
+        height: 60vh;
+    }
+}
 
 
 

@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
@@ -12,15 +12,16 @@ import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
 import { url, user_image } from '../../../File'
 import { useDispatch } from 'react-redux'
-import { AddUserPortfolio } from '../../redux/admin/PortfolioSlice'
+import { AddTestimonials } from '../../redux/admin/TestimonialSlice'
 import { Validate } from '../../../helper/Validation'
+import 'react-image-crop/dist/ReactCrop.css'
+import ReactCrop, { makeAspectCrop, centerCrop, convertToPixelCrop } from 'react-image-crop'
 
 
 
 
-
-
-
+const ASPECT_RATIO = 1
+const MIN_DIMENSION = 200
 
 
 
@@ -29,10 +30,13 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     // react hooks
     const dispatch = useDispatch()
     const imageRef = useRef(null)
+    const cropImageRef = useRef(null)
+    const previewImageRef = useRef(null)
     let token = Cookies.get('Eloquent_token')
     const [name, setName] = useState('')
     const [jobTitle, setJobTitle] = useState('')
-    const [image, setImage] = useState('')
+    const [crop, setCrop] = useState('')
+    const [image, setImage] = useState(user_image())
     const [imageSource, setImageSource] = useState('')
     const [rating, setRating] = useState('')
     const [description, setDescription] = useState('')
@@ -45,6 +49,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
 
 
     const addNewTestimonial = () => {
+        initErrorAlert() //initialize form input error alert
         if(token){
             const content = {
                 name: name,
@@ -54,8 +59,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
             }
             const validate = validate_input(content)
             if(validate !== 'success') return
-            initErrorAlert() //initialize form input error alert
-           
+            
             setButton(true)
             const formData = new FormData()
             formData.append('image', image)
@@ -71,7 +75,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                 }else if(data.status === 'error'){
                     alertNotification('error', data.message)
                 }else if(data.status === 'ok'){
-                    dispatch(AddUserPortfolio(data.newPortfolio))
+                    dispatch(AddTestimonials(data.testimonial))
                     alertNotification('success', 'Testimonial added successfully!')
                     initFormInput() //init fields
                     toggleForm(false)
@@ -98,8 +102,20 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
         const file = e.target.files
         if(file && file.length > 0){
             const reader = new FileReader()
+            const imageElement = new Image()
             reader.addEventListener('load', () => {
                 const imageUrl = reader.result ? reader.result.toString() : ''
+                imageElement.src = imageUrl
+
+                imageElement.addEventListener("load", (e) => {
+                    const { naturalWidth, naturalHeight } = e.currentTarget
+                    if(naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION){
+                        setCrop('')
+                        setImageSource('')
+                        clearFileInput()
+                        return alertNotification('error', 'Image must be at least 200 x 200 pixels!')
+                    }
+                })
                 setImageSource(imageUrl)
             })
             reader.readAsDataURL(file[0])
@@ -108,12 +124,14 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
 
     // close add form
     const toggleForm = (state) => {
-        setImage('')
         toggleAddForm(state)
         initErrorAlert()
         initFormInput()
         clearFileInput()
         setButton(false)
+        setCrop('')
+        setImageSource('')
+        setImage(user_image())
     }
 
     //  initialize form input error
@@ -136,7 +154,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     const inputErrorForBackend = (error) => {
         setNameAlert(error.name)
         setRatingAlert(error.rating)
-        setJobTitleAlert(error.job_title)
+        setJobTitleAlert(error.jobTitle)
         setDescriptionAlert(error.description)
     }
 
@@ -146,17 +164,17 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
  const validate_input = (input) => {
     const content = [
         { field: 'name', input: input.name, maxLength: 50, minLength: 3, required: true },
-        { field: 'job_title', input: input.job_title, maxLength: 100, minLength: 3, required: true },
+        { field: 'job title', input: input.job_title, maxLength: 100, minLength: 3, required: true },
         { field: 'rating', input: input.rating, required: true },
         { field: 'description', input: input.description, maxLength: 2000, minLength: 3,  required: true }
     ]
     const validation = Validate(content)
     if(validation !== 'success'){
         validation.map((validate) => {
-            if(validate.field === 'title'){
+            if(validate.field === 'name'){
                 setNameAlert(validate.error)
             }
-            if(validate.field === 'job_title'){
+            if(validate.field === 'job title'){
                 setJobTitleAlert(validate.error)
             }
             if(validate.field === 'rating'){
@@ -180,7 +198,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
             <div className="content-form">
                <div className="form">
                     <div className="title-header">
-                        <h3>ADD NEW PORTFOLIO</h3>
+                        <h3>ADD NEW TESTIMONIAL</h3>
                         <FontAwesomeIcon onClick={() => toggleForm(false) } className="icon" icon={faTimes} />
                     </div>
                     <Row className="show-grid">
@@ -188,7 +206,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                             <div className="form-group">
                                 <div className="profile-image text-center">
                                     <FontAwesomeIcon  onClick={() => toggleImageInput()} className="icon" icon={faCamera} /> 
-                                    <img src={user_image()} alt={'profile'}/>
+                                    <img src={image}  alt={'profile'}/>
                                 </div>
                                 <input type="file" ref={imageRef} style={{ display: 'none' }}  onChange={getImageFile} className="form-control" placeholder="Enter Image"/>
                             </div>
@@ -240,6 +258,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                                 
                             </div>
                         </Col>
+                        { imageSource ? (<CropperFrame imageSource={imageSource} setImage={setImage} clearFileInput={clearFileInput} cropImageRef={cropImageRef} previewImageRef={previewImageRef} setImageSource={setImageSource} crop={crop} setCrop={setCrop}/>) : null }
                     </Row>
                </div>
             </div>
@@ -249,3 +268,119 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
 
 
 export default AddTestimonial
+
+
+
+
+
+
+const CropperFrame = ({imageSource, setImageSource, crop, setCrop, setImage, clearFileInput, previewImageRef, cropImageRef}) => {
+    const onImageLoad = (e) => {
+        const { width, height } = e.currentTarget
+        const cropWithPercent = (MIN_DIMENSION / width) * 100
+        const cropped = makeAspectCrop(
+            { unit: '%', width: cropWithPercent },
+            ASPECT_RATIO,
+            width,
+            height
+        )
+        const centeredCrop = centerCrop(cropped, width, height)
+        setCrop(centeredCrop)
+    }
+
+
+    const toggleCropper = () => {
+        setCrop('')
+        clearFileInput()
+        return setImageSource('')
+    }
+
+    // update profile image 
+    const updateUserImage = (dataURL) => {
+        setImage(dataURL)
+        return setImageSource('')
+    }
+
+
+    const cropUserImage = () => {
+        setCanvasPreview(
+            cropImageRef.current,
+            previewImageRef.current,
+            convertToPixelCrop(
+                crop,
+                cropImageRef.current.width,
+                cropImageRef.current.height
+            )
+        )
+        const dataURL = previewImageRef.current.toDataURL()
+        updateUserImage(dataURL)
+    }
+
+
+    return (
+        <div className="cropper-frame-container">
+            <div className="dark-skin"></div>  
+            <div className="inner-cropper-frame">
+                <div className="cropper-frame">
+                    <ReactCrop onChange={(pixelCrop, percentCrop) => setCrop(percentCrop)} crop={crop} circularCrop keepSelection aspect={ASPECT_RATIO} minWidth={MIN_DIMENSION}>
+                        <img src={imageSource} ref={cropImageRef} onLoad={onImageLoad} alt="cropper"/>
+                    </ReactCrop>
+                </div>
+                <div className="button">
+                    <button type="button" onClick={() => toggleCropper()} className="cancel">Cancle</button>
+                    <button type="button" onClick={() => cropUserImage()} className="crop-image">Crop Image</button>
+                </div>
+                <canvas ref={previewImageRef} />
+            </div>
+        </div>
+    )
+}
+
+
+
+
+
+const setCanvasPreview = (
+    image, // HTMLImageElement
+    canvas, // HTMLCanvasElement
+    crop // PixelCrop
+  ) => {
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      throw new Error("No 2d context");
+    }
+  
+    // devicePixelRatio slightly increases sharpness on retina devices
+    // at the expense of slightly slower render times and needing to
+    // size the image back down if you want to download/upload and be
+    // true to the images natural size.
+    const pixelRatio = window.devicePixelRatio;
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+  
+    canvas.width = Math.floor(crop.width * scaleX * pixelRatio);
+    canvas.height = Math.floor(crop.height * scaleY * pixelRatio);
+  
+    ctx.scale(pixelRatio, pixelRatio);
+    ctx.imageSmoothingQuality = "high";
+    ctx.save();
+  
+    const cropX = crop.x * scaleX;
+    const cropY = crop.y * scaleY;
+  
+    // Move the crop origin to the canvas origin (0,0)
+    ctx.translate(-cropX, -cropY);
+    ctx.drawImage(
+      image,
+      0,
+      0,
+      image.naturalWidth,
+      image.naturalHeight,
+      0,
+      0,
+      image.naturalWidth,
+      image.naturalHeight
+    );
+  
+    ctx.restore();
+}

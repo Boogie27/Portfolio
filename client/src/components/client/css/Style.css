@@ -1818,6 +1818,7 @@ h1{
 /* ************** dark mode ********** */
 .portfolio-container.dark .footer-container{
     background-color: rgb(7, 7, 7);
+    border-top: 1px solid #202020;
 }
 .portfolio-container.dark .footer-container .inner-footer .content-item .title h3{
     color: #bbbbbb;
