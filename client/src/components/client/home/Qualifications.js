@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import HTMLReactParser from 'html-react-parser'
-
+import AOS from 'aos'
 
 
 
@@ -66,6 +66,7 @@ const Qualifications = () => {
     FetchQualificationsRef.current = FetchQualifications
 
     useEffect(() => {
+        AOS.init({ duration: 1000 })
         window.scrollTo(0, 0) // page scroll to top
         FetchQualificationsRef.current()
     }, [])
@@ -75,7 +76,7 @@ const Qualifications = () => {
     return (
         <div className="education-skills">
             <Row className="show-grid">
-                { qualifications.map((qualification, index) => (<QualificationItems key={index} qualification={qualification}/>))}
+                { qualifications.map((qualification, index) => (<QualificationItems key={index} number={index+1} qualification={qualification}/>))}
             </Row>
         </div>
     )
@@ -90,9 +91,9 @@ export default Qualifications
 
 
 
-const QualificationItems = ({qualification}) => {
+const QualificationItems = ({number, qualification}) => {
     return (
-        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+        <Col data-aos={number % 2 === 0 ? 'fade-up-left' : 'fade-down-right'} xs={12} sm={12} md={6} lg={6} xl={6}>
             <div className="content">
                 { qualification.from ? (<div className="date">{`${qualification.from} - ${qualification.to}` }</div>) : null }
                 {

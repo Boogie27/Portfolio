@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { icon, url } from '../../../File'
 import Qualifications from './Qualifications'
-
+import AOS from 'aos'
 
 
 
@@ -122,6 +122,7 @@ const Skills = () => {
     FetchSkillsHeaderRef.current = FetchSkillsHeader
 
     useEffect(() => {
+        AOS.init({ duration: 1000 })
         window.scrollTo(0, 0) // page scroll to top
         FetchSkillsRef.current()
         FetchSkillsHeaderRef.current()
@@ -146,7 +147,7 @@ export default Skills
 
 const TitleHeader = ({header}) => {
     return (
-        <div className="title-header">
+        <div data-aos={'zoom-out'} className="title-header">
             { header.title ? (<h3>{header.title}</h3>) : null }
             <div className="title">
                 { header.first_header ? (<h1>{header.first_header}</h1>) : null }
@@ -164,7 +165,7 @@ const Content = ({skills}) => {
             <Row className="show-grid">
                 {
                     skills.map((skill, index) => (
-                        <ContentItem  key={index} rate={skill.rating} title={skill.title} image={skill.image}/>
+                        <ContentItem  key={index} number={index+1} rate={skill.rating} title={skill.title} image={skill.image}/>
                     ))
                 }
             </Row>
@@ -176,9 +177,9 @@ const Content = ({skills}) => {
 
 
 
-const ContentItem = ({title, image, rate}) => {
+const ContentItem = ({number, title, image, rate}) => {
     return (
-        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+        <Col data-aos={number % 2 === 0 ? 'slide-left' : 'slide-right'} xs={12} sm={12} md={6} lg={6} xl={6}>
             <div className="content-item">
                 <div className="inner-content-item">
                    <div className="top">

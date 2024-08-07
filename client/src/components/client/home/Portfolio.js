@@ -16,7 +16,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { portfolio_img } from '../../../File'
 import HTMLReactParser from 'html-react-parser'
-
+import AOS from 'aos'
 
 
 
@@ -152,6 +152,7 @@ const Portfolio = () => {
     FetchPortfolioHeaderRef.current = FetchPortfolioHeader
 
     useEffect(() => {
+        AOS.init({ duration: 1000 })
         window.scrollTo(0, 0) // page scroll to top
         FetchPortfoliosRef.current()
         FetchPortfolioHeaderRef.current()
@@ -203,7 +204,7 @@ const Portfolio = () => {
     return (
         <Fragment>
         {
-            portfolioHeader.is_featued ? (
+            portfolioHeader.is_featured ? (
                 <div className="portfolio-content-container">
                     <div className="inner-portfolio-content">
                         <TitleHeader portfolioHeader={portfolioHeader}/>
@@ -263,7 +264,7 @@ const PortfolioContent = ({portfolios, portfolioState, togglePupUp, toggleTechno
     return (
         <div className="portfolio-content">
             <Row className="show-grid">
-                { portfolios.map((item, index) => (<ContentItem key={index}  item={item} portfolioState={portfolioState} toggleTechnology={toggleTechnology} togglePupUp={togglePupUp}/>))}
+                { portfolios.map((item, index) => (<ContentItem key={index}  number={index+1} item={item} portfolioState={portfolioState} toggleTechnology={toggleTechnology} togglePupUp={togglePupUp}/>))}
             </Row>
         </div>
     )
@@ -273,11 +274,11 @@ const PortfolioContent = ({portfolios, portfolioState, togglePupUp, toggleTechno
 
 
 
-const ContentItem = ({portfolioState, item, togglePupUp, toggleTechnology}) => {
+const ContentItem = ({portfolioState, number, item, togglePupUp, toggleTechnology}) => {
     let state = portfolioState === 'grid' ? 6 : 12
 
     return (
-        <Col xs={12} sm={12} md={12} lg={12} xl={state}>
+        <Col data-aos={number % 2 === 0 ? 'slide-left' : 'slide-right'} xs={12} sm={12} md={12} lg={12} xl={state}>
             <div className={`portfolio-content-item ${state === 12 ? 'large' : ''}`}>
                 <div className="image">
                     <img onClick={() => togglePupUp(true, item.image)} src={portfolio_img(item.image[0])} alt={item.image[0]}/>

@@ -140,6 +140,14 @@ h1{
     }
 }
 /* ********* APP SECTION ************ */
+.portfolio-container{
+    width: 100%;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+/* ********* APP SECTION ************ */
 .portfolio-container.dark{
     background-color: rgb(14, 14, 14);
 }

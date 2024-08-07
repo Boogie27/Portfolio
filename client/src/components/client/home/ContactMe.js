@@ -11,7 +11,7 @@ import HTMLReactParser from 'html-react-parser'
 import { url } from '../../../File'
 import Axios from 'axios'
 import FormInputAlert from '../alert/FormInputAlert'
-
+import AOS from 'aos'
 
 
 
@@ -56,6 +56,7 @@ const ContactMe = ({ loader, alertNotification }) => {
     FetchContactMeRef.current = FetchContactMe
 
     useEffect(() => {
+        AOS.init({ duration: 1000 })
         window.scrollTo(0, 0) // page scroll to top
         FetchContactMeRef.current()
     }, [])
@@ -93,20 +94,20 @@ const ContactMeContent = ({contactMe, alertNotification, loader}) => {
 const ContentLeft = ({contactMe}) => {
     return (
         <div className="content-left">
-            <div className="title-header">
+            <div data-aos={'slide-left'} className="title-header">
                 <h1>
                     { contactMe.span ? (<span>{contactMe.span} </span>) : null }
                     { contactMe.header ? (contactMe.header) : null }
                 </h1>
             </div>
-            <div className="body">
+            <div data-aos={'slide-up'} className="body">
                 {contactMe.text ? (HTMLReactParser(contactMe.text)) : null }
             </div>
             <div className="bottom-content">
-            <Row className="show-grid">
-                <BottomContent counter={contactMe.project_count} description={'Completed Projects'} icon={faBriefcase}/>
-                <BottomContent counter={contactMe.review_count} description={'Client Reviews'} icon={faMagnifyingGlass}/>
-            </Row>
+                <Row className="show-grid">
+                    <BottomContent counter={contactMe.project_count} description={'Completed Projects'} icon={faBriefcase}/>
+                    <BottomContent counter={contactMe.review_count} description={'Client Reviews'} icon={faMagnifyingGlass}/>
+                </Row>
             </div>
         </div>
     )
@@ -118,7 +119,7 @@ const ContentLeft = ({contactMe}) => {
 
 const BottomContent = ({counter, description, icon}) => {
     return (
-        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+        <Col data-aos={'slide-right'} xs={12} sm={12} md={6} lg={6} xl={6}>
             <div className="bottom-content-item">
                 <ul>
                     <li>
@@ -275,30 +276,30 @@ const ContentRight = ({contactMe, alertNotification, loader}) => {
     return (
         <div className="content-right">
             <div className="title-header">
-                <h3>{contactMe.title}</h3>
-                <div className="description">{contactMe.form_text ? (HTMLReactParser(contactMe.form_text)) : null }</div>
+                <h3 data-aos={'fade-up-left'} >{contactMe.title}</h3>
+                <div data-aos={'fade-down-right'} className="description">{contactMe.form_text ? (HTMLReactParser(contactMe.form_text)) : null }</div>
                 <div className="contact-form">
-                    <div className="form-group">
+                    <div data-aos={'slide-left'} className="form-group">
                         <FormInputAlert alert={nameAlert}/>
                         <input type="text" onChange={(e) => setName(e.target.value)} value={name} className="form-control" placeholder="Enter Name"/>
                     </div>
-                    <div className="form-group">
+                    <div data-aos={'slide-down'} className="form-group">
                         <FormInputAlert alert={emailAlert}/>
                         <input type="text" onChange={(e) => setEmail(e.target.value)} value={email}className="form-control" placeholder="Enter Email"/>
                     </div>
-                    <div className="form-group">
+                    <div data-aos={'slide-up'} className="form-group">
                         <FormInputAlert alert={phoneAlert}/>
                         <input type="text" onChange={(e) => setPhone(e.target.value)} value={phone} className="form-control" placeholder="Enter Phone"/>
                     </div>
-                    <div className="form-group">
+                    <div data-aos={'slide-right'} className="form-group">
                         <FormInputAlert alert={countryAlert}/>
                         <input type="text" onChange={(e) => setCountry(e.target.value)} value={country} className="form-control" placeholder="Enter Country"/>
                     </div>
-                    <div className="form-group">
+                    <div data-aos={'fade-up-left'} className="form-group">
                         <FormInputAlert alert={messageAlert}/>
                         <textarea className="form-control" onChange={(e) => setMessage(e.target.value)} value={message} rows="4" cols="50" placeholder="Write Message..."></textarea>
                     </div>
-                    <div className="form-button">
+                    <div data-aos={'zoom-in'} className="form-button">
                         { 
                         button ? (
                             <button type="button">PLEASE WAIT...</button>

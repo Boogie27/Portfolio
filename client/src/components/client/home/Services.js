@@ -4,7 +4,7 @@ import Axios from 'axios'
 import { useState, useEffect, useRef } from 'react'
 import { url } from '../../../File'
 import HTMLReactParser from 'html-react-parser'
-
+import AOS from 'aos'
 
 
 
@@ -60,6 +60,7 @@ const Services = () => {
     FetchServiceHeaderRef.current = FetchServiceHeader
 
     useEffect(() => {
+        AOS.init({ duration: 1000 })
         window.scrollTo(0, 0) // page scroll to top
         FetchUserServicesRef.current()
         FetchServiceHeaderRef.current()
@@ -84,9 +85,11 @@ export default Services
 const TitleHeader = ({serviceHeaders}) => {
     return (
         <div className="title-header">
-            <div className="title">{serviceHeaders.title}</div>
-            <h1>{serviceHeaders.first_header}</h1>
-            <h1>{serviceHeaders.second_header}</h1>
+            <div data-aos={'zoom-in'} className="title">{serviceHeaders.title}</div>
+           <div data-aos={'slide-left'}>
+                <h1>{serviceHeaders.first_header}</h1>
+                <h1>{serviceHeaders.second_header}</h1>
+           </div>
       </div>
     )
 }
@@ -111,7 +114,7 @@ const ServicesBody = ({services}) => {
 const ContentItem = ({service}) => {
     return (
         <Col xs={12} sm={12} md={6} lg={4} xl={4}>
-            <div className="content-item">
+            <div data-aos={'slide-down'} className="content-item">
                 <div className="title">
                     <h3>{service.title}</h3>
                 </div>

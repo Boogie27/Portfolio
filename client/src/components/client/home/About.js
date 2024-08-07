@@ -9,6 +9,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { userImage, url } from '../../../File'
 import HTMLReactParser from 'html-react-parser'
+import AOS from 'aos'
+
+
 
 
 
@@ -46,6 +49,7 @@ const About = () => {
     FetchUserAboutRef.current = FetchUserAbout
 
     useEffect(() => {
+        AOS.init({ duration: 1000 })
         window.scrollTo(0, 0) // page scroll to top
         FetchUserAboutRef.current()
     }, [])
@@ -82,11 +86,11 @@ export default About
 const ContentLeft = ({aboutMe}) => {
     return (
         <div className="content-left">
-            <div className="title">
+            <div data-aos={'slide-left'} className="title">
                 <h1>{aboutMe.header} <span>{aboutMe.span}</span></h1>
             </div>
-            <div className="body">{ aboutMe.text ? (HTMLReactParser(aboutMe.text)) : null }</div>
-            <div className="button">
+            <div data-aos={'slide-down'} className="body">{ aboutMe.text ? (HTMLReactParser(aboutMe.text)) : null }</div>
+            <div data-aos={'slide-up'} className="button">
                 <button type="button">
                     Download CV 
                     <FontAwesomeIcon className="icon" icon={faDownload} />
@@ -102,11 +106,11 @@ const ContentLeft = ({aboutMe}) => {
 
 const ContentRight = ({aboutMe}) => {
     return (
-        <div className="content-right">
+        <div data-aos={'zoom-in'} className="content-right">
             <div className="image">
                 <img src={userImage(aboutMe.image)} alt="about-us"/>
             </div>
-            <div className="bottom-content">
+            <div data-aos={'slide-up'} className="bottom-content">
                 <ul>
                     <li><FontAwesomeIcon className="icon" icon={faLayerGroup} /></li>
                     <li>

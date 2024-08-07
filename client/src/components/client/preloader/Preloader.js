@@ -26,7 +26,7 @@ const Preloader = () => {
     const removerPreloader = () => {
         setTimeout(() => {
             setPreloader(false)
-        }, 1000)
+        }, 500)
     }
 
     serverREaderRef.current = CheckIFServerIsReady

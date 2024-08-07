@@ -10,7 +10,7 @@ import {
   faLayerGroup,
   faQuoteRight,
 } from '@fortawesome/free-solid-svg-icons'
-
+import AOS from 'aos'
 
 
 
@@ -122,6 +122,7 @@ const Testimonial = () => {
     FetchTestimonialHeaderRef.current = FetchTestimonialHeader
 
     useEffect(() => {
+        AOS.init({ duration: 1000 })
         window.scrollTo(0, 0) // page scroll to top
         FetchTestimonialsRef.current()
         FetchTestimonialHeaderRef.current()
@@ -150,7 +151,7 @@ export default Testimonial
 
 const TitleHeader = ({testimonialHeader}) => {
     return (
-        <div className="title-header">
+        <div data-aos={'zoom-out'} className="title-header">
             <h3>{testimonialHeader.title}</h3>
             <div className="title">
                 <h1>{testimonialHeader.header}</h1>
@@ -164,7 +165,7 @@ const TitleHeader = ({testimonialHeader}) => {
 
 const TestimonialContent = ({ testimonials, responsive}) => {
     return (
-        <div className="testimonial-slider-frame">
+        <div data-aos={'slide-right'} className="testimonial-slider-frame">
             <Carousel 
             infinite={true}
             autoPlay={true}

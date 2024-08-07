@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { userImage, url } from '../../../File'
 import HTMLReactParser from 'html-react-parser'
-
+import AOS from 'aos'
 
 
 
@@ -35,6 +35,7 @@ const Banner = () => {
   homeBannerRef.current = getHomeBanners
 
   useEffect(() => {
+    AOS.init({ duration: 2000 })
     window.scrollTo(0, 0) // page scroll to top
     homeBannerRef.current()
 }, [])
@@ -58,12 +59,14 @@ export default Banner
 const ContentLeft = ({homeBanners}) => {
   return (
     <div className="content-left">
-        <div className="title-header">
+        <div data-aos={'slide-left'} className="title-header">
           <h3>{homeBanners.first_header}</h3>
           <h3>{homeBanners.second_header} <span>{homeBanners.span_header}</span></h3>
         </div>
-        <div className="body">{homeBanners.description ? HTMLReactParser(homeBanners.description) : 'I am a software engineer' }</div>
-        <div className="button">
+        <div data-aos={'fade'} className="body">
+          {homeBanners.description ? HTMLReactParser(homeBanners.description) : 'I am a software engineer' }
+        </div>
+        <div data-aos={'fade-down-right'} className="button">
           <button type="button">
             Download CV 
             <FontAwesomeIcon className="icon" icon={faDownload} />
@@ -80,7 +83,7 @@ const ContentRight = ({homeBanners}) => {
   const image = homeBanners.image ? homeBanners.image : 'demo.png'
   return (
     <div className="content-right">
-      <div className="image">
+      <div data-aos={'zoom-in'} className="image">
         <img src={userImage(image)} alt="banner"/>
       </div>
     </div>
