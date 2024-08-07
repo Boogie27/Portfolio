@@ -16,6 +16,7 @@ const skillSlice = createSlice({
                     title: content.title,
                     image: content.image,
                     rating: content.rating,
+                    is_featured: content.is_featured,
                     created_at: content.created_at,
                     updated_at: content.updated_at
                 }

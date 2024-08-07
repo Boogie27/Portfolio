@@ -1,6 +1,5 @@
 import Axios from 'axios'
 import Cookies from 'js-cookie'
-import HTMLReactParser from 'html-react-parser'
 import { useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
@@ -8,10 +7,11 @@ import {
     faTrash,
     faFolderOpen,
     faToggleOn,
+    faToggleOff,
 } from '@fortawesome/free-solid-svg-icons'
 import { url, DateTime, icon } from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserSkills } from '../../redux/admin/SkillSlice'
+import { getUserSkills, UpdateUserSkill } from '../../redux/admin/SkillSlice'
 import  DeleteContactForm  from './DeleteContactForm'
 import AddSkills from './AddSkills'
 import EditSkills from './EditSkills'
@@ -49,7 +49,7 @@ const SkillsBody = ({preloader, alertNotification}) => {
         setEditFormState({state: state, _id: _id})
     }
 
-
+    // fetch user skills
     const FetchUserSkills = () => {
         if(token){
             Axios.get(url(`/api/admin/fetch-user-skills/${token}`)).then((response) => {
@@ -64,6 +64,30 @@ const SkillsBody = ({preloader, alertNotification}) => {
     }
 
 
+    // toggle skill feature off or on
+    const toggleFeature = (_id) => {
+        if(token){
+            const content = {
+                _id: _id,
+                token: token
+            }
+            preloader(true, 'Please wait...')
+            Axios.post(url('/api/admin/toggle-skills-feature'), content).then((response) => {
+                const data = response.data
+                if(data.status === 'ok'){
+                    dispatch(UpdateUserSkill(data.updatedSkill))
+                }else if(data.status === 'error'){
+                    alertNotification('error', data.message)
+                }else if(data.status === 'catch-error'){
+                    console.log(data.catchError)
+                }
+                preloader(false)
+            }).catch(error => {
+                preloader(false)
+                console.log(error)
+            })
+        }
+    }
 
     
     FetchUserSkillsRef.current = FetchUserSkills
@@ -177,7 +201,7 @@ const SkillsBody = ({preloader, alertNotification}) => {
     return (
         <div className="dashboard-banner-container">
             <TitleHeader toggleAddForm={toggleAddForm}/>
-            <ContentTable skills={skills}  toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
+            <ContentTable skills={skills}  toggleEditForm={toggleEditForm} toggleFeature={toggleFeature} toggleDeleteForm={toggleDeleteForm}/>
             <AddSkills addFormState={addFormState} toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
             {editFormState.state ? (<EditSkills editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
             <DeleteContactForm deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
@@ -206,7 +230,7 @@ const TitleHeader = ({toggleAddForm}) => {
   }
 
 
-const ContentTable = ({skills, toggleDeleteForm, toggleEditForm}) => {
+const ContentTable = ({skills, toggleDeleteForm, toggleEditForm, toggleFeature}) => {
     return (
         <div className="table-content-container">
             <table className="table table-hover">
@@ -223,7 +247,7 @@ const ContentTable = ({skills, toggleDeleteForm, toggleEditForm}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    { skills.map((skill, index) => (<ContentItem key={index} skill={skill} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
+                    { skills.map((skill, index) => (<ContentItem key={index} skill={skill} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
                 </tbody>
             </table>
             { skills.length === 0 ? (<TableEmpty/>) : null }
@@ -246,7 +270,7 @@ const TableEmpty = () => {
 
 
 
-const ContentItem = ({skill, toggleEditForm, toggleDeleteForm}) => {
+const ContentItem = ({skill, toggleEditForm, toggleDeleteForm, toggleFeature}) => {
     return (
         <tr>
             <td>{skill.title}</td>
@@ -257,7 +281,7 @@ const ContentItem = ({skill, toggleEditForm, toggleDeleteForm}) => {
             </td>
             <td>{skill.rating}%</td>
             <td className="table-data-icon">
-                <FontAwesomeIcon className="icon" icon={faToggleOn} />
+            <FontAwesomeIcon title="Toggle Feature" onClick={() => toggleFeature(skill._id)} className={`icon ${skill.is_featured ? 'active' : ''}`} icon={skill.is_featured ? faToggleOn : faToggleOff}/>
             </td>
             <td>{DateTime(skill.created_at, 'Do MMMM YYYY | h:mma')}</td>
             <td>{DateTime(skill.updated_at, 'Do MMMM YYYY | h:mma')}</td>

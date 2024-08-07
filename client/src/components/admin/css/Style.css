@@ -690,6 +690,11 @@ h1{
     color: #FDB813;
     background-color: #fdb71333;
 }
+.admin-container.dark .table-content-container tbody tr td .order input{
+    color: #989898;
+    background-color: #202020;
+    border: 1px solid #2c2c2c;
+}
 @media only screen and (max-width: 1400px){
     .float-container-content .content-body{
         width: 80%;
@@ -875,6 +880,13 @@ h1{
     padding: 15px 10px;
     border-radius: 0px;
 }
+.app-content-form .content-form .form input:focus,
+.app-content-form .content-form .form textarea:focus,
+.app-content-form .content-form .form select:focus{
+    outline: none;
+    box-shadow: none;
+    color: #555;
+}
 .app-content-form .content-form .form input::placeholder,
 .app-content-form .content-form .form textarea::placeholder{
     color: #bcbcbc;
@@ -962,7 +974,17 @@ h1{
     color: #ccc;
 }
 .admin-container.dark .app-content-form .content-form .form input,
-.admin-container.dark .app-content-form .content-form .form textarea{
+.admin-container.dark .app-content-form .content-form .form textarea,
+.admin-container.dark .app-content-form .content-form .form select{
+    color: #aeaeae;
+    background-color: #202020;
+    border: 1px solid #323232;
+}
+.admin-container.dark .app-content-form .content-form .form input:focus,
+.admin-container.dark .app-content-form .content-form .form textarea:focus,
+.admin-container.dark .app-content-form .content-form .form select:focus{
+    outline: none;
+    box-shadow: none;
     color: #aeaeae;
     background-color: #202020;
     border: 1px solid #323232;
@@ -974,6 +996,18 @@ h1{
 .admin-container.dark .app-content-form .content-form .form .form-group .profile-image .icon{
     color: #fff;
     background-color: #41414192;
+}
+.admin-container.dark .app-content-form .content-form .form .form-group .image-preview{
+    border: 1px solid #323232;
+}
+.admin-container.dark .app-content-form .content-form .form .form-group .image-preview .icon{
+    color: #353535;
+}
+.admin-container.dark .app-content-form .content-form .form .form-group .technology{
+    color: #fff;
+}
+.admin-container.dark .app-content-form .content-form .form .form-group .technology .icon{
+    color: rgb(141, 0, 0);
 }
 @media only screen and (max-width: 1400px){
     .app-content-form .content-form .form{

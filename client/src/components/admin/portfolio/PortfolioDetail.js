@@ -111,18 +111,16 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
       }
   }
 
-  //  initialize form input error
-  const initErrorAlert = () => {
-      setTitleAlert('')
-      setDescriptionAlert('')
-  }
-
-  //  initialize form input
-  const initFormInput = () => {
-      setTitle('')
-      setTechs([])
-      setDescription('')
-  }
+    //  initialize form input error
+    const initErrorAlert = () => {
+        setTitleAlert('')
+        setFromMonthAlert('')
+        setFromYearAlert('')
+        setToMonthAlert('')
+        setToYearAlert('')
+        setTechnologyAlert('')
+        setDescriptionAlert('')
+    }
 
   // backen error message
   const inputErrorForBackend = (error) => {

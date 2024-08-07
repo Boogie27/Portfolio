@@ -9,6 +9,7 @@ const {
     FetchClientSkills,
     UpdateUserSkillsHeader,
     FetchClientSkillsHeader,
+    ToggleUserSkillsFeature,
 } = require('../controllers/SkillsController')
 
 
@@ -22,6 +23,9 @@ router.get('/api/admin/fetch-user-skills/:token', FetchUserSkills)
 router.post('/api/admin/add-new-skills', AddNewSkills)
 router.post('/api/admin/delete-user-skills', DeleteUserSkills)
 router.post('/api/admin/edit-user-skill', EditUserSkills)
+router.post('/api/admin/toggle-skills-feature', ToggleUserSkillsFeature)
+
+
 
 
 

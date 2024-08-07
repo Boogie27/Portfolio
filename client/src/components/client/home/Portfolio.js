@@ -245,7 +245,7 @@ const ShowMore = ({portfolioState, togglePortfolioGrid}) => {
 
 const TitleHeader = ({portfolioHeader}) => {
     return (
-        <div className="title-header">
+        <div data-aos={'zoom-in'} className="title-header">
             <h3>{portfolioHeader.title}</h3>
             <div className="title">
                 { portfolioHeader.first_header ? (<h1>{portfolioHeader.first_header}</h1>) : null }

@@ -91,6 +91,34 @@ const PortfolioBody = ({preloader, alertNotification}) => {
     }
 
 
+    // update portfolio order
+    const handleKeyDown = (e, _id, order) => {
+        if (e.key === 'Enter') {
+            if(token){
+                const content = {
+                    _id: _id,
+                    order: order,
+                    token: token
+                }
+                preloader(true, 'Please wait...')
+                Axios.post(url('/api/admin/update-portfolio-order'), content).then((response) => {
+                    const data = response.data
+                    if(data.status === 'ok'){
+                        dispatch(UpdateUserPortfolio(data.updatedPortfolio))
+                        alertNotification('success', 'Portfolio order upated successfully!')
+                    }else if(data.status === 'error'){
+                        alertNotification('error', data.message)
+                    }else if(data.status === 'catch-error'){
+                        console.log(data.catchError)
+                    }
+                    preloader(false)
+                }).catch(error => {
+                    preloader(false)
+                    console.log(error)
+                })
+            }
+        }
+    }
 
     
     FetchUserPortfoliosRef.current = FetchUserPortfolios
@@ -193,7 +221,7 @@ const PortfolioBody = ({preloader, alertNotification}) => {
     return (
         <div className="dashboard-banner-container">
             <TitleHeader toggleAddForm={toggleAddForm}/>
-            <ContentTable portfolios={portfolios}  toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
+            <ContentTable portfolios={portfolios} handleKeyDown={handleKeyDown} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
             <AddPortfolio addFormState={addFormState} toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
             {editFormState.state ? (<EditPortfolio editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
             <DeleteContent deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
@@ -222,7 +250,7 @@ const TitleHeader = ({toggleAddForm}) => {
 }
 
 
-const ContentTable = ({portfolios, toggleDeleteForm, toggleFeature, toggleEditForm}) => {
+const ContentTable = ({portfolios, toggleDeleteForm, toggleFeature, toggleEditForm, handleKeyDown}) => {
     return (
         <div className="table-content-container">
             <table className="table table-hover">
@@ -238,7 +266,7 @@ const ContentTable = ({portfolios, toggleDeleteForm, toggleFeature, toggleEditFo
                     </tr>
                 </thead>
                 <tbody>
-                    { portfolios.map((portfolio, index) => (<ContentItem key={index} portfolio={portfolio} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
+                    { portfolios.map((portfolio, index) => (<ContentItem key={index} portfolio={portfolio} handleKeyDown={handleKeyDown} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
                 </tbody>
             </table>
             { portfolios.length === 0 ? (<TableEmpty/>) : null }
@@ -261,8 +289,8 @@ const TableEmpty = () => {
 
 
 
-const ContentItem = ({portfolio, toggleEditForm, toggleFeature, toggleDeleteForm}) => {
-    const [order, setOrder] = useState('')
+const ContentItem = ({portfolio, toggleEditForm, toggleFeature, handleKeyDown, toggleDeleteForm}) => {
+    const [order, setOrder] = useState(portfolio.order || '')
     
     return (
         <tr>
@@ -281,7 +309,7 @@ const ContentItem = ({portfolio, toggleEditForm, toggleFeature, toggleDeleteForm
             </td>
             <td>
                 <div className="order">
-                    <input type="number" min="1" onChange={(e) => setOrder(e.target.value)} value={portfolio.order && order}/>
+                    <input type="number" min="1" onKeyDown={(e) => handleKeyDown(e, portfolio._id, order)} onChange={(e) => setOrder(e.target.value)} value={order}/>
                 </div>
             </td>
             <td>{DateTime(portfolio.updated_at, 'Do MMMM YYYY | h:mma')}</td>

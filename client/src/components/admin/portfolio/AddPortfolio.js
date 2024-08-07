@@ -125,6 +125,11 @@ const AddPortfolio = ({addFormState, toggleAddForm, alertNotification}) => {
     //  initialize form input error
    const initErrorAlert = () => {
         setTitleAlert('')
+        setFromMonthAlert('')
+        setFromYearAlert('')
+        setToMonthAlert('')
+        setToYearAlert('')
+        setTechnologyAlert('')
         setDescriptionAlert('')
     }
 

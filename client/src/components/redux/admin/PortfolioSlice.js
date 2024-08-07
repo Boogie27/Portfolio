@@ -26,7 +26,7 @@ const portfolioSlice = createSlice({
                     created_at: content.created_at,
                     updated_at: content.updated_at
                 }
-            })
+            }).sort((a, b) => a.order - b.order)  // Sort by order in ascending order
         },
         AddUserPortfolio: (state, action) => {
             state.portfolios.push(action.payload)

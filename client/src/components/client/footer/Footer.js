@@ -11,6 +11,8 @@ import {
 import { NavLink } from 'react-router-dom'
 import { url } from '../../../File'
 import HTMLReactParser from 'html-react-parser'
+import AOS from 'aos'
+
 
 
 
@@ -55,6 +57,7 @@ const Footer = () => {
     FetchAppFooterRef.current = FetchAppFooter
 
     useEffect(() => {
+        AOS.init({ duration: 1000 })
         window.scrollTo(0, 0) // page scroll to top
         FetchAppFooterRef.current()
     }, [])
@@ -123,7 +126,7 @@ const BottomContent = ({footerItem}) => {
 
 const AddressContact = ({footerItem}) => {
     return (
-        <div className="content-item">
+        <div data-aos={'fade-down-right'} className="content-item">
             <div className="img">
                 <FontAwesomeIcon className="icon" icon={faLocationDot} />
             </div>
@@ -144,7 +147,7 @@ const AddressContact = ({footerItem}) => {
 
 const PhoneContact = ({footerItem}) => {
     return (
-        <div className="content-item">
+        <div data-aos={'zoom-in'} className="content-item">
             <div className="img">
                 <FontAwesomeIcon className="icon" icon={faPhone} />
             </div>
@@ -164,7 +167,7 @@ const PhoneContact = ({footerItem}) => {
 
 const EmailContact = ({footerItem}) => {
     return (
-        <div className="content-item">
+        <div data-aos={'fade-up-left'} className="content-item">
             <div className="img">
                 <FontAwesomeIcon className="icon" icon={faEnvelope} />
             </div>

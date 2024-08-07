@@ -592,6 +592,43 @@ const DeleteUserPortfolioImage = AsyncHandler(async (request, response) => {
 
 
 
+// update user portifolio orer
+const UpdateUserPortfolioOrder = AsyncHandler(async (request, response) => {
+    try{
+        const input = request.body
+        const userToken = jwt.verify(input.token, env.SECRET_KEY) //check if user token exists
+        if(!userToken){
+            return response.send({status: 'not-login', message: 'Login user to perform this action'})
+        }
+
+        const user_id = userToken.string._id
+        const exists = await PortfolioModel.findOne({ _id: input._id, user_id:  user_id}).exec()
+        if(!exists){
+            return response.send({status: 'error', message: 'Either Portfolio does not exist or you need to login'})
+        }
+        const updateContent = {
+            order: input.order,
+            updated_at: today(), 
+        }
+        const update = await PortfolioModel.findOneAndUpdate({_id: exists._id}, {$set: updateContent}).exec()
+        if(update){
+            const updatedPortfolio = await PortfolioModel.findOne({ _id: exists._id })
+            return response.send({status: 'ok', updatedPortfolio: updatedPortfolio})
+        }
+        return response.send({status: 'error', message: 'Something went wrong, try again!'})
+    }catch(error){
+        return response.send({ status: 'catch-error', catchError: error })
+    }
+})
+
+
+
+
+
+
+
+
+
 
 
 // ****************** CLIENT SECTION *****************
@@ -599,7 +636,7 @@ const DeleteUserPortfolioImage = AsyncHandler(async (request, response) => {
 //   fetch client portfolios
 const FetchClientUserPortfolios = AsyncHandler(async (request, response) => {
     try{
-        const portfolios = await PortfolioModel.find({is_featured: 1}).exec()
+        const portfolios = await PortfolioModel.find({is_featured: 1}).sort({ order: 1 }).exec()
         if(portfolios){
             return response.send({status: 'ok', portfolios: portfolios})
         }
@@ -644,6 +681,7 @@ module.exports = {
     FetchUserPortfolios,
     EditUserPortfolioImage,
     AddUserPortfolioImage,
+    UpdateUserPortfolioOrder,
     DeleteUserPortfolioImage,
     FetchClientUserPortfolios,
     ToggleFeaturedUserPortfolio,

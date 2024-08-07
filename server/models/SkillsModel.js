@@ -19,6 +19,10 @@ const SkillsSchema  = new mongoose.Schema({
         type: String,
         required: true
     },
+    is_featured: {
+        type: Number,
+        required: true
+    },
     created_at: {
         type: Date,
         required: true

@@ -603,7 +603,7 @@ h1{
 .portfolio-container.dark .services-container .services-body .content-item{
     box-shadow: none;
     border: 5px solid #323232;
-    background-color: transparent;
+    background-color: #101010;
 }
 .portfolio-container.dark .services-container .services-body .content-item .title h3{
    color: #FDB813;

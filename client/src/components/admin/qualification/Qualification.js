@@ -1,7 +1,4 @@
 import QualificationBody from './QualificationBody'
-import DeleteContent from './DeleteContent'
-import AddContent from './AddContent'
-import EditContent from './EditContent'
 
 
 
