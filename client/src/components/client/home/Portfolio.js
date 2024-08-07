@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import { url } from '../../../File'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Fragment } from 'react'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { NavLink } from 'react-router-dom'
@@ -43,11 +43,11 @@ const Portfolio = () => {
         setPortfolioState(state)
     }
 
-    const header = {
-        title: "MY RECENT PORTFOLIO",
-        header_one: "Elevate your brand to new",
-        header_two: "heights with our portfolio expertise",
-    }
+    // const header = {
+    //     title: "MY RECENT PORTFOLIO",
+    //     header_one: "Elevate your brand to new",
+    //     header_two: "heights with our portfolio expertise",
+    // }
 
     // const portfolios = [
     //     {
@@ -201,15 +201,21 @@ const Portfolio = () => {
 
    
     return (
-        <div className="portfolio-content-container">
-            <div className="inner-portfolio-content">
-                <TitleHeader portfolioHeader={portfolioHeader}/>
-                <ShowMore portfolioState={portfolioState} togglePortfolioGrid={togglePortfolioGrid}/>
-                <PortfolioContent portfolios={portfolios} toggleTechnology={toggleTechnology} portfolioState={portfolioState} togglePupUp={togglePupUp}/>
-                <PortfolioPupUp image={image}  toggleDirection={toggleDirection} popupState={popupState} togglePupUp={togglePupUp}/>
-                { technology.state && technology.portfolio ? (<Technology technology={technology} toggleTechnology={toggleTechnology}/>) : null }
-            </div>
-        </div>
+        <Fragment>
+        {
+            portfolioHeader.is_featued ? (
+                <div className="portfolio-content-container">
+                    <div className="inner-portfolio-content">
+                        <TitleHeader portfolioHeader={portfolioHeader}/>
+                        <ShowMore portfolioState={portfolioState} togglePortfolioGrid={togglePortfolioGrid}/>
+                        <PortfolioContent portfolios={portfolios} toggleTechnology={toggleTechnology} portfolioState={portfolioState} togglePupUp={togglePupUp}/>
+                        <PortfolioPupUp image={image}  toggleDirection={toggleDirection} popupState={popupState} togglePupUp={togglePupUp}/>
+                        { technology.state && technology.portfolio ? (<Technology technology={technology} toggleTechnology={toggleTechnology}/>) : null }
+                    </div>
+                </div>
+            ) : null
+        }
+        </Fragment>  
   )
 }
 

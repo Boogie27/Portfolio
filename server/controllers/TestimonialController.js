@@ -268,6 +268,11 @@ const UpdateUserTestimonial = AsyncHandler(async (request, response) => {
                 return response.send({status: 'error', message: uploades.error})
             }else if(uploades.status == 'ok'){
                 imageName = uploades.imageName
+                if(exists.image){
+                    const destination = path.join(__dirname, '../public/asset/image/users/');
+                    const filePath = destination + exists.image
+                    RemoveFile(filePath) // delete old existing image from image folder
+                }
             }
             const updateContent = {
                 name: name,
@@ -307,7 +312,6 @@ const FetchTestimonials = AsyncHandler(async (request, response) => {
         const testimonials = await TestimonialModel.find({ user_id: user_id }).exec()
 
         if (testimonials) {
-            console.log(testimonials)
             return response.send({ status: 'ok', testimonials: testimonials })
         }
 

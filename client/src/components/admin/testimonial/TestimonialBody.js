@@ -247,21 +247,21 @@ const ContentItem = ({testimonial, toggleEditForm, toggleModal, toggleFeature, t
                 </div>
             </td>
             <td>
-                <div onClick={() => toggleModal(true, testimonial)} className="image">
+                <div title="View Testimonial" onClick={() => toggleModal(true, testimonial)} className="image">
                     <img src={user_image(testimonial.image)} alt={testimonial.image}/>
                 </div>
             </td>
             <td>{testimonial.job_title}</td>
             <td>{testimonial.rating}</td>
             <td className="table-data-icon">
-                <FontAwesomeIcon onClick={() => toggleFeature(testimonial._id)} className={`icon ${testimonial.is_featured ? 'active' : ''}`} icon={testimonial.is_featured ? faToggleOn : faToggleOff}/>
+                <FontAwesomeIcon title="Toggle Testimonial" onClick={() => toggleFeature(testimonial._id)} className={`icon ${testimonial.is_featured ? 'active' : ''}`} icon={testimonial.is_featured ? faToggleOn : faToggleOff}/>
             </td>
             <td>{DateTime(testimonial.updated_at, 'Do MMMM YYYY | h:mma')}</td>
             <td>
-                <FontAwesomeIcon onClick={() => toggleEditForm(true, testimonial._id)} className="icon" icon={faPen} />
+                <FontAwesomeIcon title="Edit Testimonial" onClick={() => toggleEditForm(true, testimonial._id)} className="icon" icon={faPen} />
             </td>
             <td>
-                <FontAwesomeIcon  onClick={() => toggleDeleteForm(true, testimonial._id)} className="icon delete" icon={faTrash} />
+                <FontAwesomeIcon  title="Delete Testimonial" onClick={() => toggleDeleteForm(true, testimonial._id)} className="icon delete" icon={faTrash} />
             </td>
         </tr>
     )

@@ -281,7 +281,7 @@ const ContentItem = ({portfolio, toggleEditForm, toggleFeature, toggleDeleteForm
             </td>
             <td>
                 <div className="order">
-                    <input type="number" min="1" onChange={(e) => setOrder(e.target.value)} value={portfolio.order}/>
+                    <input type="number" min="1" onChange={(e) => setOrder(e.target.value)} value={portfolio.order && order}/>
                 </div>
             </td>
             <td>{DateTime(portfolio.updated_at, 'Do MMMM YYYY | h:mma')}</td>

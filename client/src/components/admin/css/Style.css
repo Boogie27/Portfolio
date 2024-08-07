@@ -335,15 +335,21 @@ h1{
 .admin-container.dark .side-navigation-container .side-navigation-body .contact-us .title h3{
     color: #ccc;
 }
-.admin-container.dark .side-navigation-container .side-navigation-body .contact-us input,
+/* .admin-container.dark .side-navigation-container .side-navigation-body .contact-us input,
 .admin-container.dark .side-navigation-container .side-navigation-body .contact-us textarea{
     color: #868686;
     border: 2px solid #202020;
     background-color: #151515;
-}
-.side-navigation-container .side-navigation-body .contact-us input::placeholder,
+} */
+/* .side-navigation-container .side-navigation-body .contact-us input::placeholder,
 .side-navigation-container .side-navigation-body .contact-us textarea::placeholder{
     color: #3a3a3a;
+} */
+.admin-container.dark .side-navigation-container .side-navigation-body .side-nav-content ul li a{
+    color: #868686;
+}
+.admin-container.dark .side-navigation-container .side-navigation-body .side-nav-content ul li:hover{
+    background-color: #181818;
 }
 @media only screen and (max-width: 1400px){
     .side-navigation-container .side-navigation-body .side-nav-content{
@@ -661,6 +667,9 @@ h1{
     color: #7a7a7a;
     font-size: 16px;
 }
+.admin-container.dark .table-content-container tbody tr td a{
+    color: #888888;
+}
 .admin-container.dark .table-content-container tbody tr td .dim{
     color: #4a4a4a;
 }
@@ -824,7 +833,7 @@ h1{
     border-radius: 50%;
     position: relative;
     margin-bottom: 60px;
-    background-color: transparent;
+    background-color: #f5f5f5;
 }
 .app-content-form .content-form .form .form-group .profile-image .icon{
     right: 0px;
@@ -849,7 +858,7 @@ h1{
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background-color: transparent;
+    background-color: #f5f5f5;
 }
 .app-content-form .content-form .form .form-group label{
     color: #555;
@@ -1526,9 +1535,14 @@ h1{
 .dashboard-form-container .content-form .form select:focus{
     border: 1px solid #FDB813;
 }
-.dashboard-form-container .content-form .form input::placeholder,
+/* .dashboard-form-container .content-form .form input::placeholder,
 .dashboard-form-container .content-form .form textarea::placeholder{
-    color: #bcbcbc;
+    color: #595959;
+} */
+.dashboard-form-container .content-form .form input::placeholder,
+.dashboard-form-container .content-form .form textarea::placeholder,
+.dashboard-form-container .content-form .form select::placeholder{
+    color: #b9b9b9;
 }
 .dashboard-form-container .content-form .form .form-button{
     margin-top: 30px;
@@ -1648,6 +1662,26 @@ h1{
 }
 .portfolio-form-images .action-botton .icon.edit:hover{
     transform: scale(1.15);
+}
+/* ************* dark mode ************* */
+.admin-container.dark  .dashboard-form-container .content-form .form{
+    background-color: #171717;
+    border: 1px solid #262626;
+}
+.admin-container.dark .dashboard-form-container .content-form .form label{
+    color: #a9a9a9;
+}
+.admin-container.dark .dashboard-form-container .content-form .form input,
+.admin-container.dark .dashboard-form-container .content-form .form textarea,
+.admin-container.dark .dashboard-form-container .content-form .form select{
+    color: #808080;
+    background-color: #202020;
+    border: 1px solid #262626;
+}
+.admin-container.dark .dashboard-form-container .content-form .form input::placeholder,
+.admin-container.dark .dashboard-form-container .content-form .form textarea::placeholder,
+.admin-container.dark .dashboard-form-container .content-form .form select::placeholder{
+    color: #444444;
 }
 @media only screen and (max-width: 767px){
     .portfolio-form-images {
