@@ -7,6 +7,7 @@ import slillReducer from './admin/SkillSlice'
 import qualificationReducer from './admin/QualificationSlice'
 import portfolioReducer from './admin/PortfolioSlice'
 import testimonialReducer from './admin/TestimonialSlice'
+import reviewRequestReducer from './admin/ReviewRequestSlice'
 
 
 
@@ -27,6 +28,7 @@ const store = configureStore({
         portfolios: portfolioReducer,
         qualifications: qualificationReducer,
         testimonials: testimonialReducer,
+        reviewRequests: reviewRequestReducer,
     }
 })
 

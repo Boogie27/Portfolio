@@ -273,7 +273,7 @@ const SendClientContactMessage = AsyncHandler(async (request, response) => {
         }
         const contact = await ContactModel.create(content)
         if(contact){
-            const settings = await SettingsModel.findOne({name: 'settings'}).exec()
+            const settings = await SettingsModel.findOne({user_id: user_id}).exec()
             if(settings){
                 if(settings.email && settings.app_name && settings.phone_one){
                     const sendEmail = sendMailToClient(request.body, settings)

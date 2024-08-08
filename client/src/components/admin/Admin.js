@@ -25,6 +25,7 @@ import Portfolio from './portfolio/Portfolio'
 import PortfolioDetail from './portfolio/PortfolioDetail'
 import Testimonial from './testimonial/Testimonial'
 import Settings from './settings/Settings'
+import Review from './review/Review'
 
 
 
@@ -115,6 +116,7 @@ const Admin = ({setAppState}) => {
         <Routes>
             <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}>
                 <Route path="/dashboard" element={<DashBoard/>}/>
+                <Route path="/dashboard/review-request" element={<Review preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/settings" element={<Settings preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/testimonial" element={<Testimonial preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/portfolio/detail/:_id" element={<PortfolioDetail preloader={preloader} alertNotification={alertNotification}/>}/>

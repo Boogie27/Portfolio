@@ -101,6 +101,18 @@ h1{
         width: 100%;
     }
 }
+@media only screen and (max-width: 567px){
+    .preloader-conatiner .inner-preloader .title-header h3,
+    .preloader-conatiner .inner-preloader .title-header h3 span{
+        font-size: 40px;
+    }
+}
+@media only screen and (max-width: 398px){
+    .preloader-conatiner .inner-preloader .title-header h3,
+    .preloader-conatiner .inner-preloader .title-header h3 span{
+        font-size: 25px;
+    }
+}
 /* ************ ACTION PRELOADER SECTION ********* */
 .content-preloader {
     top: 0px;
@@ -1909,5 +1921,325 @@ h1{
         height: 70px;
         margin: 0  auto;
         margin-bottom: 10px;
+    }
+}
+/* *********** REVIEW SECTION *********** */
+.app-review-container{
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+}
+.app-review-container .dark-skin{
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    width: 100%;
+    height: 100vh;
+    display: block;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.654);
+}
+.app-review-container .review-body{
+    z-index: 30;
+    width: 50%;
+    min-height: 400px;
+    max-height: 80vh;
+    overflow-Y: auto;
+    position: relative;
+    background-color: #fff;
+}
+.app-review-container .review-body::-webkit-scrollbar{
+    width: 0px;
+    background: transparent;
+}
+.app-review-container .review-body::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+.app-review-container .review-body .review-star-rating .title-header{
+    padding: 50px 20px 20px 20px;
+    text-align: center;
+    position: relative;
+}
+.app-review-container .review-body .review-star-rating .title-header h3{
+    color: #333;
+    font-size: 23px;
+    font-weight: bold;
+}
+.app-review-container .review-body .review-star-rating .title-header .icon{
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.3s ease;
+    background-color: #EB5757;
+}
+.app-review-container .review-body .review-star-rating .title-header .icon:hover{
+    animation: btnSpinner 0.3s linear;
+}
+.app-review-container .review-body .review-star-rating{
+    width: 100%;
+    height: 100%;
+}
+.app-review-container .review-body .review-star-rating .review-star-body p{
+    text-align: center;
+    font-size: 18px;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+.app-review-container .review-body .review-star-rating .review-star-body .stars{
+    text-align: center;
+    padding: 40px 0px;
+}
+.app-review-container .review-body .review-star-rating .review-star-body .stars .star{
+    font-size: 40px;
+    margin: 0px 5px;
+    cursor: pointer;
+}
+.app-review-container .review-body .review-star-rating .review-star-body .stars .star.active{
+    color: #FDB813;
+}
+.app-review-container .review-body .button{
+    width: 100%;
+    text-align: center;
+    padding: 0px 10px;
+}
+.app-review-container .review-body .button button{
+    width: 300px;
+    border: none;
+    font-weight: bold;
+    padding: 10px 30px;
+    border: 3px solid #FDB813;
+    background-color: #FDB813;
+    transition: all 0.3s ease;
+}
+.app-review-container .review-body .button button:hover{
+    background-color: #fdb71370;
+    border: 3px solid #FDB813;
+}
+.app-review-container .review-form-rating{
+    padding: 20px 20px;
+}
+.app-review-container .review-form-rating .title-header{
+    padding: 40px 20px 20px 20px;
+    text-align: center;
+    position: relative;
+}
+.app-review-container .review-form-rating .title-header h3{
+    color: #333;
+    font-size: 23px;
+    font-weight: bold;
+}
+.app-review-container .review-image-rating .title-header .icon,
+.app-review-container .review-form-rating .title-header .icon{
+    top: 10px;
+    left: 5px;
+    color: #333;
+    display: block;
+    padding: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    position: absolute;
+    transition: all 0.3s ease;
+}
+.app-review-container .review-image-rating .title-header .icon:hover,
+.app-review-container .review-form-rating .title-header .icon:hover{
+    color: #FDB813;
+}
+.app-review-container .review-form-rating .form input,
+.app-review-container .review-form-rating .form textarea,
+.app-review-container .review-form-rating .form select{
+    outline: none;
+    box-shadow: none;
+    color: #555;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 15px 10px;
+    border-radius: 0px;
+}
+.app-review-container .review-form-rating .form input:focus,
+.app-review-container .review-form-rating .form textarea:focus{
+    outline: none;
+    box-shadow: none;
+    color: #555;
+    border: 1px solid #FDB813;
+}
+.app-review-container .review-form-rating .form input::placeholder,
+.app-review-container .review-form-rating .form textarea::placeholder{
+    color: #bcbcbc;
+}
+.app-review-container .review-form-rating .form label{
+    color: #555;
+}
+.app-review-container .review-image-rating .review-image-body{
+    width: 100%;
+    padding: 40px 0px;
+    text-align: center;
+}
+.app-review-container .review-image-rating .review-image-body .image{
+    margin: 0 auto;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e9e9e9;
+}
+.app-review-container .review-image-rating .review-image-body .icon{
+    cursor: pointer;
+    color: #c2c2c2;
+    font-size: 120px;
+    border-radius: 50%;
+}
+.app-review-container .review-image-rating .title-header .icon-upload{
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    display: block;
+    padding: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    position: absolute;
+    border-radius: 50%;
+    padding: 10px 10px;
+    transition: all 0.3s ease;
+    background-color: #FDB813;
+    border: 2px solid #FDB813;
+}
+.app-review-container .review-image-rating .title-header .icon-upload:hover{
+    background-color: #fdb71370;
+    border: 2px solid #FDB813;
+}
+.app-review-container .review-image-rating .button{
+    text-align: center;
+}
+/* ************** dark mode *************** */
+.portfolio-container.dark .app-review-container .review-body{
+    background-color: #1b1b1b;
+    border: 1px solid #323232;
+}
+.portfolio-container.dark .app-review-container .review-image-rating .review-image-body .image{
+    background-color: #272727;
+}
+.portfolio-container.dark .app-review-container .review-image-rating .review-image-body .icon{
+    color: #5c5c5c;
+}
+.portfolio-container.dark .app-review-container .review-body .review-star-rating .title-header h3,
+.portfolio-container.dark .app-review-container .review-form-rating .title-header h3{
+    color: #c4c4c4;
+}
+.portfolio-container.dark .app-review-container .review-image-rating .title-header .icon,
+.portfolio-container.dark .app-review-container .review-form-rating .title-header .icon,
+.portfolio-container.dark .app-review-container .review-image-rating .title-header .icon{
+    color: #676767;
+}
+.portfolio-container.dark .app-review-container .review-image-rating .title-header .icon:hover,
+.portfolio-container.dark .app-review-container .review-form-rating .title-header .icon:hover,
+.portfolio-container.dark .app-review-container .review-image-rating .title-header .icon:hover{
+    color: #FDB813;
+}
+.portfolio-container.dark .app-review-container .review-form-rating .form input,
+.portfolio-container.dark .app-review-container .review-form-rating .form textarea,
+.portfolio-container.dark .app-review-container .review-form-rating .form select{
+    color: #969696;
+    background-color: #202020;
+    border: 1px solid #323232;
+}
+.portfolio-container.dark .app-review-container .review-form-rating .form input:focus,
+.portfolio-container.dark .app-review-container .review-form-rating .form textarea:focus{
+    color: #969696;
+    border: 1px solid #875f01;
+}
+.portfolio-container.dark .app-review-container .review-form-rating .form input::placeholder,
+.portfolio-container.dark .app-review-container .review-form-rating .form textarea::placeholder{
+    color: #595959;
+}
+.portfolio-container.dark .app-review-container .review-form-rating .form label{
+    color: #9b9b9b;
+}
+.portfolio-container.dark .app-review-container .review-body .review-star-rating .review-star-body p{
+    color: #7d7d7d;
+}
+@media only screen and (max-width: 1400px){
+    .app-review-container .review-body{
+        width: 60%;
+    }
+}
+@media only screen and (max-width: 1200px){
+    .app-review-container .review-body{
+        width: 70%;
+    }
+}
+@media only screen and (max-width: 992px){
+    .app-review-container .review-body{
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 767px){
+    .app-review-container .review-body{
+        width: 90%;
+        min-height: 400px;
+    }
+    .app-review-container .review-body .review-star-rating .review-star-body .stars{
+        margin: 0px;
+    }
+    .app-review-container .review-body .review-star-rating .review-star-body .stars .star{
+        font-size: 30px;
+    }
+    .app-review-container .review-body .review-star-rating .review-star-body p{
+        width: 90%;
+        font-size: 16px;
+    }
+}
+@media only screen and (max-width: 567px){
+    .app-review-container .review-form-rating{
+        padding: 20px 10px;
+    }
+    .app-review-container .review-body{
+        width: 95%;
+    }
+    .app-review-container .review-body .button button{
+        width: 100%;
+    }
+    .app-review-container .review-body .button{
+        padding: 20px 20px;
+    }
+    .app-review-container .review-form-rating .title-header{
+        padding: 20px;
+    }
+    .app-review-container .review-form-rating .title-header h3{
+        font-size: 18px;
+    }
+    .app-review-container .review-form-rating .title-header .icon{
+        top: -10px;
+    }
+    .app-review-container .review-form-rating .form label{
+        color: #555;
+        font-size: 14px;
+    }
+    .app-review-container .review-form-rating .form input::placeholder,
+    .app-review-container .review-form-rating .form textarea::placeholder{
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 398px){
+    .app-review-container .review-body .review-star-rating .review-star-body .stars{
+        padding: 20px 0px;
     }
 }

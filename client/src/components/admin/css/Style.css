@@ -452,6 +452,22 @@ h1{
 .table-content-container tbody tr.seen{
     background-color: #fff;
 }
+.table-content-container  tbody tr td .completed{
+    width: 100px;
+    color: #fff;
+    text-align: center;
+    padding: 3px 5px;
+    background-color: rgb(59, 166, 59);
+    border: 2px solid rgb(86, 206, 86);
+}
+.table-content-container  tbody tr td .pending{
+    width: 100px;
+    color: #fff;
+    text-align: center;
+    padding: 3px 5px;
+    background-color: #fdb7139c;
+    border: 2px solid #FDB813;
+}
 .table-content-container tbody tr td .icon,
 .table-content-container tbody tr td .icon.delete{
     color: #656565;
@@ -935,7 +951,7 @@ h1{
     align-items: center;
 }
 .app-content-form .content-form .form .form-group .icon{
-    color: #333;
+    color: #555;
     font-size: 30px;
     margin: 0px 10px;
     cursor: pointer;

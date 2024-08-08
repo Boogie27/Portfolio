@@ -5,6 +5,7 @@ import ContactMe from './ContactMe'
 import Skills from './Skills'
 import Portfolio from './Portfolio'
 import Testimonial from './Testimonial'
+import Review from '../review/Review'
 
 
 
@@ -19,6 +20,7 @@ const Home = ({ loader, alertNotification }) => {
       <Skills/>
       <Portfolio/>
       <Testimonial/>
+      <Review/>
     </div>
   )
 }
