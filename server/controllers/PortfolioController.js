@@ -156,7 +156,7 @@ const AddNewPortfolio = AsyncHandler(async (request, response) => {
             return response.send({ status: 'error', message: 'Portfolio already exists' })
         }
 
-        const order = await PortfolioModel.find({ user_id: user_id }).exec()
+        const order = await PortfolioModel.findOne({ user_id: user_id }).sort({order: -1}).exec()
 
         if (imageFile) {
             const upload = FileUpload({
@@ -183,7 +183,7 @@ const AddNewPortfolio = AsyncHandler(async (request, response) => {
             user_id: user_id,
             title: title,
             image: imageName ? Array(imageName) : [],
-            order: order.length ? order.length + 1 : 1,
+            order: order ? order.order + 1 : 1,
             description: input.description,
             from_month: input.fromMonth,
             from_year: parseInt(input.fromYear),

@@ -13,22 +13,14 @@ import FormInputAlert from '../alert/FormInputAlert'
 
 
 
-const ReviewForm = ({togglePages}) => {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [jobTitle, setJobTitle] = useState('')
-    const [description, setDescription] = useState('')
-
-    const [nameAlert, setNameAlert] = useState('')
-    const [emailAlert, setEmailAlert] = useState('')
-    const [jobTitleAlert, setJobTitleAlert] = useState('')
-    const [descriptionAlert, setDescriptionAlert] = useState('')
+const ReviewForm = ({togglePages, name, email, setName, setEmail, nameAlert, emailAlert, SubmitForm}) => {
+    
 
 
   return (
     <div className="review-form-rating">
         <div className="title-header">
-            <h3>RATE OUR SERVICE</h3>
+            <h3>NAME & EMAIL</h3>
             <FontAwesomeIcon onClick={() => togglePages(1)} className="icon" icon={faArrowLeft} />
         </div>
         <div className="form">
@@ -40,31 +32,17 @@ const ReviewForm = ({togglePages}) => {
                         <FormInputAlert alert={nameAlert}/>
                     </div>
                 </Col>
-                <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                     <div className="form-group">
                         <label>Email:</label>
                         <input type="text" onChange={(e) => setEmail(e.target.value)} value={email} className="form-control" placeholder="Enter email"/>
                         <FormInputAlert alert={emailAlert}/>
                     </div>
                 </Col>
-                <Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <div className="form-group">
-                        <label>Job Title:</label>
-                        <input type="text" onChange={(e) => setJobTitle(e.target.value)} value={jobTitle} className="form-control" placeholder="Job Title"/>
-                        <FormInputAlert alert={jobTitleAlert}/>
-                    </div>
-                </Col>
-                <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <label>Description:</label>
-                    <div className="form-group">
-                        <textarea className="form-control" onChange={(e) => setDescription(e.target.value)}  value={description} rows="4" cols="50" placeholder="Write Message..."></textarea>
-                    </div>
-                    <FormInputAlert alert={descriptionAlert}/>
-                </Col>
             </Row>
         </div>
         <div className="button">
-            <button type="button">SUBMIT</button>
+        <button onClick={() => SubmitForm('form-one')} type="button">NEXT</button>
         </div>
     </div>
   )

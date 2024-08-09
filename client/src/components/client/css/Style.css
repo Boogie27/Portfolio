@@ -2004,6 +2004,10 @@ h1{
     text-align: center;
     padding: 40px 0px;
 }
+.app-review-container .review-body .review-star-rating .review-star-body .stars .form-input-alert{
+    width: 100%;
+    display: inline-block;
+}
 .app-review-container .review-body .review-star-rating .review-star-body .stars .star{
     font-size: 40px;
     margin: 0px 5px;

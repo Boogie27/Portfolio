@@ -14,7 +14,7 @@ const ReviewImage = ({togglePages}) => {
   return (
     <div className="review-image-rating">
         <div className="title-header">
-            <FontAwesomeIcon onClick={() => togglePages(2)} className="icon" icon={faArrowLeft} />
+            <FontAwesomeIcon onClick={() => togglePages(3)} className="icon" icon={faArrowLeft} />
             <FontAwesomeIcon className="icon-upload" icon={faCamera} />
         </div>
         <div className="review-image-body">
