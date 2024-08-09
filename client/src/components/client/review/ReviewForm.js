@@ -42,7 +42,7 @@ const ReviewForm = ({togglePages, name, email, setName, setEmail, nameAlert, ema
             </Row>
         </div>
         <div className="button">
-        <button onClick={() => SubmitForm('form-one')} type="button">NEXT</button>
+            <button onClick={() => SubmitForm('form-one')} type="button">NEXT</button>
         </div>
     </div>
   )

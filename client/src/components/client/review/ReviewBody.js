@@ -2,6 +2,7 @@ import StarRating from './StarRating'
 import ReviewForm from './ReviewForm'
 import ReviewImage from './ReviewImage'
 import ReviewFormTwo from './ReviewFormTwo'
+import Success from './Success'
 
 
 
@@ -20,6 +21,7 @@ const ReviewBody = ({
         { page === 2 ? (<ReviewForm togglePages={togglePages}  SubmitForm={SubmitForm} name={name} email={email} setName={setName} setEmail={setEmail} nameAlert={nameAlert} emailAlert={emailAlert}/>) : null }
         { page === 3 ? (<ReviewFormTwo togglePages={togglePages} SubmitForm={SubmitForm} jobTitle={jobTitle} description={description} setJobTitle={setJobTitle} setDescription={setDescription} jobTitleAlert={jobTitleAlert} descriptionAlert={descriptionAlert} />) : null }
         { page === 4 ? (<ReviewImage togglePages={togglePages}/>) : null }
+        { page === 5 ? (<Success/>) : null }
     </div>
   )
 }

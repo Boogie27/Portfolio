@@ -10,7 +10,7 @@ import { Validate } from '../../../helper/Validation'
 
 
 const Review = () => {
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(5)
     const [formState, setFormState] = useState(true)
     const [rating, setRating] = useState(0)
     const [name, setName] = useState('')
