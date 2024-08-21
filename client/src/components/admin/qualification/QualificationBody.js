@@ -79,6 +79,7 @@ const QualificationBody = ({preloader, alertNotification}) => {
     // fetch user qualifation
     const FetchUserQualification = () => {
         if(token){
+            preloader(true, 'Please wait...')
             Axios.get(url(`/api/admin/fetch-user-qualification/${token}`)).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
@@ -86,7 +87,9 @@ const QualificationBody = ({preloader, alertNotification}) => {
                 }else if(data.status === 'catch-error'){
                     console.log(data.catchError)
                 }
+                preloader(false)
             }).catch(error => {
+                preloader(false)
                 console.log(error)
             })
         }
@@ -174,7 +177,7 @@ const TitleHeader = ({toggleAddForm}) => {
 
 const ContentTable = ({qualifications, toggleDeleteForm, toggleFeature, toggleEditForm}) => {
     return (
-        <div className="table-content-container">
+        <div className="table-content-container table-responsive">
             <table className="table table-hover">
                 <thead>
                     <tr>

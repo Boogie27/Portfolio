@@ -6,8 +6,8 @@ import Moment from "moment";
 // data base url link
 const clientURI = 'http://localhost:3000'
 const serverURL = 'http://localhost:3001'
-let productionClientURL = 'https://eloquent.com'
-let productionServerURL = 'https://server.eloquent.com'
+let productionClientURL = 'https://charles.koworldltd.com'
+let productionServerURL = 'https://server.charles.koworldltd.com'
 
 
 
@@ -15,7 +15,7 @@ const userDemoImage = 'demo.png' // demo user image
 
 
 // server url 
-const url = (string = null) => { 
+const url = (string = '') => { 
     const url = window.location.href.split('/')[2]
     const url_name = url.split(':')[0]
     if(url_name === 'localhost'){
@@ -28,7 +28,7 @@ const url = (string = null) => {
 
 
 // client url
-const ClientUrl = (string = null) => { 
+const ClientUrl = (string = '') => { 
     const url = window.location.href.split('/')[2]
     const url_name = url.split(':')[0]
     if(url_name === 'localhost'){
@@ -125,6 +125,7 @@ export {
     url,
     icon,
     page,
+    ClientUrl,
     DateTime,
     curentURL,
     auth_image,

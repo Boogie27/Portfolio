@@ -19,7 +19,7 @@ import { UpdateUserServices } from '../../redux/admin/ServiceSlice'
 
 
 
-const EditService = ({editFormState, toggleEditForm, alertNotification}) => {
+const EditService = ({ preloader, editFormState, toggleEditForm, alertNotification}) => {
     // react hooks
     const dispatch = useDispatch()
     const services = useSelector(state => state.services.services)
@@ -45,6 +45,7 @@ const EditService = ({editFormState, toggleEditForm, alertNotification}) => {
                 _id: service._id
             }
             setButton(true)
+            preloader(true, 'Please wait...')
             Axios.post(url('/api/admin/edit-user-services'), content).then((response) => {
                 const data = response.data
                 if(data.status === 'input-error'){
@@ -57,9 +58,11 @@ const EditService = ({editFormState, toggleEditForm, alertNotification}) => {
                     initFormInput() //init fields
                     toggleForm(false)
                 }
+                preloader(false)
                 return setButton(false)
             }).catch(error => {
                 setButton(false)
+                preloader(false)
                 console.log(error)
             })
         }

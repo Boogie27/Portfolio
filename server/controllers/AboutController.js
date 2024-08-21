@@ -181,7 +181,7 @@ const UpLoadUserImage = AsyncHandler(async (request, response) => {
             size: size,
             types: types,
             file: imageFile,
-            name: 'user-image',
+            name: 'user-image-',
             destination: destination
         })
         if(upload.status == true){ 

@@ -10,7 +10,7 @@ import AOS from 'aos'
 
 
 
-const Services = () => {
+const Services = ({serviceRef}) => {
     const FetchUserServicesRef = useRef(null)
     const FetchServiceHeaderRef = useRef(null)
     const [services, setServices] = useState([])
@@ -67,7 +67,7 @@ const Services = () => {
     }, [])
 
   return (
-    <div className="services-container">
+    <div ref={serviceRef} className="services-container">
       <div className="inner-services">
         { serviceHeaders ? (<TitleHeader serviceHeaders={serviceHeaders}/>) : null }
         <ServicesBody services={services}/>
@@ -86,7 +86,7 @@ const TitleHeader = ({serviceHeaders}) => {
     return (
         <div className="title-header">
             <div data-aos={'zoom-in'} className="title">{serviceHeaders.title}</div>
-           <div data-aos={'slide-left'}>
+           <div data-aos={'zoom-in'}>
                 <h1>{serviceHeaders.first_header}</h1>
                 <h1>{serviceHeaders.second_header}</h1>
            </div>
@@ -114,7 +114,7 @@ const ServicesBody = ({services}) => {
 const ContentItem = ({service}) => {
     return (
         <Col xs={12} sm={12} md={6} lg={4} xl={4}>
-            <div data-aos={'slide-down'} className="content-item">
+            <div data-aos={'zoom-in'} className="content-item">
                 <div className="title">
                     <h3>{service.title}</h3>
                 </div>

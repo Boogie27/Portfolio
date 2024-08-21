@@ -189,7 +189,7 @@ const PortfolioHeader = ({preloader, alertNotification }) => {
                             </Col>
                             <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                                 <div className="form-group">
-                                    <label>Feature Portfolio Header: </label>
+                                    <label>Feature Portfolio: </label>
                                     <FontAwesomeIcon onClick={() => setFeatured(!featured)} className={`icon-toggle ${featured ? 'active' : ''}`} icon={featured ? faToggleOn : faToggleOff} />
                                 </div>
                             </Col>

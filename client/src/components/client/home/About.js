@@ -17,7 +17,7 @@ import AOS from 'aos'
 
 
 
-const About = () => {
+const About = ({aboutRef}) => {
     const FetchUserAboutRef = useRef()
     const [aboutMe, setAboutMe] = useState([])
 
@@ -56,7 +56,7 @@ const About = () => {
 
 
     return (
-        <div className="about-us-container">
+        <div ref={aboutRef} className="about-us-container">
             <div className="inner-about-us">
                 <div className="title-header">
                     <h3>{aboutMe.title}</h3>
@@ -89,7 +89,7 @@ const ContentLeft = ({aboutMe}) => {
             <div data-aos={'slide-left'} className="title">
                 <h1>{aboutMe.header} <span>{aboutMe.span}</span></h1>
             </div>
-            <div data-aos={'slide-down'} className="body">{ aboutMe.text ? (HTMLReactParser(aboutMe.text)) : null }</div>
+            <div data-aos={'zoom-out'} className="body">{ aboutMe.text ? (HTMLReactParser(aboutMe.text)) : null }</div>
             <div data-aos={'slide-up'} className="button">
                 <button type="button">
                     Download CV 

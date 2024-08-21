@@ -22,7 +22,7 @@ const generateToken = (length = 32) => {
 
 
 
-
+// send review request
 const SendReviewRequest = AsyncHandler(async (request, response) => {
     try {
         const input = request.body;
@@ -44,13 +44,13 @@ const SendReviewRequest = AsyncHandler(async (request, response) => {
         if (exists) {
             return response.send({ status: 'error', message: 'Email already exists, try another one!' });
         } else {
-            console.log('creating...');
+            const token = generateToken()
             const content = {
                 user_id: user_id,
                 name: input.name,
                 email: input.email,
                 project: input.project,
-                token: generateToken(),
+                token: token,
                 is_completed: 0,
                 completed_at: '',
                 created_at: today(),
@@ -63,7 +63,8 @@ const SendReviewRequest = AsyncHandler(async (request, response) => {
                 // send out email  here
                 const settings = await SettingsModel.findOne({user_id: user_id}).exec()
                 if(settings){
-                    const sendEmail = sendMailToClient(request.body, settings)
+                    const link = input.link + '/?review-service=' + token
+                    const sendEmail = sendMailToClient(request.body, link, settings) // send out email  here
                 }
                 return response.send({ status: 'ok', requestReview: requestReview });
             }
@@ -131,20 +132,24 @@ const UpdateReviewRequest = AsyncHandler(async (request, response) => {
         if(emailCheck && emailCheck._id != input._id){
             return response.send({ status: 'error', message: 'Email already exists, try another one!' });
         }
+        
+        const token = generateToken()
         let exists = await RequestReviewModel.findOne({ _id: input._id, user_id: user_id}).exec();
         const updateContent = {
             name: input.name,
             email: input.email,
             project: input.project,
-            token: generateToken(),
+            token: token,
             updated_at: today(),
+            created_at: input.sendMail ? today() : exists.created_at
         };
         const update = await RequestReviewModel.findOneAndUpdate({_id: exists._id}, {$set: updateContent}).exec()
         if(update){
             if(input.sendMail){
                 const settings = await SettingsModel.findOne({user_id: user_id}).exec()
                 if(settings){
-                    const sendEmail = sendMailToClient(request.body, settings) // send out email  here
+                    const link = input.link + '/?review-service=' + token
+                    const sendEmail = sendMailToClient(request.body, link, settings) // send out email  here
                 }
             }
             const updatedContent = await RequestReviewModel.findOne({_id: exists._id}).exec()
@@ -211,12 +216,12 @@ const DeleteReviewRequest = AsyncHandler(async (request, response) => {
 
 
 //  send email function
-const sendMailToClient = (input, settings) => {
+const sendMailToClient = (input, link, settings) => {
     string = {
         from: settings.email,
         to: input.email,
         subject: 'Review  request',
-        message: HtmlMessage(input, settings)
+        message: HtmlMessage(input, link, settings)
     }
     return SendMail(string)
 }

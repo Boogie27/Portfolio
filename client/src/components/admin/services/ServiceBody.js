@@ -48,6 +48,7 @@ const ServiceBody = ({alertNotification, preloader}) => {
 
     const FetchServices = () => {
         if(token){
+            preloader(true, 'Please wait...')
             Axios.get(url(`/api/admin/fetch-user-services/${token}`)).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
@@ -105,8 +106,8 @@ const ServiceBody = ({alertNotification, preloader}) => {
         <div>
         <TitleHeader toggleAddForm={toggleAddForm}/>
         <ContentTable services={services} toggleFeature={toggleFeature} deleteService={deleteService} toggleEditForm={toggleEditForm}/>
-        <AddService addFormState={addFormState} toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
-        {editFormState.state ? (<EditService editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
+        <AddService addFormState={addFormState} toggleAddForm={toggleAddForm} preloader={preloader} alertNotification={alertNotification}/>
+        {editFormState.state ? (<EditService editFormState={editFormState} preloader={preloader} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
         <DeleteUserService deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
         </div>
     )
@@ -141,7 +142,7 @@ const TitleHeader = ({toggleAddForm}) => {
 
 const ContentTable = ({services, toggleFeature, deleteService, toggleEditForm}) => {
     return (
-        <div className="table-content-container">
+        <div className="table-content-container table-responsive">
             <table className="table table-hover">
                 <thead>
                     <tr>

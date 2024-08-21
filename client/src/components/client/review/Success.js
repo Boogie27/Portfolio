@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 
-const Success = () => {
+const Success = ({toggleForm}) => {
   return (
     <div className="success-page">
         <div className="icon-parent">
@@ -15,10 +15,10 @@ const Success = () => {
         </div>
         <div className="text">
             <h3>Thank you!</h3>
-            <p>Your review has been registered successfully, We appreciate the time you have taken to rate your service</p>
+            <p>Your review has been registered successfully, We appreciate the time you have taken to rate our service</p>
         </div>
         <div className="button">
-            <button type="button">CLOSE</button>
+            <button onClick={() => toggleForm(false)} type="button">CLOSE</button>
         </div>
     </div>
   )

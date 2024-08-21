@@ -225,16 +225,21 @@ const Banner = ({ user, preloader, alertNotification }) => {
             if(event.target.files && event.target.files.length > 0){
                 // upload image here
                 const formData = new FormData()
+                formData.append('token', token)
                 formData.append('image', event.target.files[0])
                 Axios.post(url('/api/admin/upload-home-banner-image'), formData).then((response) => {
                     const data = response.data
                     if(data.status === 'ok'){
                         setImage(data.imageName)
-                        clearFileInput()
-                        preloader(false)
                         alertNotification('success', 'Image uploaded sucessfully!')
+                    }else if(data.status === 'error'){
+                        alertNotification('error', data.message)
                     }
+                    preloader(false)
+                    clearFileInput()
                 }).catch(error => {
+                    preloader(false)
+                    clearFileInput()
                     console.log(error)
                     alertNotification('error', 'Something went wrong!')
                 })

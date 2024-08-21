@@ -15,7 +15,7 @@ import AOS from 'aos'
 
 
 
-const Banner = () => {
+const Banner = ({bannerRef}) => {
   const [homeBanners, setHomeBanners] = useState([])
 
   const homeBannerRef = useRef()
@@ -41,7 +41,7 @@ const Banner = () => {
 }, [])
 
   return (
-    <div className="banner-container">
+    <div ref={bannerRef} className="banner-container">
       <Row className="show-grid">
           <Col xs={12} sm={12} md={12} lg={12} xl={7}><ContentLeft homeBanners={homeBanners}/></Col>
           <Col xs={12} sm={12} md={12} lg={12} xl={5}><ContentRight homeBanners={homeBanners}/></Col>

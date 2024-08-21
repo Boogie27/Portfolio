@@ -1,17 +1,13 @@
 import Axios from 'axios'
 import Cookies from 'js-cookie'
-import HTMLReactParser from 'html-react-parser'
 import { useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faPen,
     faTrash,
-    faTimes,
     faFolderOpen,
-    faToggleOn,
-    faToggleOff,
 } from '@fortawesome/free-solid-svg-icons'
-import { url, DateTime, user_image } from '../../../File'
+import { url, DateTime } from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
 import { getReviewRequest } from '../../redux/admin/ReviewRequestSlice'
 import  DeleteContent  from './DeleteContent'
@@ -175,7 +171,7 @@ const TitleHeader = ({toggleAddForm}) => {
 
 const ContentTable = ({reviewRequests, toggleDeleteForm, toggleEditForm}) => {
     return (
-        <div className="table-content-container">
+        <div className="table-content-container table-responsive">
             <table className="table table-hover">
                 <thead>
                     <tr>

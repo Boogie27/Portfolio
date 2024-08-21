@@ -72,7 +72,7 @@ const Footer = ({alertNotification, preloader}) => {
                     alertNotification('success', 'Portfolio updated successfully!')
                 }
                 preloader(false)
-                return setButton(false)
+                setButton(false)
             }).catch(error => {
                 setButton(false)
                 preloader(false)
@@ -162,6 +162,7 @@ const Footer = ({alertNotification, preloader}) => {
 // fetch footer data
 const FetchFooter = () => {
     if(token){
+        preloader(true, 'Please wait...')
         Axios.get(url(`/api/admin/fetch-user-footer-settings/${token}`)).then((response) => {
             const data = response.data
             if(data.status === 'ok'){
@@ -180,7 +181,9 @@ const FetchFooter = () => {
                 setCountry(settings.country)
                 setAllRights(settings.all_rights)
             }
+            preloader(false)
         }).catch(error => {
+            preloader(false)
             console.log(error)
         })
     }

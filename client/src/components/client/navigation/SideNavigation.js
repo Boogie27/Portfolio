@@ -8,13 +8,7 @@ import {
 
 
 
-const SideNavigation = ({ theme, sideNav, toggleNavigation, toggleAppTheme}) => {
-
-  const aboutUs = {
-    title: "MY RECENT PORTFOLIO",
-    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore et magna aliqua. Ut enim ad minim veniam laboris.",
-}
-
+const SideNavigation = ({ theme, sideNav, SideNavScrollToContent, toggleNavigation, toggleAppTheme}) => {
 
 
   return (
@@ -23,7 +17,7 @@ const SideNavigation = ({ theme, sideNav, toggleNavigation, toggleAppTheme}) => 
       <div className="side-navigation-body">
         <TitleHeader theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
         <div className="side-nav-content">
-          <AboutUs aboutUs={aboutUs}/>
+          <NavigationLinks SideNavScrollToContent={SideNavScrollToContent}/>
           <ContactUs/>
         </div>
       </div>
@@ -56,17 +50,19 @@ const TitleHeader = ({ theme, toggleNavigation, toggleAppTheme}) => {
 
 
 
-
-const AboutUs = ({aboutUs}) => {
+const NavigationLinks = ({SideNavScrollToContent}) => {
   return (
-      <div className="about-us">
-          <div className="title">
-            {aboutUs.title ? (<h3>About Me</h3>) : null }
-          </div>
-          <div className="description">
-            {aboutUs.text}
-          </div>
-      </div>
+    <div className="side-navigation-links">
+        <ul>
+            <li onClick={() => SideNavScrollToContent('home')}>Home</li>
+            <li onClick={() => SideNavScrollToContent('about')}>About</li>
+            <li onClick={() => SideNavScrollToContent('skill')}>Skills</li>
+            <li onClick={() => SideNavScrollToContent('service')}>Services</li>
+            <li onClick={() => SideNavScrollToContent('portfolio')}>Portfolio</li>
+            <li onClick={() => SideNavScrollToContent('contact')}>Contact Me</li>
+            <li onClick={() => SideNavScrollToContent('qualification')}>Qualification</li>
+        </ul>
+    </div>
   )
 }
 

@@ -18,9 +18,30 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Client = ({setAppState}) => {
     const setThemeAutoRef = useRef(null)
+    const bannerRef = useRef(null)
+    const aboutRef = useRef(null)
+    const serviceRef = useRef(null)
+    const portfolioRef = useRef(null)
+    const contactRef = useRef(null)
+    const skillsRef = useRef(null)
+    const qualificationRef = useRef(null)
+    const testimonialRef = useRef(null)
+    const [isAppReady, setIsAppReady] = useState(false)
     const [theme, setTheme] = useState('dark')
     const [isLoading, setIsLoading] = useState({ state: false, text: 'Loading...'})
 
+
+    // scroll to content
+    const scrollToContent = (content) => {
+        if(content === 'home'){bannerRef.current.scrollIntoView({ behavior: "smooth" })}
+        if(content === 'about'){aboutRef.current.scrollIntoView({ behavior: "smooth" })}
+        if(content === 'service'){serviceRef.current.scrollIntoView({ behavior: "smooth" })}
+        if(content === 'contact'){contactRef.current.scrollIntoView({ behavior: "smooth" })}
+        if(content === 'portfolio'){portfolioRef.current.scrollIntoView({ behavior: "smooth" })}
+        if(content === 'skill'){skillsRef.current.scrollIntoView({ behavior: "smooth" })}
+        if(content === 'qualification'){qualificationRef.current.scrollIntoView({ behavior: "smooth" })}
+        if(content === 'testimonial'){testimonialRef.current.scrollIntoView({ behavior: "smooth" })}
+    }
 
     // alert notification
     const alertNotification = (state, messsage) => {
@@ -36,7 +57,14 @@ const Client = ({setAppState}) => {
      // set theme when page loads
      const setThemeAuto = () => {
         let pageTheme = Cookies.get('Eloquent-theme')
+        const metaTag = document.querySelector('meta[name="theme-color"]')
+
         if(pageTheme){
+            if(pageTheme === 'light'){
+                metaTag.setAttribute("content", '#000000')
+            }else{
+                metaTag.setAttribute("content", 'rgb(14, 14, 14)')
+            }
             return setTheme(pageTheme)
         }
     }
@@ -55,11 +83,15 @@ const Client = ({setAppState}) => {
 
   return (
     <div className={`portfolio-container ${theme}`}>
-        <Preloader/>
+        <Preloader setIsAppReady={setIsAppReady}/>
         { isLoading.state ? (<ActionPreloader text={isLoading.text}/>) : null }
-        <Navigation theme={theme} setTheme={setTheme} setAppState={setAppState}/>
+        <Navigation theme={theme} setTheme={setTheme} scrollToContent={scrollToContent} setAppState={setAppState}/>
             <Routes>
-                <Route path="/" element={<Home loader={loader} alertNotification={alertNotification}/>}/>
+                <Route path="/" element={<Home 
+                    aboutRef={aboutRef} serviceRef={serviceRef} portfolioRef={portfolioRef} contactRef={contactRef}
+                    skillsRef={skillsRef} qualificationRef={qualificationRef} testimonialRef={testimonialRef}
+                    bannerRef={bannerRef} loader={loader} alertNotification={alertNotification} isAppReady={isAppReady}/>}
+                />
             </Routes>
         <Footer/>
         <ToastContainer/>

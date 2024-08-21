@@ -14,6 +14,7 @@ const testimonialSlice = createSlice({
                     _id: content._id,
                     user_id: content.user_id,
                     name: content.name,
+                    email: content.email,
                     image: content.image,
                     rating: content.rating,
                     job_title: content.job_title,

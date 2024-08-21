@@ -1,16 +1,14 @@
 import Axios from 'axios'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
-    faStar,
     faTimes,
-    faCamera,
 } from '@fortawesome/free-solid-svg-icons'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
-import { url, user_image } from '../../../File'
+import { url, ClientUrl } from '../../../File'
 import { useDispatch } from 'react-redux'
 import { AddReviewRequest } from '../../redux/admin/ReviewRequestSlice'
 import { Validate } from '../../../helper/Validation'
@@ -45,6 +43,7 @@ const AddContent = ({addFormState, toggleAddForm, alertNotification}) => {
                 email: email,
                 project: project,
                 token: token,
+                link: ClientUrl(),
             }
             const validate = validate_input(content)
             if(validate !== 'success') return
@@ -149,7 +148,7 @@ const AddContent = ({addFormState, toggleAddForm, alertNotification}) => {
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                             <div className="form-group">
                                 <label>Email:</label>
-                                <input type="text" onChange={(e) => setEmail(e.target.value)} value={email} className="form-control" placeholder="Enter email"/>
+                                <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} className="form-control" placeholder="Enter email"/>
                                 <FormInputAlert alert={emailAlert}/>
                             </div>
                         </Col>

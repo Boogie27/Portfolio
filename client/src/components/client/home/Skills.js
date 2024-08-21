@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { icon, url } from '../../../File'
-import Qualifications from './Qualifications'
 import AOS from 'aos'
 
 
@@ -15,7 +14,7 @@ import AOS from 'aos'
 
 
 
-const Skills = () => {
+const Skills = ({skillsRef}) => {
 
     // const header = {
     //     title: "MY SKILLS & RATINGS",
@@ -129,10 +128,9 @@ const Skills = () => {
     }, [])
 
   return (
-    <div className="skills-container">
+    <div ref={skillsRef} className="skills-container">
         <div className="inner-skills">
             <TitleHeader header={header}/>
-            <Qualifications/>
             <Content skills={skills}/>
         </div>
     </div>
@@ -157,6 +155,19 @@ const TitleHeader = ({header}) => {
     )
 }
 
+
+
+
+// const SkillsHeader = () => {
+//     return (
+//         <div data-aos={'zoom-out'} className="title-header">
+//             <h3>MY SKILLS</h3>
+//             <div className="title">
+//                 <h1></h1>
+//             </div>
+//         </div>
+//     )
+// }
 
 
 const Content = ({skills}) => {

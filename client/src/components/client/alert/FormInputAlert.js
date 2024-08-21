@@ -2,9 +2,9 @@
 
 
 
-const FormInputAlert = ({ alert }) => {
+const FormInputAlert = ({ position, alert }) => {
     return (
-        <div className="form-input-alert">
+        <div className={`form-input-alert ${position}`}>
             { alert && alert.length ? (<span className="text-danger">{alert}</span>) : null }
         </div>
     )

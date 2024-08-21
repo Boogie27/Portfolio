@@ -70,30 +70,14 @@ const UpdatePortfolioHeader = AsyncHandler(async (request, response) => {
     let titleAlert = ''
     let firstHeaderAlert = ''
     const content = [
-        {
-            field: 'title',
-            input: input.title,
-            maxLength: 50,
-            minLength: 3,
-            required: true,
-        },
-        {
-            field: 'first-header',
-            input: input.firstHeader,
-            maxLength: 100,
-            minLength: 3,
-            required: true,
-        }
+        {  field: 'title', input: input.title,  maxLength: 50,  minLength: 3,   required: true, },
+        {  field: 'first-header', input: input.firstHeader,  maxLength: 100, minLength: 3,required: true,}
     ]
     const validation = Validate(content)
     if(validation != 'success'){
         validation.map((validate) => {
-            if(validate.field === 'title'){
-                titleAlert = validate.error
-            }
-            if(validate.field === 'first-header'){
-                firstHeaderAlert = validate.error
-            }
+            if(validate.field === 'title'){  titleAlert = validate.error }
+            if(validate.field === 'first-header'){  firstHeaderAlert = validate.error }
             return false
         })
         return {
@@ -182,6 +166,7 @@ const AddNewPortfolio = AsyncHandler(async (request, response) => {
         const content = {
             user_id: user_id,
             title: title,
+            link: input.link,
             image: imageName ? Array(imageName) : [],
             order: order ? order.order + 1 : 1,
             description: input.description,
@@ -216,30 +201,14 @@ const validate_input = (input) => {
     let titleAlert = ''
     let descriptionAlert = ''
     const content = [
-        {
-            field: 'title',
-            input: input.title,
-            maxLength: 50,
-            minLength: 3,
-            required: true,
-        },
-        {
-            field: 'description',
-            input: input.description,
-            maxLength: 2000,
-            minLength: 3,
-            required: true,
-        }
+        { field: 'title', input: input.title, maxLength: 50,  minLength: 3, required: true},
+        { field: 'description', input: input.description, maxLength: 2000, minLength: 3, required: true}
     ]
     const validation = Validate(content)
     if(validation != 'success'){
         validation.map((validate) => {
-            if(validate.field === 'title'){
-                titleAlert = validate.error
-            }
-            if(validate.field === 'description'){
-                firstHeaderAlert = validate.error
-            }
+            if(validate.field === 'title'){ titleAlert = validate.error}
+            if(validate.field === 'description'){firstHeaderAlert = validate.error}
             return false
         })
         return {
@@ -328,6 +297,7 @@ const UpdateUserPortfolio = AsyncHandler(async (request, response) => {
 
             if (upload.status) {
                 imageName = upload.newName;
+                portfolio.image.push(imageName)
             } else if(upload.error){
                 return response.send({ status: 'error', message: upload.error })
             }
@@ -340,18 +310,24 @@ const UpdateUserPortfolio = AsyncHandler(async (request, response) => {
             technology = portfolio.technologies
         }
 
+        // check if image is present then add to array of images
+        if(imageName){
+            portfolio.image.push(imageName)
+        }
+
         const updateContent = {
             user_id: user_id,
             title: title,
+            link: input.link,
             description: input.description,
             from_month: input.fromMonth,
             from_year: parseInt(input.fromYear),
             to_month: input.toMonth,
             to_year: parseInt(input.toYear),
             technologies: technology,
-            is_featured: 0,
+            is_featured: portfolio.is_featured ? 1 : 0,
             updated_at: today(),
-            image: imageName ? portfolio.image.push(imageName) : portfolio.image,
+            image: portfolio.image,
         };
 
         const update = await PortfolioModel.findOneAndUpdate({_id: portfolio._id}, {$set: updateContent}).exec()

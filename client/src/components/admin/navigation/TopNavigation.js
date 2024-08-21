@@ -4,18 +4,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
    faBars,
    faMoon,
+   faBarsStaggered,
 } from '@fortawesome/free-solid-svg-icons'
 
 
 
 
 
-const TopNavigation = ({ theme, toggleAppTheme, toggleNavigation, toggleApp}) => {
+const TopNavigation = ({ theme, toggleAppTheme, toggleAppPage, toggleNavigation, toggleApp}) => {
   return (
-    <div className="top-navigation-container">
+    <div className="top-navigation-container admin">
         <div className="inner-navigation">
-            <NavigationLeft toggleApp={toggleApp}/>
-            <NavigationMiddle toggleApp={toggleApp}/>
+            <NavigationLeft toggleApp={toggleApp} toggleAppPage={toggleAppPage}/>
+            {/* <NavigationMiddle toggleApp={toggleApp}/> */}
             <NavigationRight theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
         </div>
     </div>
@@ -30,11 +31,13 @@ export default TopNavigation
 
 
 
-const NavigationLeft = ({toggleApp}) => {
+const NavigationLeft = ({toggleApp, toggleAppPage}) => {
     return (
       <div className="navigation-left">
-        <NavLink onClick={() => toggleApp('client')} to="/">
-          <div className="logo"></div>
+        <div className="bars">
+            <FontAwesomeIcon  onClick={() => toggleAppPage()} className="icon" icon={faBarsStaggered} />
+        </div>
+        <NavLink onClick={() => toggleApp('admin')} to="/dashboard">
           <div className="title">Dash<span>board</span></div>
         </NavLink>
       </div>

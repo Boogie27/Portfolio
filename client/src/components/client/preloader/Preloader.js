@@ -5,10 +5,9 @@ import { url } from '../../../File'
 
 
 
-import React from 'react'
 
-const Preloader = () => {
-    const serverREaderRef = useRef()
+const Preloader = ({ setIsAppReady }) => {
+    const serverREaderRef = useRef(null)
     const [preloader, setPreloader] = useState(true)
 
     const CheckIFServerIsReady = () => {
@@ -25,8 +24,16 @@ const Preloader = () => {
     // remove preloader
     const removerPreloader = () => {
         setTimeout(() => {
+            makeAppReady()
             setPreloader(false)
         }, 500)
+    }
+
+    // remove preloader
+    const makeAppReady = () => {
+        setTimeout(() => {
+            setIsAppReady(true)
+        }, 1000)
     }
 
     serverREaderRef.current = CheckIFServerIsReady

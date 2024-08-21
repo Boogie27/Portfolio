@@ -52,12 +52,15 @@ const SkillsBody = ({preloader, alertNotification}) => {
     // fetch user skills
     const FetchUserSkills = () => {
         if(token){
+            preloader(true, 'Please wait...')
             Axios.get(url(`/api/admin/fetch-user-skills/${token}`)).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
                     dispatch(getUserSkills(data.skills))
                 }
+                preloader(false)
             }).catch(error => {
+                preloader(false)
                 console.log(error)
             })
         }
@@ -232,7 +235,7 @@ const TitleHeader = ({toggleAddForm}) => {
 
 const ContentTable = ({skills, toggleDeleteForm, toggleEditForm, toggleFeature}) => {
     return (
-        <div className="table-content-container">
+        <div className="table-content-container table-responsive">
             <table className="table table-hover">
                 <thead>
                     <tr>

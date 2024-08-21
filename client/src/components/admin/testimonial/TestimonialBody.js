@@ -93,12 +93,17 @@ const TestimonialBody = ({preloader, alertNotification}) => {
     // fetch  user portfolio
     const FetchTestimonials = () => {
         if(token){
+            preloader(true, 'Please wait...')
             Axios.get(url(`/api/admin/fetch-user-testimonials/${token}`)).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
                     dispatch(getTestimonials(data.testimonials))
+                }else {
+                    console.log(data.error)
                 }
+                 preloader(false)
             }).catch(error => {
+                preloader(false)
                 console.log(error)
             })
         }
@@ -200,11 +205,12 @@ const TitleHeader = ({toggleAddForm}) => {
 
 const ContentTable = ({testimonials, toggleDeleteForm, toggleModal, toggleFeature, toggleEditForm}) => {
     return (
-        <div className="table-content-container">
+        <div className="table-content-container table-responsive">
             <table className="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Image</th>
                         <th scope="col">Job Title</th>
                         <th scope="col">Ratings</th>
@@ -246,6 +252,7 @@ const ContentItem = ({testimonial, toggleEditForm, toggleModal, toggleFeature, t
                     {testimonial.name}
                 </div>
             </td>
+            <td>{testimonial.email}</td>
             <td>
                 <div title="View Testimonial" onClick={() => toggleModal(true, testimonial)} className="image">
                     <img src={user_image(testimonial.image)} alt={testimonial.image}/>

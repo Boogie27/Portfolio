@@ -24,7 +24,7 @@ import AOS from 'aos'
 
 
 
-const Portfolio = () => {
+const Portfolio = ({portfolioRef}) => {
     const FetchPortfoliosRef = useRef(null)
     const FetchPortfolioHeaderRef = useRef(null)
 
@@ -205,7 +205,7 @@ const Portfolio = () => {
         <Fragment>
         {
             portfolioHeader.is_featured ? (
-                <div className="portfolio-content-container">
+                <div ref={portfolioRef} className="portfolio-content-container">
                     <div className="inner-portfolio-content">
                         <TitleHeader portfolioHeader={portfolioHeader}/>
                         <ShowMore portfolioState={portfolioState} togglePortfolioGrid={togglePortfolioGrid}/>
@@ -277,6 +277,12 @@ const PortfolioContent = ({portfolios, portfolioState, togglePupUp, toggleTechno
 const ContentItem = ({portfolioState, number, item, togglePupUp, toggleTechnology}) => {
     let state = portfolioState === 'grid' ? 6 : 12
 
+    const viewPortfolioWebsite = (e, link) => {
+        e.preventDefault()
+        window.open(link, '_blank', 'noopener,noreferrer');
+    }
+
+
     return (
         <Col data-aos={number % 2 === 0 ? 'slide-left' : 'slide-right'} xs={12} sm={12} md={12} lg={12} xl={state}>
             <div className={`portfolio-content-item ${state === 12 ? 'large' : ''}`}>
@@ -288,9 +294,13 @@ const ContentItem = ({portfolioState, number, item, togglePupUp, toggleTechnolog
                         <li className="title-header">
                             <h3>{item.title}</h3>
                         </li>
-                        <li>
-                            <NavLink to="/">Visit Website</NavLink>
-                        </li>
+                        {
+                            item.link ? (
+                                <li>
+                                    <NavLink onClick={(e) => viewPortfolioWebsite(e, item.link)} to={item.link}>Visit Website</NavLink>
+                                </li>
+                            ) : null
+                        }
                         <li className="technology-button">
                             <button onClick={() => toggleTechnology(true, item)}>
                                 <FontAwesomeIcon className="icon" icon={faGears} />
@@ -340,6 +350,12 @@ const PortfolioPupUp = ({popupState, togglePupUp, image, toggleDirection}) => {
 const Technology = ({technology, toggleTechnology}) => {
     const portfolio = technology.portfolio
 
+    const viewPortfolioWebsite = (e, link) => {
+        e.preventDefault()
+        window.open(link, '_blank', 'noopener,noreferrer')
+    }
+
+
     return (
         <div className="technologies-container">
             <div className="dark-skin"></div>
@@ -370,7 +386,7 @@ const Technology = ({technology, toggleTechnology}) => {
                             portfolio.link ? (
                                 <li className="button">
                                     <NavLink to={portfolio.link}>
-                                        <button>Visit website</button>
+                                        <button onClick={(e) => viewPortfolioWebsite(e, portfolio.link)}>Visit website</button>
                                     </NavLink>
                                 </li>
                             ) : null

@@ -55,7 +55,16 @@ const Validate = (inputs) => {
                         error.push(message)
                     }
                 }
-
+            } else if(input.hasOwnProperty('wordCount') && input.input !== '') {
+                const words = input.input.trim().split(/\s+/)
+                const filterWords = words.filter((word) => word.length > 0)
+                if(filterWords.length > input.wordCount){
+                    const message = {
+                        field: input.field,
+                        error: `*Max word count of ${input.wordCount}`
+                    }
+                    error.push(message)
+                }
             }
             return error
         })
@@ -67,6 +76,19 @@ const Validate = (inputs) => {
     }
 }
 
+
+
+
+
+// handle word count
+const WordsCount = (string='') => {
+    if(string){
+        const words = string.trim().split(/\s+/)
+        const filterWords = words.filter((word) => word.length > 0)
+        return filterWords.length
+    }
+    return 0
+}
 
 
 const capitalized = (string) => {

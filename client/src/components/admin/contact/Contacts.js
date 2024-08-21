@@ -153,7 +153,7 @@ const TitleHeader = () => {
 
 const ContentTable = ({contacts, toggleMessageForm, toggleDeleteForm}) => {
     return (
-        <div className="table-content-container">
+        <div className="table-content-container table-responsive">
             <table className="table table-hover">
                 <thead>
                     <tr>

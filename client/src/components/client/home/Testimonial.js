@@ -6,16 +6,18 @@ import "react-multi-carousel/lib/styles.css";
 import { user_image } from '../../../File'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
-  faStar,
   faLayerGroup,
   faQuoteRight,
 } from '@fortawesome/free-solid-svg-icons'
+import { 
+    faStar,
+  } from '@fortawesome/free-regular-svg-icons'
 import AOS from 'aos'
 
 
 
 
-const Testimonial = () => {
+const Testimonial = ({testimonialRef}) => {
 
     const responsive = {
         superLargeDesktop: {
@@ -93,7 +95,6 @@ const Testimonial = () => {
         Axios.get(url(`/api/client/fetch-client-user-testimonial-header`)).then((response) => {
             const data = response.data
             if(data.status === 'ok'){
-                console.log(data.testimonialHeader)
                 setTestimonialHeader(data.testimonialHeader)
             }
         }).catch(error => {
@@ -108,7 +109,6 @@ const Testimonial = () => {
         Axios.get(url(`/api/client/fetch-client-user-testimonials`)).then((response) => {
             const data = response.data
             if(data.status === 'ok'){
-                console.log(data.testimonials)
                 setTestimonials(data.testimonials)
             }
         }).catch(error => {
@@ -132,7 +132,7 @@ const Testimonial = () => {
     <Fragment>
        {
             testimonialHeader && testimonialHeader.is_featured ? (
-                <div className="testimonial-container">
+                <div ref={testimonialRef} className="testimonial-container">
                     <div className="inner-testimonial">
                         <TitleHeader testimonialHeader={testimonialHeader}/>
                         <TestimonialContent testimonials={testimonials} responsive={responsive}/>

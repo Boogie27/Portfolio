@@ -39,6 +39,7 @@ const EditPortfolio = ({editFormState, toggleEditForm, alertNotification}) => {
     const [toMonth, setToMonth] = useState(portfolio.to_month)
     const [toYear, setToYear] = useState(portfolio.to_year)
     const [image, setImage] = useState('')
+    const [link, setLink] = useState(portfolio.link || '')
     const [technology, setTechnology] = useState('')
     const [techs, setTechs] = useState(portfolio.technologies)
     const [description, setDescription] = useState(portfolio.description)
@@ -47,6 +48,7 @@ const EditPortfolio = ({editFormState, toggleEditForm, alertNotification}) => {
     const [years, setYears] = useState([])
     const [button, setButton] = useState(false)
 
+    const [linkAlert, setLinkAlert] = useState('')
     const [titleAlert, setTitleAlert] = useState('')
     const [fromMonthAlert, setFromMonthAlert] = useState('')
     const [fromYearAlert, setFromYearAlert] = useState('')
@@ -74,6 +76,7 @@ const EditPortfolio = ({editFormState, toggleEditForm, alertNotification}) => {
             const formData = new FormData()
             formData.append('_id', portfolio._id)
             formData.append('image', image)
+            formData.append('link', link)
             formData.append('title', title)
             formData.append('token', token)
             formData.append('fromMonth', fromMonth)
@@ -130,6 +133,7 @@ const EditPortfolio = ({editFormState, toggleEditForm, alertNotification}) => {
     //  initialize form input error
    const initErrorAlert = () => {
         setTitleAlert('')
+        setLinkAlert('')
         setFromMonthAlert('')
         setFromYearAlert('')
         setToMonthAlert('')
@@ -142,12 +146,15 @@ const EditPortfolio = ({editFormState, toggleEditForm, alertNotification}) => {
     const initFormInput = () => {
         setTitle('')
         setTechs([])
+        setLinkAlert('')
         setDescription('')
     }
 
     // backen error message
     const inputErrorForBackend = (error) => {
+        setLinkAlert(error.link)
         setTitleAlert(error.title)
+        setDescriptionAlert(error.description)
     }
 
     //  add or remove from technology
@@ -171,30 +178,14 @@ const EditPortfolio = ({editFormState, toggleEditForm, alertNotification}) => {
  // validate input
  const validate_input = (input) => {
     const content = [
-        {
-            field: 'title',
-            input: input.title,
-            maxLength: 50,
-            minLength: 3,
-            required: true,
-        },
-        {
-            field: 'description',
-            input: input.description,
-            maxLength: 2000,
-            minLength: 3,
-            required: true,
-        }
+        { field: 'title', input: input.title, maxLength: 50,  minLength: 3, required: true},
+        { field: 'description', input: input.description, maxLength: 2000, minLength: 3, required: true}
     ]
     const validation = Validate(content)
     if(validation !== 'success'){
         validation.map((validate) => {
-            if(validate.field === 'title'){
-                setTitleAlert(validate.error)
-            }
-            if(validate.field === 'description'){
-                setDescriptionAlert(validate.error)
-            }
+            if(validate.field === 'title'){ setTitleAlert(validate.error) }
+            if(validate.field === 'description'){ setDescriptionAlert(validate.error) }
             return false
         })
         return false
@@ -288,13 +279,20 @@ useEffect(() => {
                             </div>
                         </Col>
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                            <label>Portfolio link:</label>
+                            <div className="form-group">
+                                <input type="text" className="form-control"  onChange={(e) => setLink(e.target.value)}  value={link} placeholder="Link to portfolio"/>
+                                <FormInputAlert alert={linkAlert}/>
+                            </div>
+                        </Col>
+                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                             <label>Technologies:</label>
                             <div className="form-group">
                                 <input type="text" className="form-control"   onKeyDown={handleKeyDown}  onChange={(e) => setTechnology(e.target.value)}  value={technology} placeholder="Enter Technologies"/>
                                 <FormInputAlert alert={technologyAlert}/>
                             </div>
                         </Col>
-                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                             <div className="form-group">
                                 {
                                     techs.length ? techs.map((tech, index) => (

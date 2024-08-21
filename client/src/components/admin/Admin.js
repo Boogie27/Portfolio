@@ -17,8 +17,6 @@ import { url } from '../../File'
 import { useNavigate } from 'react-router-dom'
 import Axios from 'axios'
 import ProtectedRoutes from './utility/ProtectedRoutes'
-import { useDispatch } from 'react-redux'
-import { fetchUser } from '../redux/admin/UserSlice'
 import Skills from './skills/Skills'
 import Qualification from './qualification/Qualification'
 import Portfolio from './portfolio/Portfolio'
@@ -40,13 +38,12 @@ const Admin = ({setAppState}) => {
     const preloaderRef = useRef(null)
     const setThemeAutoRef = useRef(null)
     const fetchLoggedInUserRef = useRef(null)
-    const [theme, setTheme] = useState('dark')
+    const [theme, setTheme] = useState('')
     const [user, setUser] = useState('')
+    let token = Cookies.get('Eloquent_token')
     const [isLoggedIn, setIsLoggedIn] = useState(true)
+    const [dashboardSideBar, setDashboardSideBar] = useState(false)
     const [isLoading, setIsLoading] = useState({ state: true, text: 'Loading...'})
-
-    // redux store
-    const dispatch = useDispatch()
    
 
     // alert notification
@@ -66,15 +63,21 @@ const Admin = ({setAppState}) => {
 
     // set theme when page loads
     const setThemeAuto = () => {
-        let pageTheme = Cookies.get('Eloquent-admin-theme')
-        if(pageTheme){
-            return setTheme(pageTheme)
+        if(!token){
+            let pageTheme = Cookies.get('Eloquent-admin-theme')
+            if(pageTheme){
+                return setTheme(pageTheme)
+            }
         }
+    }
+
+     // toggle app dashboard
+     const toggleAppPage = () => {
+        setDashboardSideBar(!dashboardSideBar)
     }
 
     // check if user is loggedin
     const fetchLoggedInUser = () => {
-        let token = Cookies.get('Eloquent_token')
         if(token){
             Axios.get(url(`/api/admin/fetch-active-user/${token}`)).then((response) => {
                 const data = response.data
@@ -84,8 +87,8 @@ const Admin = ({setAppState}) => {
                 }else if(data.status === 'ok'){
                     setIsLoggedIn(true)
                     setUser(data.user)
-                    setTheme(data.user.theme)
-                    dispatch(fetchUser(data.user))
+                    setTheme(data.user.admin_theme)
+                    Cookies.set('Eloquent-admin-theme', data.user.admin_theme, { expires: 7 })
                     alertNotification('sucess', 'Login successful!')
                 }
                 return preloader(false)
@@ -112,10 +115,10 @@ const Admin = ({setAppState}) => {
   return (
     <div className={`admin-container ${theme}`}>
         { isLoading.state ? (<Preloader text={isLoading.text}/>) : null }
-        { isLoggedIn ? (<Navigation theme={theme} setTheme={setTheme} setAppState={setAppState} alertNotification={alertNotification}/>) : null }
+        { isLoggedIn ? (<Navigation theme={theme} setTheme={setTheme} toggleAppPage={toggleAppPage} setAppState={setAppState} alertNotification={alertNotification}/>) : null }
         <Routes>
             <Route element={<ProtectedRoutes isLoggedIn={isLoggedIn}/>}>
-                <Route path="/dashboard" element={<DashBoard/>}/>
+                <Route path="/dashboard" element={<DashBoard dashboardSideBar={dashboardSideBar}/>}/>
                 <Route path="/dashboard/review-request" element={<Review preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/settings" element={<Settings preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/testimonial" element={<Testimonial preloader={preloader} alertNotification={alertNotification}/>}/>

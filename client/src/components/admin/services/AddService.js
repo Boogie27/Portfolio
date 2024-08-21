@@ -19,7 +19,7 @@ import { AddUserServices } from '../../redux/admin/ServiceSlice'
 
 
 
-const AddService = ({addFormState, toggleAddForm, alertNotification}) => {
+const AddService = ({preloader, addFormState, toggleAddForm, alertNotification}) => {
     // react hooks
     const dispatch = useDispatch()
 
@@ -42,6 +42,7 @@ const AddService = ({addFormState, toggleAddForm, alertNotification}) => {
                 token: token
             }
             setButton(true)
+            preloader(true, 'Please wait...')
             Axios.post(url('/api/admin/add-new-service'), content).then((response) => {
                 const data = response.data
                 if(data.status === 'input-error'){
@@ -54,9 +55,11 @@ const AddService = ({addFormState, toggleAddForm, alertNotification}) => {
                     initFormInput() //init fields
                     toggleForm(false)
                 }
+                preloader(false)
                 return setButton(false)
             }).catch(error => {
                 setButton(false)
+                preloader(false)
                 console.log(error)
             })
         }

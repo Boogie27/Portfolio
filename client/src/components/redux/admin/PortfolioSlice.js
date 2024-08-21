@@ -13,6 +13,7 @@ const portfolioSlice = createSlice({
                 return {
                     _id: content._id,
                     user_id: content.user_id,
+                    link: content.link,
                     title: content.title,
                     image: content.image,
                     order: content.order,

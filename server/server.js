@@ -24,6 +24,14 @@ const ReviewRequestRoute = require('./routes/ReviewRequestRoute')
 
 
 
+// CORS Middleware Setup
+app.use((request, response, next) => {
+    response.header("Access-Control-Allow-Origin", "https://charles.koworldltd.com");
+    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    response.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow specific methods
+    next()
+})
+
 
 
 app.use(fileUpload())
@@ -65,6 +73,15 @@ app.use(ReviewRequestRoute)
 app.use('/public/asset/image/icon/', express.static(path.join(__dirname, '/public/asset/image/icon')));
 app.use('/public/asset/image/users/', express.static(path.join(__dirname, '/public/asset/image/users')));
 app.use('/public/asset/image/portfolio/', express.static(path.join(__dirname, '/public/asset/image/portfolio')));
+
+
+
+//   example to test if server is working
+app.get("/example", (reguest, response) => {
+    console.log('Server is running!')
+    return response.send("Server is working!")
+})
+
 
 
 //  port

@@ -37,12 +37,14 @@ const AddPortfolio = ({addFormState, toggleAddForm, alertNotification}) => {
     const [image, setImage] = useState('')
     const [technology, setTechnology] = useState('')
     const [techs, setTechs] = useState([])
+    const [link, setLink] = useState('')
     const [description, setDescription] = useState('')
     const [imagePreview, setImagePreview] = useState('')
     const [months, setMonths] = useState([])
     const [years, setYears] = useState([])
     const [button, setButton] = useState(false)
 
+    const [linkAlert, setLinkAlert] = useState('')
     const [titleAlert, setTitleAlert] = useState('')
     const [fromMonthAlert, setFromMonthAlert] = useState('')
     const [fromYearAlert, setFromYearAlert] = useState('')
@@ -70,6 +72,7 @@ const AddPortfolio = ({addFormState, toggleAddForm, alertNotification}) => {
             const formData = new FormData()
             formData.append('image', image)
             formData.append('title', title)
+            formData.append('link', link)
             formData.append('token', token)
             formData.append('fromMonth', fromMonth)
             formData.append('fromYear', fromYear)
@@ -124,6 +127,7 @@ const AddPortfolio = ({addFormState, toggleAddForm, alertNotification}) => {
 
     //  initialize form input error
    const initErrorAlert = () => {
+        setLinkAlert('')
         setTitleAlert('')
         setFromMonthAlert('')
         setFromYearAlert('')
@@ -137,12 +141,15 @@ const AddPortfolio = ({addFormState, toggleAddForm, alertNotification}) => {
     const initFormInput = () => {
         setTitle('')
         setTechs([])
+        setLinkAlert('')
         setDescription('')
     }
 
     // backen error message
     const inputErrorForBackend = (error) => {
+        setLinkAlert(error.link)
         setTitleAlert(error.title)
+        setDescriptionAlert(error.description)
     }
 
     //  add or remove from technology
@@ -166,30 +173,14 @@ const AddPortfolio = ({addFormState, toggleAddForm, alertNotification}) => {
  // validate input
  const validate_input = (input) => {
     const content = [
-        {
-            field: 'title',
-            input: input.title,
-            maxLength: 50,
-            minLength: 3,
-            required: true,
-        },
-        {
-            field: 'description',
-            input: input.description,
-            maxLength: 2000,
-            minLength: 3,
-            required: true,
-        }
+        { field: 'title', input: input.title, maxLength: 50,  minLength: 3, required: true},
+        { field: 'description', input: input.description, maxLength: 2000, minLength: 3, required: true}
     ]
     const validation = Validate(content)
     if(validation !== 'success'){
         validation.map((validate) => {
-            if(validate.field === 'title'){
-                setTitleAlert(validate.error)
-            }
-            if(validate.field === 'description'){
-                setDescriptionAlert(validate.error)
-            }
+            if(validate.field === 'title'){ setTitleAlert(validate.error) }
+            if(validate.field === 'description'){ setDescriptionAlert(validate.error) }
             return false
         })
         return false
@@ -290,6 +281,13 @@ useEffect(() => {
                             </div>
                         </Col>
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                            <label>Portfolio link:</label>
+                            <div className="form-group">
+                                <input type="text" className="form-control"  onChange={(e) => setLink(e.target.value)}  value={link} placeholder="Link to portfolio"/>
+                                <FormInputAlert alert={linkAlert}/>
+                            </div>
+                        </Col>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                             <div className="form-group">
                                 {
                                     techs.length ? techs.map((tech, index) => (

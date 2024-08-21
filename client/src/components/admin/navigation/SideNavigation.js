@@ -16,7 +16,7 @@ const SideNavigation = ({ theme, sideNav, toggleNavigation, toggleApp, toggleApp
   return (
     <div className={`side-navigation-container ${sideNav ? 'active' : ''}`}>
       <div onClick={() => toggleNavigation()} className="dark-skin"></div>
-      <div className="side-navigation-body">
+      <div className="admin-side-navigation-body">
         <TitleHeader theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
         <div className="side-nav-content">
           <ul>
@@ -37,9 +37,6 @@ const SideNavigation = ({ theme, sideNav, toggleNavigation, toggleApp, toggleApp
               </li>
               <li>
                 <NavLink onClick={() => toggleApp('admin')} to="/dashboard/qualifications">Qualifications</NavLink>
-              </li>
-              <li>
-                <NavLink onClick={() => toggleApp('admin')} to="/dashboard/project">Projects</NavLink>
               </li>
               <li>
                 <NavLink onClick={() => toggleApp('admin')} to="/dashboard/services">Services</NavLink>

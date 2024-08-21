@@ -33,6 +33,7 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
   const editImageRef = useRef(null)
   let token = Cookies.get('Eloquent_token')
   const [title, setTitle] = useState('')
+  const [link, setLink] = useState('')
   const [fromMonth, setFromMonth] = useState('')
   const [fromYear, setFromYear] = useState('')
   const [toMonth, setToMonth] = useState('')
@@ -47,6 +48,7 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
   const [years, setYears] = useState([])
   const [button, setButton] = useState(false)
 
+  const [linkAlert, setLinkAlert] = useState('')
   const [titleAlert, setTitleAlert] = useState('')
   const [fromMonthAlert, setFromMonthAlert] = useState('')
   const [fromYearAlert, setFromYearAlert] = useState('')
@@ -62,6 +64,7 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
       if(token){
           const content = {
               title: title,
+              link: link,
               fromMonth: fromMonth,
               fromYear: fromYear,
               toMonth: toMonth,
@@ -77,6 +80,7 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
           formData.append('_id', _id)
           formData.append('image', images)
           formData.append('title', title)
+          formData.append('link', link)
           formData.append('token', token)
           formData.append('fromMonth', fromMonth)
           formData.append('fromYear', fromYear)
@@ -113,6 +117,7 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
 
     //  initialize form input error
     const initErrorAlert = () => {
+        setLinkAlert('')
         setTitleAlert('')
         setFromMonthAlert('')
         setFromYearAlert('')
@@ -124,7 +129,9 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
 
   // backen error message
   const inputErrorForBackend = (error) => {
-      setTitleAlert(error.title)
+    setLinkAlert(error.link)
+    setTitleAlert(error.title)
+    setDescriptionAlert(error.description)
   }
 
   
@@ -192,40 +199,24 @@ const PortfolioDetail = ({preloader, alertNotification}) => {
   }
 
 
-// validate input
-const validate_input = (input) => {
-  const content = [
-      {
-          field: 'title',
-          input: input.title,
-          maxLength: 50,
-          minLength: 3,
-          required: true,
-      },
-      {
-          field: 'description',
-          input: input.description,
-          maxLength: 2000,
-          minLength: 3,
-          required: true,
-      }
-  ]
-  const validation = Validate(content)
-  if(validation !== 'success'){
-      validation.map((validate) => {
-          if(validate.field === 'title'){
-              setTitleAlert(validate.error)
-          }
-          if(validate.field === 'description'){
-              setDescriptionAlert(validate.error)
-          }
-          return false
-      })
-      return false
-  }else{
-      return 'success'
-  }
-}
+    // validate input
+    const validate_input = (input) => {
+        const content = [
+            { field: 'title', input: input.title, maxLength: 50,  minLength: 3, required: true},
+            { field: 'description', input: input.description, maxLength: 2000, minLength: 3, required: true}
+        ]
+        const validation = Validate(content)
+        if(validation !== 'success'){
+            validation.map((validate) => {
+                if(validate.field === 'title'){ setTitleAlert(validate.error) }
+                if(validate.field === 'description'){ setDescriptionAlert(validate.error) }
+                return false
+            })
+            return false
+        }else{
+            return 'success'
+        }
+    }
 
 
 
@@ -239,6 +230,7 @@ const validate_input = (input) => {
               if(data.status === 'ok'){
                 const portfolio = data.portfolios.find(portfolio => portfolio._id === _id)
                 setTitle(portfolio.title)
+                setLink(portfolio.link)
                 setImages(portfolio.image)
                 setFromMonth(portfolio.from_month)
                 setFromYear(portfolio.from_year)
@@ -351,13 +343,20 @@ const validate_input = (input) => {
         <div className="content-form">
             <div className="form">
                 <Row className="show-grid">
-                    <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                         <div className="form-group">
                             <label>Title:</label>
                             <input type="text" onChange={(e) => setTitle(e.target.value)} value={title} className="form-control" placeholder="Enter title"/>
                             <FormInputAlert alert={titleAlert}/>
                         </div>
                     </Col>
+                    <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                            <label>Portfolio link:</label>
+                            <div className="form-group">
+                                <input type="text" className="form-control"  onChange={(e) => setLink(e.target.value)}  value={link} placeholder="Link to portfolio"/>
+                                <FormInputAlert alert={linkAlert}/>
+                            </div>
+                        </Col>
                     <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                         <label>From Month:</label>
                         <select value={fromMonth} onChange={(e) => setFromMonth(e.target.value)} className="form-control">

@@ -2,6 +2,10 @@
 
 const TestimonialModel = require('../models/TestimonialModel')
 const TestimonialHeaderModel = require('../models/TestimonialHeaderModel')
+const RequestReviewModel = require('../models/RequestReviewModel')
+const SettingsModel = require('../models/SettingsModel')
+const { SendMail } = require('../mailer/Mailer')
+const HtmlMessage = require('../mailer/TestimonialThankYouMailTemplate')
 const AsyncHandler = require('express-async-handler')
 const { today } = require('../data')
 const jwt = require('jsonwebtoken')
@@ -156,6 +160,7 @@ const AddNewTestimonial = AsyncHandler(async (request, response) => {
 
         const user_id = userToken.string._id;
         const name = input.name.toLowerCase()
+        const email = input.email.toLowerCase()
         let exists = await TestimonialModel.findOne({name: name, user_id: user_id}).exec()
         if(exists && exists.name === name){
             return response.send({status: 'input-error', validationError: { name: 'Name already exists!' }})
@@ -174,6 +179,7 @@ const AddNewTestimonial = AsyncHandler(async (request, response) => {
             const content = {
                 name: name,
                 user_id: user_id,
+                email: email,
                 rating: parseInt(input.rating),
                 job_title: input.job_title,
                 description: input.description,
@@ -201,33 +207,28 @@ const AddNewTestimonial = AsyncHandler(async (request, response) => {
  const validate_add_testimonial_input = (input) => {
     let nameAlert = ''
     let jobTitleAlert = ''
+    let emailAlert = ''
     let ratingAlert = ''
     let descriptionAlert = ''
     const content = [
         { field: 'name', input: input.name, maxLength: 50, minLength: 3, required: true },
         { field: 'job title', input: input.job_title, maxLength: 100, minLength: 3, required: true },
         { field: 'rating', input: input.rating, required: true },
+        { field: 'email', input: input.email, email: true,  required: true },
         { field: 'description', input: input.description, maxLength: 2000, minLength: 3,  required: true }
     ]
     const validation = Validate(content)
     if(validation != 'success'){
         validation.map((validate) => {
-            if(validate.field === 'name'){
-                nameAlert = validate.error
-            }
-            if(validate.field === 'job title'){
-                jobTitleAlert = validate.error
-            }
-            if(validate.field === 'rating'){
-                ratingAlert = validate.error
-            }
-            if(validate.field === 'description'){
-                descriptionAlert = validate.error
-            }
+            if(validate.field === 'name'){ nameAlert = validate.error }
+            if(validate.field === 'email'){ emailAlert = validate.error}
+            if(validate.field === 'job title'){ jobTitleAlert = validate.error}
+            if(validate.field === 'rating'){  ratingAlert = validate.error }
+            if(validate.field === 'description'){ descriptionAlert = validate.error }
             return false
         })
         return {
-            name: nameAlert, jobTitle: jobTitleAlert,  rating: ratingAlert, description: descriptionAlert, 
+            name: nameAlert, jobTitle: jobTitleAlert,  rating: ratingAlert, description: descriptionAlert, email: emailAlert
         }
     }else{
         return 'success'
@@ -250,36 +251,42 @@ const UpdateUserTestimonial = AsyncHandler(async (request, response) => {
             return response.send({status: 'not-login', message: 'Login user to perform this action'})
         }
 
-        
-
         const user_id = userToken.string._id;
         const name = input.name.toLowerCase()
+        const email = input.email.toLowerCase()
         let exists = await TestimonialModel.findOne({ _id: input._id, user_id: user_id }).exec()
         if(!exists){
             return response.send({status: 'error', message: 'Either Testimonial deos not exist or Login!'})
         }else{
-            const uploades = await UploadCropImage({
-                base64: input.image,
-                extension: 'png',
-                name: 'testimonial-image',
-                destination:  path.join(__dirname, '../public/asset/image/users/')
-            })
-            if(uploades.status == 'error'){
-                return response.send({status: 'error', message: uploades.error})
-            }else if(uploades.status == 'ok'){
-                imageName = uploades.imageName
-                if(exists.image){
-                    const destination = path.join(__dirname, '../public/asset/image/users/');
-                    const filePath = destination + exists.image
-                    RemoveFile(filePath) // delete old existing image from image folder
+            const imageExists = input.image.split(':')
+            if(imageExists[0] == 'http' || imageExists[0] == 'https'){   
+                imageName = exists.image
+            }else{
+                const uploades = await UploadCropImage({
+                    base64: input.image,
+                    extension: 'png',
+                    name: 'testimonial-image',
+                    destination:  path.join(__dirname, '../public/asset/image/users/')
+                })
+                if(uploades.status == 'error'){
+                    return response.send({status: 'error', message: uploades.error})
+                }else if(uploades.status == 'ok'){
+                    imageName = uploades.imageName
+                    if(exists.image){
+                        const destination = path.join(__dirname, '../public/asset/image/users/');
+                        const filePath = destination + exists.image
+                        RemoveFile(filePath) // delete old existing image from image folder
+                    }
                 }
             }
+           
             const updateContent = {
                 name: name,
+                email: email,
                 rating: parseInt(input.rating),
                 job_title: input.job_title,
                 description: input.description,
-                image: imageName.length ? imageName : exists.image,
+                image: imageName,
                 updated_at: today(),
             }
             const update = await TestimonialModel.findOneAndUpdate({_id: exists._id}, {$set: updateContent}).exec()
@@ -412,6 +419,118 @@ const FetchClientTestimonials = AsyncHandler(async (request, response) => {
 
 
 
+//   add new  client testimonial 
+const AddNewClientTestimonial = AsyncHandler(async (request, response) => {
+    try{
+        let imageName = ''
+        const input = request.body
+        const validation = validate_add_testimonial_input(input)
+        if(validation != 'success'){
+            return response.send({status: 'input-error', validationError: validation})
+        }
+        // user the token form the email sent to check for the email
+        const checkForEmail = await RequestReviewModel.findOne({ token: input.token }).exec()
+        if(!checkForEmail){
+            return response.send({status: 'token-error'})
+        }else{
+            if(checkForEmail.email != input.email){
+                return response.send({status: 'input-error', validationError: { email: 'Wrong email specified!'}})
+            }
+            if(checkForEmail.is_completed){
+                return response.send({status: 'completed'})
+            }
+        }
+       
+        const name = input.name.toLowerCase()
+        const email = input.email.toLowerCase()
+        let exists = await TestimonialModel.findOne({email: email, user_id: checkForEmail.user_id}).exec()
+        if(exists){
+            return response.send({status: 'input-error', validationError: { email: 'Portfolio has already been rated by this email!'}})
+        }else{
+            const uploades = await UploadCropImage({
+                base64: input.image,
+                extension: 'png',
+                name: 'testimonial-image',
+                destination:  path.join(__dirname, '../public/asset/image/users/')
+            })
+            if(uploades.status == 'error'){
+                return response.send({status: 'error', message: uploades.error})
+            }else if(uploades.status == 'ok'){
+                imageName = uploades.imageName
+            }
+            const content = {
+                name: name,
+                email: email,
+                user_id: checkForEmail.user_id,
+                rating: parseInt(input.rating),
+                job_title: input.job_title,
+                description: input.description,
+                image: imageName,
+                is_featured: 0,
+                updated_at: today(),
+                created_at: today(),
+            }
+            
+            const testimonial = await TestimonialModel.create(content)
+            if(testimonial){
+                // update the review request table and set to completed
+                const update = {
+                    is_completed: 1,  
+                    completed_at: today()
+                }
+
+                const requestReview = await RequestReviewModel.findOneAndUpdate({user_id: checkForEmail.user_id, email: input.email}, {$set: update}).exec()
+
+                // send  mail to the user to thank them
+                const settings = await SettingsModel.findOne({user_id: checkForEmail.user_id}).exec()
+                if(settings){
+                    const sendEmail = sendMailToClient(request.body, settings) // send out email  here
+                }
+                return response.send({status: 'ok'})
+            }
+        }
+        return response.send({status: 'error', message: 'Something went wront, try again!'})
+   
+    }catch(error){
+        return response.send({ status: 'catch-error', catchError: error })
+    }
+})
+
+
+
+
+
+
+//   check if review token exists
+const FetchClientReviewToken = AsyncHandler(async (request, response) => {
+    try{
+        const { token } = request.params
+        const clientToken = await RequestReviewModel.findOne({ token: token }).exec()
+        if(clientToken){
+            return response.send({status: 'ok'})
+        }
+        return response.send({status: 'failed'})
+    }catch(error){
+        return response.send({ status: 'catch-error', catchError: error })
+    }
+})
+
+
+
+
+
+
+//  send email function
+const sendMailToClient = (input, settings) => {
+    string = {
+        from: settings.email,
+        to: input.email,
+        subject: 'Portfolio Revied',
+        message: HtmlMessage(input, settings)
+    }
+    return SendMail(string)
+}
+
 
 
 
@@ -425,9 +544,11 @@ module.exports = {
     FetchTestimonials,
     AddNewTestimonial,
     DeleteTestimonial,
+    FetchClientReviewToken,
     UpdateTestimonialHeader,
     FetchTestimonialHeader,
     UpdateUserTestimonial,
+    AddNewClientTestimonial,
     FetchClientTestimonials,
     ToggleUserTestimonialFeature,
     FetchClientTestimonialHeader,

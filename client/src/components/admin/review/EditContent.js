@@ -10,7 +10,7 @@ import {
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
-import { url } from '../../../File'
+import { url, ClientUrl } from '../../../File'
 import { useDispatch } from 'react-redux'
 import { UpdateReviewRequest } from '../../redux/admin/ReviewRequestSlice'
 import { Validate } from '../../../helper/Validation'
@@ -46,6 +46,7 @@ const EditContent = ({editFormState, toggleEditForm, alertNotification}) => {
                 email: email,
                 project: project,
                 token: token,
+                link: ClientUrl(),
                 sendMail: sendMail,
                 _id: editFormState.content._id,
             }
@@ -144,7 +145,7 @@ const EditContent = ({editFormState, toggleEditForm, alertNotification}) => {
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                             <div className="form-group">
                                 <label>Email:</label>
-                                <input type="text" onChange={(e) => setEmail(e.target.value)} value={email} className="form-control" placeholder="Enter email"/>
+                                <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} className="form-control" placeholder="Enter email"/>
                                 <FormInputAlert alert={emailAlert}/>
                             </div>
                         </Col>

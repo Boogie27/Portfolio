@@ -13,7 +13,7 @@ import AOS from 'aos'
 
 
 
-const Qualifications = () => {
+const Qualifications = ({qualificationRef}) => {
 
     
     // const qualifications = [
@@ -45,10 +45,12 @@ const Qualifications = () => {
 
 
     const FetchQualificationsRef = useRef(null)
+    const FetchQualificationsHeaderRef = useRef(null)
+    const [header, setHeader] = useState([])
     const [qualifications, setQualifications] = useState([])
 
 
-    // fetch skills 
+    // fetch qualifications 
     const FetchQualifications = () => {
         Axios.get(url(`/api/admin/fetch-client-user-qualification`)).then((response) => {
             const data = response.data
@@ -61,23 +63,39 @@ const Qualifications = () => {
     }
 
 
+     // fetch qualifications header 
+     const FetchQualificationsHeader = () => {
+        Axios.get(url(`/api/client/fetch-client-qualification-header`)).then((response) => {
+            const data = response.data
+            if(data.status === 'ok'){
+                setHeader(data.qualificationHeader)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+
 
 
     FetchQualificationsRef.current = FetchQualifications
+    FetchQualificationsHeaderRef.current = FetchQualificationsHeader
 
     useEffect(() => {
         AOS.init({ duration: 1000 })
         window.scrollTo(0, 0) // page scroll to top
         FetchQualificationsRef.current()
+        FetchQualificationsHeaderRef.current()
     }, [])
 
 
 
     return (
-        <div className="education-skills">
-            <Row className="show-grid">
-                { qualifications.map((qualification, index) => (<QualificationItems key={index} number={index+1} qualification={qualification}/>))}
-            </Row>
+        <div ref={qualificationRef} className="skills-container">
+            <div className="inner-skills">
+                <TitleHeader header={header}/>
+                <QualificationContent qualifications={qualifications}/>
+            </div>
         </div>
     )
 }
@@ -87,6 +105,30 @@ export default Qualifications
 
 
 
+
+const TitleHeader = ({header}) => {
+    return (
+        <div data-aos={'zoom-out'} className="title-header">
+            { header.title ? (<h3>{header.title}</h3>) : null }
+            <div className="title">
+                { header.first_header ? (<h1>{header.first_header}</h1>) : null }
+                { header.second_header ? (<h1>{header.second_header}</h1>) : null }
+            </div>
+        </div>
+    )
+}
+
+
+
+const QualificationContent = ({qualifications}) => {
+    return (
+        <div className="education-skills">
+        <Row className="show-grid">
+            { qualifications.map((qualification, index) => (<QualificationItems key={index} number={index+1} qualification={qualification}/>))}
+        </Row>
+    </div>
+    )
+} 
 
 
 

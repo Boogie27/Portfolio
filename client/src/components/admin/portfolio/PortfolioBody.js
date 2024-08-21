@@ -79,12 +79,17 @@ const PortfolioBody = ({preloader, alertNotification}) => {
     // fetch  user portfolio
     const FetchUserPortfolios = () => {
         if(token){
+            preloader(true, 'Please wait...')
             Axios.get(url(`/api/admin/fetch-user-portfolios/${token}`)).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
                     dispatch(getUserPortfolios(data.portfolios))
+                }else if(data.status === 'catch-error'){
+                    console.log(data.catchError)
                 }
+                 preloader(false)
             }).catch(error => {
+             preloader(false)
                 console.log(error)
             })
         }
@@ -252,7 +257,7 @@ const TitleHeader = ({toggleAddForm}) => {
 
 const ContentTable = ({portfolios, toggleDeleteForm, toggleFeature, toggleEditForm, handleKeyDown}) => {
     return (
-        <div className="table-content-container">
+        <div className="table-content-container table-responsive">
             <table className="table table-hover">
                 <thead>
                     <tr>
@@ -298,11 +303,15 @@ const ContentItem = ({portfolio, toggleEditForm, toggleFeature, handleKeyDown, t
                 <NavLink to={`/dashboard/portfolio/detail/${portfolio._id}`}>{portfolio.title}</NavLink>
             </td>
             <td>
-                <NavLink to={`/dashboard/portfolio/detail/${portfolio._id}`}>
-                    <div className="image">
-                        <img src={portfolio_img(portfolio.image[0])} alt={portfolio.image[0]}/>
-                    </div>
-                </NavLink>
+                {
+                    portfolio.image.length ? (
+                        <NavLink to={`/dashboard/portfolio/detail/${portfolio._id}`}>
+                            <div className="image">
+                                <img src={portfolio_img(portfolio.image[0])} alt={portfolio.image[0]}/>
+                            </div>
+                        </NavLink>
+                    ) : null
+                }
             </td>
             <td className="table-data-icon">
                 <FontAwesomeIcon onClick={() => toggleFeature(portfolio._id)} className={`icon ${portfolio.is_featured ? 'active' : ''}`} icon={portfolio.is_featured ? faToggleOn : faToggleOff}/>

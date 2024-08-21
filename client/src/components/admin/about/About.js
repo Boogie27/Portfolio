@@ -77,7 +77,7 @@ const About = ({preloader, alertNotification, image, setImage }) => {
                     setFeatured(data.about.is_featured)
                 }
                 preloader(false)
-                return setButton(false)
+                setButton(false)
             }).catch(error => {
                 setButton(false)
                 preloader(false)

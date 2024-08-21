@@ -12,7 +12,9 @@ const PortfolioSchema  = new mongoose.Schema({
         type: String,
         required: true
     },
-    
+    link: {
+        type: String,
+    },
     image: {
         type: Array,
         default: [],

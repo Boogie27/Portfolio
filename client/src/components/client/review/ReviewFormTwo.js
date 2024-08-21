@@ -1,6 +1,5 @@
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { useState } from 'react'
 import { 
     faArrowLeft,
 } from '@fortawesome/free-solid-svg-icons'
@@ -13,7 +12,7 @@ import FormInputAlert from '../alert/FormInputAlert'
 
 
 
-const ReviewFormTwo = ({togglePages, description, jobTitle, setJobTitle, setDescription, descriptionAlert, jobTitleAlert, SubmitForm}) => {
+const ReviewFormTwo = ({togglePages, wordCount, description, jobTitle, setJobTitle, handleTextChange, descriptionAlert, jobTitleAlert, SubmitForm}) => {
 
 
   return (
@@ -34,8 +33,9 @@ const ReviewFormTwo = ({togglePages, description, jobTitle, setJobTitle, setDesc
                 <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                     <label>Description:</label>
                     <div className="form-group">
-                        <textarea className="form-control" onChange={(e) => setDescription(e.target.value)}  value={description} rows="4" cols="50" placeholder="What can you say about our service..."></textarea>
+                        <textarea className="form-control" onChange={(e) => handleTextChange(e.target.value)}  value={description} rows="4" cols="50" placeholder="What can you say about our service..."></textarea>
                     </div>
+                    <div className="word-count"><b>Max words:</b> {wordCount} / 50</div>
                     <FormInputAlert alert={descriptionAlert}/>
                 </Col>
             </Row>

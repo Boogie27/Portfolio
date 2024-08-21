@@ -10,7 +10,7 @@ import Cookies from 'js-cookie'
 
 
 
-const Navigation = ({ theme, setTheme, setAppState, alertNotification}) => {
+const Navigation = ({ theme, setTheme, setAppState, toggleAppPage, alertNotification}) => {
   let token = Cookies.get('Eloquent_token')
   const [sideNav, setSideNav] = useState(false)
   const state = theme === 'dark' ? 'light' : 'dark'
@@ -18,6 +18,7 @@ const Navigation = ({ theme, setTheme, setAppState, alertNotification}) => {
   const toggleAppTheme = () => {
     if(token){
       const content = {
+        theme: state,
         token: token,
       }
       setTheme(state)
@@ -26,8 +27,7 @@ const Navigation = ({ theme, setTheme, setAppState, alertNotification}) => {
         if(data.status === 'error'){
             alertNotification('error', data.message)
         }else if(data.status === 'ok'){
-          setTheme(data.theme)
-          Cookies.set('Eloquent-admin-theme', data.theme, { expires: 7 })
+          Cookies.set('Eloquent-admin-theme', state, { expires: 7 })
         }
       }).catch(error => {
           console.log(error)
@@ -46,11 +46,13 @@ const Navigation = ({ theme, setTheme, setAppState, alertNotification}) => {
       setAppState(state) // switch app state between client and admin
     }
   
+
+   
   
     
   return (
     <div className="main-navigation">
-      <TopNavigation theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme} toggleApp={toggleApp}/>
+      <TopNavigation theme={theme} toggleAppPage={toggleAppPage} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme} toggleApp={toggleApp}/>
       <SideNavigation theme={theme} toggleApp={toggleApp} sideNav={sideNav} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
     </div>
   )

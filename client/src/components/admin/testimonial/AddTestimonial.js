@@ -3,10 +3,10 @@ import { useState, useRef } from 'react'
 import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
-    faStar,
     faTimes,
     faCamera,
 } from '@fortawesome/free-solid-svg-icons'
+import { faStar } from '@fortawesome/free-regular-svg-icons'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
@@ -34,8 +34,10 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     const previewImageRef = useRef(null)
     let token = Cookies.get('Eloquent_token')
     const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
     const [jobTitle, setJobTitle] = useState('')
     const [crop, setCrop] = useState('')
+    const [wordCount, setWordCount] = useState(0)
     const [image, setImage] = useState(user_image())
     const [imageSource, setImageSource] = useState('')
     const [rating, setRating] = useState('')
@@ -43,6 +45,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     const [button, setButton] = useState(false)
 
     const [nameAlert, setNameAlert] = useState('')
+    const [emailAlert, setEmailAlert] = useState('')
     const [ratingAlert, setRatingAlert] = useState('')
     const [jobTitleAlert, setJobTitleAlert] = useState('')
     const [descriptionAlert, setDescriptionAlert] = useState('')
@@ -53,17 +56,18 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
         if(token){
             const content = {
                 name: name,
+                email: email,
                 rating: rating,
                 job_title: jobTitle,
                 description: description,
             }
             const validate = validate_input(content)
             if(validate !== 'success') return
-            
             setButton(true)
             const formData = new FormData()
             formData.append('image', image)
             formData.append('name', name)
+            formData.append('email', email)
             formData.append('token', token)
             formData.append('job_title', jobTitle)
             formData.append('rating', rating)
@@ -122,6 +126,19 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
         }
     }
 
+
+    // handle word count
+    const handleTextChange = (string) => {
+        const words = string.trim().split(/\s+/)
+        const filterWords = words.filter((word) => word.length > 0)
+        if(filterWords.length <= 50){
+            setDescription(string)
+            setWordCount(filterWords.length)
+        }
+    }
+
+    
+
     // close add form
     const toggleForm = (state) => {
         toggleAddForm(state)
@@ -137,6 +154,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     //  initialize form input error
    const initErrorAlert = () => {
         setNameAlert('')
+        setEmailAlert('')
         setRatingAlert('')
         setJobTitleAlert('')
         setDescriptionAlert('')
@@ -145,6 +163,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     //  initialize form input
     const initFormInput = () => {
         setName('')
+        setEmail('')
         setJobTitle('')
         setRating('')
         setDescription('')
@@ -153,6 +172,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     // backen error message
     const inputErrorForBackend = (error) => {
         setNameAlert(error.name)
+        setEmailAlert(error.email)
         setRatingAlert(error.rating)
         setJobTitleAlert(error.jobTitle)
         setDescriptionAlert(error.description)
@@ -166,23 +186,17 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
         { field: 'name', input: input.name, maxLength: 50, minLength: 3, required: true },
         { field: 'job title', input: input.job_title, maxLength: 100, minLength: 3, required: true },
         { field: 'rating', input: input.rating, required: true },
-        { field: 'description', input: input.description, maxLength: 2000, minLength: 3,  required: true }
+        { field: 'email', input: input.email, email: true,  required: true },
+        { field: 'description', input: input.description, wordCount: 50, minLength: 3,  required: true }
     ]
     const validation = Validate(content)
     if(validation !== 'success'){
         validation.map((validate) => {
-            if(validate.field === 'name'){
-                setNameAlert(validate.error)
-            }
-            if(validate.field === 'job title'){
-                setJobTitleAlert(validate.error)
-            }
-            if(validate.field === 'rating'){
-                setRatingAlert(validate.error)
-            }
-            if(validate.field === 'description'){
-                setDescriptionAlert(validate.error)
-            }
+            if(validate.field === 'name'){ setNameAlert(validate.error)}
+            if(validate.field === 'email'){ setEmailAlert(validate.error)}
+            if(validate.field === 'job title'){ setJobTitleAlert(validate.error)}
+            if(validate.field === 'rating'){ setRatingAlert(validate.error) }
+            if(validate.field === 'description'){ setDescriptionAlert(validate.error) }
             return false
         })
         return false
@@ -190,6 +204,8 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
         return 'success'
     }
 }
+
+
 
 
 
@@ -220,16 +236,24 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                         </Col>
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                             <div className="form-group">
+                                <label>Email:</label>
+                                <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} className="form-control" placeholder="Enter email"/>
+                                <FormInputAlert alert={emailAlert}/>
+                            </div>
+                        </Col>
+                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                            <div className="form-group">
                                 <label>Job Title:</label>
                                 <input type="text" onChange={(e) => setJobTitle(e.target.value)} value={jobTitle} className="form-control" placeholder="Job title"/>
                                 <FormInputAlert alert={jobTitleAlert}/>
                             </div>
                         </Col>
-                        <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                        <Col xs={12} sm={12} md={12} lg={6} xl={6}>
                             <div className="form-group">
                                 <label>Description:</label>
-                                <textarea className="form-control" onChange={(e) => setDescription(e.target.value)}  value={description} rows="4" cols="50" placeholder="Write Message..."></textarea>
+                                <textarea className="form-control" onChange={(e) => handleTextChange(e.target.value)}  value={description} rows="4" cols="50" placeholder="Write Message..."></textarea>
                                 <FormInputAlert alert={descriptionAlert}/>
+                                <div className="word-count"><b>Max words:</b> {wordCount} / 50</div>
                             </div>
                         </Col>
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -298,6 +322,7 @@ const CropperFrame = ({imageSource, setImageSource, crop, setCrop, setImage, cle
     // update profile image 
     const updateUserImage = (dataURL) => {
         setImage(dataURL)
+        clearFileInput()
         return setImageSource('')
     }
 

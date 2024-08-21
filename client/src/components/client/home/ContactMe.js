@@ -25,7 +25,7 @@ import AOS from 'aos'
 
 
 
-const ContactMe = ({ loader, alertNotification }) => {
+const ContactMe = ({ contactRef, loader, alertNotification }) => {
     const FetchContactMeRef = useRef()
     const [contactMe, setContactMe] = useState({})
 
@@ -63,7 +63,7 @@ const ContactMe = ({ loader, alertNotification }) => {
 
   return (
     <Fragment>
-        { contactMe ? ( <ContactMeContent alertNotification={alertNotification} loader={loader} contactMe={contactMe}/>) : null }
+        { contactMe ? ( <ContactMeContent contactRef={contactRef} alertNotification={alertNotification} loader={loader} contactMe={contactMe}/>) : null }
     </Fragment>
   )
 }
@@ -72,7 +72,7 @@ export default ContactMe
 
 
 
-const ContactMeContent = ({contactMe, alertNotification, loader}) => {
+const ContactMeContent = ({contactMe, contactRef, alertNotification, loader}) => {
     return (
         <div className="get-in-touch-container">
         <div className="inner-get-in-touch">
@@ -81,7 +81,7 @@ const ContactMeContent = ({contactMe, alertNotification, loader}) => {
                         <ContentLeft contactMe={contactMe}/>
                     </Col>
                     <Col xs={12} sm={12} md={12} lg={12} xl={6}>
-                        <ContentRight alertNotification={alertNotification} loader={loader} contactMe={contactMe}/>
+                        <ContentRight contactRef={contactRef} alertNotification={alertNotification} loader={loader} contactMe={contactMe}/>
                     </Col>
                 </Row>
             </div>
@@ -135,7 +135,7 @@ const BottomContent = ({counter, description, icon}) => {
 
 
 
-const ContentRight = ({contactMe, alertNotification, loader}) => {
+const ContentRight = ({contactMe, contactRef, alertNotification, loader}) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -274,7 +274,7 @@ const ContentRight = ({contactMe, alertNotification, loader}) => {
 
 
     return (
-        <div className="content-right">
+        <div ref={contactRef} className="content-right">
             <div className="title-header">
                 <h3 data-aos={'fade-up-left'} >{contactMe.title}</h3>
                 <div data-aos={'fade-down-right'} className="description">{contactMe.form_text ? (HTMLReactParser(contactMe.form_text)) : null }</div>
