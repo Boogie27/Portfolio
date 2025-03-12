@@ -11,8 +11,8 @@ const state = process.env.NODE_ENV
 // data base url link
 const clientURI = 'http://localhost:3000'
 const serverURL = 'http://localhost:3001'
-let productionClientURL = 'https://eloquent.com'
-let productionServerURL = 'https://server.eloquent.com'
+let productionClientURL = 'https://elotechsolutions.com'
+let productionServerURL = 'https://server.elotechsolutions.com'
 
 
 
