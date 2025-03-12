@@ -1,6 +1,11 @@
 
 import Moment from "moment";
 
+const state = process.env.NODE_ENV
+
+
+
+
 
 
 // data base url link
@@ -16,26 +21,38 @@ const userDemoImage = 'demo.png' // demo user image
 
 // server url 
 const url = (string = null) => { 
-    const url = window.location.href.split('/')[2]
-    const url_name = url.split(':')[0]
-    if(url_name === 'localhost'){
+    if(state === 'development'){
         return serverURL + string
     }
     return productionServerURL + string
 }
+// const url = (string = null) => { 
+//     const url = window.location.href.split('/')[2]
+//     const url_name = url.split(':')[0]
+//     if(url_name === 'localhost'){
+//         return serverURL + string
+//     }
+//     return productionServerURL + string
+// }
 
 
 
 
 // client url
 const ClientUrl = (string = null) => { 
-    const url = window.location.href.split('/')[2]
-    const url_name = url.split(':')[0]
-    if(url_name === 'localhost'){
+    if(state === 'development'){
         return clientURI + string
     }
     return productionClientURL + string
 }
+// const ClientUrl = (string = null) => { 
+//     const url = window.location.href.split('/')[2]
+//     const url_name = url.split(':')[0]
+//     if(url_name === 'localhost'){
+//         return clientURI + string
+//     }
+//     return productionClientURL + string
+// }
 
 
 

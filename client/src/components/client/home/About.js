@@ -56,7 +56,7 @@ const About = () => {
             <div className="inner-about-us">
                 <div className="title-header">
                     <h3>{aboutMe.title}</h3>
-                </div>
+                    </div>
                 <div className="body">
                     <Row className="show-grid">
                         <Col xs={12} sm={12} md={12} lg={12} xl={6}>

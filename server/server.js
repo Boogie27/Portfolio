@@ -63,6 +63,11 @@ app.use('/public/asset/image/portfolio/', express.static(path.join(__dirname, '/
 //  port
 const PORT = env.PORT || 3001
 
+//  ********* Test ********
+app.get('/test', (req, res) => {
+    res.send('Server running on port:' + PORT)
+})
+
 // ************** running the server*********
 app.listen(PORT, () => {
     console.log("Server running on port: " + PORT)
