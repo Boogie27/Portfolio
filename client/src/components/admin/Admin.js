@@ -81,9 +81,10 @@ const Admin = ({setAppState}) => {
                     alertNotification('error', data.message)
                     return navigate('/dashboard/login')
                 }else if(data.status === 'ok'){
+                    console.log(data)
                     setIsLoggedIn(true)
                     setUser(data.user)
-                    setTheme(data.user.theme)
+                    setTheme(data.user.admin_theme)
                     dispatch(fetchUser(data.user))
                     alertNotification('sucess', 'Login successful!')
                 }

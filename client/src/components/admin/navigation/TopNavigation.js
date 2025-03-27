@@ -48,7 +48,7 @@ const NavigationMiddle = ({toggleApp}) => {
       <div className="navigation-middle">
         <ul>
             <li>
-              <NavLink onClick={() => toggleApp('admin')} to="/dashboard">Dashboard</NavLink>
+              <NavLink onClick={() => toggleApp('client')} to="/">Home</NavLink>
             </li>
             <li>
               <NavLink onClick={() => toggleApp('admin')} to="/dashboard/banner">Banner</NavLink>
