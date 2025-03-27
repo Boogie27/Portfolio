@@ -1,0 +1,7 @@
+ValidationError: home_banners validation failed: user_id: Path `user_id` is required.
+    at Document.invalidate (/home/koworld/nodevenv/server.charles.koworldltd.com/20/lib/node_modules/mongoose/lib/document.js:3318:32)
+    at /home/koworld/nodevenv/server.charles.koworldltd.com/20/lib/node_modules/mongoose/lib/document.js:3079:17
+    at /home/koworld/nodevenv/server.charles.koworldltd.com/20/lib/node_modules/mongoose/lib/schemaType.js:1388:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+File does not exists
+File does not exists

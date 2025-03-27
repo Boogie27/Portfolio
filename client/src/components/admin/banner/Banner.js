@@ -221,10 +221,11 @@ const Banner = ({ user, preloader, alertNotification }) => {
     const toggleImageInput = (event) => {
         let token = Cookies.get('Eloquent_token')
         if(token){
-            preloader(true, 'Uploading image, please wait...')
+            // preloader(true, 'Uploading image, please wait...')
             if(event.target.files && event.target.files.length > 0){
                 // upload image here
                 const formData = new FormData()
+                formData.append('token', token)
                 formData.append('image', event.target.files[0])
                 Axios.post(url('/api/admin/upload-home-banner-image'), formData).then((response) => {
                     const data = response.data

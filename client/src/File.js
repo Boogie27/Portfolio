@@ -12,7 +12,7 @@ const state = process.env.NODE_ENV
 const clientURI = 'http://localhost:3000'
 const serverURL = 'http://localhost:3001'
 let productionClientURL = 'https://elotechsolutions.com'
-let productionServerURL = 'https://server.elotechsolutions.com'
+let productionServerURL = 'https://elotechsolutions.com'
 
 
 

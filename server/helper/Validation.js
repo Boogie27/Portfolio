@@ -5,26 +5,26 @@ const Validate = (inputs) => {
     let error = []
     if(inputs && inputs.length) {
         inputs.map((input) => {
-            if(input.required && !input.input.length){
+            if(input.hasOwnProperty('required') && input.required == true && input.input == ''){
                 const name = capitalized(input.field)
                 const message = {
                     field: input.field,
                     error: `*${name} field is required`
                 }
                 error.push(message)
-            }else if(input.input.length > input.maxLength ){
+            }else if(input.hasOwnProperty('maxLength') && input.input != '' && input.input.length > input.maxLength ){
                 const message = {
                     field: input.field,
                     error: `*Must be maximum of ${input.maxLength} characters`
                 }
                 error.push(message)
-            }else if(input.input.length < input.minLength ){
+            }else if(input.hasOwnProperty('minLength') && input.input != '' && input.input.length < input.minLength ){
                 const message = {
                     field: input.field,
                     error: `*Must be minimum of ${input.minLength} characters`
                 }
                 error.push(message)
-            }else if(input.field == 'email'){
+            }else if(input.hasOwnProperty('email') && input.email == true){
                 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/; // Regular expression for validating email
                 if(!emailRegex.test(input.input)){
                     const message = {
@@ -33,7 +33,7 @@ const Validate = (inputs) => {
                     }
                     error.push(message)
                 }
-            }else if(input.field == 'phone'){
+            }else if(input.hasOwnProperty('phone') && input.phone == true && input.input != ''){
                 const phoneRegex = /^[+]?[\s./0-9]*[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/g // Regular expression for digits with optional + ( ) sign
                 if(!phoneRegex.test(input.input)){
                     const message = {
@@ -42,7 +42,7 @@ const Validate = (inputs) => {
                     }
                     error.push(message)
                 }
-            }else if(input.equals){
+            }else if(input.hasOwnProperty('equals') && input.equals == true){
                 for(let i = 0; i < inputs.length; i++){
                     const item = inputs[i]
                     if(input.equals == item.field && input.input != item.input){
@@ -60,7 +60,7 @@ const Validate = (inputs) => {
             return error
         })
     }
-    if(error.length > 0){
+    if(error.length){
         return error
     }else{
         return 'success'

@@ -18,10 +18,19 @@ const SkillsRoute = require('./routes/SkillsRoute')
 const QualificationRoute = require('./routes/QualificationRoute')
 const PortfolioRoute = require('./routes/PortfolioRoute')
 const TestimonialRoute = require('./routes/TestimonialRoute')
+const SettingsRoute = require('./routes/SettingsRoute')
+const ReviewRequestRoute = require('./routes/ReviewRequestRoute')
 
 
 
 
+// CORS Middleware Setup
+app.use((request, response, next) => {
+    response.header("Access-Control-Allow-Origin", "https://charles.koworldltd.com");
+    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    response.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow specific methods
+    next()
+})
 
 
 
@@ -52,6 +61,12 @@ app.use(SkillsRoute)
 app.use(QualificationRoute)
 app.use(PortfolioRoute)
 app.use(TestimonialRoute)
+app.use(SettingsRoute)
+app.use(ReviewRequestRoute)
+
+
+
+
 
 
 // serve static image from folders in the server to frontend
@@ -60,13 +75,17 @@ app.use('/public/asset/image/users/', express.static(path.join(__dirname, '/publ
 app.use('/public/asset/image/portfolio/', express.static(path.join(__dirname, '/public/asset/image/portfolio')));
 
 
+
+//   example to test if server is working
+app.get("/example", (reguest, response) => {
+    console.log('Server is running!')
+    return response.send("Server is working!")
+})
+
+
+
 //  port
 const PORT = env.PORT || 3001
-
-//  ********* Test ********
-app.get('/test', (req, res) => {
-    res.send('Server running on port:' + PORT)
-})
 
 // ************** running the server*********
 app.listen(PORT, () => {

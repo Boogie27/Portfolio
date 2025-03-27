@@ -70,30 +70,14 @@ const UpdatePortfolioHeader = AsyncHandler(async (request, response) => {
     let titleAlert = ''
     let firstHeaderAlert = ''
     const content = [
-        {
-            field: 'title',
-            input: input.title,
-            maxLength: 50,
-            minLength: 3,
-            required: true,
-        },
-        {
-            field: 'first-header',
-            input: input.firstHeader,
-            maxLength: 100,
-            minLength: 3,
-            required: true,
-        }
+        {  field: 'title', input: input.title,  maxLength: 50,  minLength: 3,   required: true, },
+        {  field: 'first-header', input: input.firstHeader,  maxLength: 100, minLength: 3,required: true,}
     ]
     const validation = Validate(content)
     if(validation != 'success'){
         validation.map((validate) => {
-            if(validate.field === 'title'){
-                titleAlert = validate.error
-            }
-            if(validate.field === 'first-header'){
-                firstHeaderAlert = validate.error
-            }
+            if(validate.field === 'title'){  titleAlert = validate.error }
+            if(validate.field === 'first-header'){  firstHeaderAlert = validate.error }
             return false
         })
         return {
@@ -156,7 +140,7 @@ const AddNewPortfolio = AsyncHandler(async (request, response) => {
             return response.send({ status: 'error', message: 'Portfolio already exists' })
         }
 
-        const order = await PortfolioModel.find({ user_id: user_id }).exec()
+        const order = await PortfolioModel.findOne({ user_id: user_id }).sort({order: -1}).exec()
 
         if (imageFile) {
             const upload = FileUpload({
@@ -182,8 +166,9 @@ const AddNewPortfolio = AsyncHandler(async (request, response) => {
         const content = {
             user_id: user_id,
             title: title,
+            link: input.link,
             image: imageName ? Array(imageName) : [],
-            order: order.length ? order.length + 1 : 1,
+            order: order ? order.order + 1 : 1,
             description: input.description,
             from_month: input.fromMonth,
             from_year: parseInt(input.fromYear),
@@ -216,30 +201,14 @@ const validate_input = (input) => {
     let titleAlert = ''
     let descriptionAlert = ''
     const content = [
-        {
-            field: 'title',
-            input: input.title,
-            maxLength: 50,
-            minLength: 3,
-            required: true,
-        },
-        {
-            field: 'description',
-            input: input.description,
-            maxLength: 2000,
-            minLength: 3,
-            required: true,
-        }
+        { field: 'title', input: input.title, maxLength: 50,  minLength: 3, required: true},
+        { field: 'description', input: input.description, maxLength: 2000, minLength: 3, required: true}
     ]
     const validation = Validate(content)
     if(validation != 'success'){
         validation.map((validate) => {
-            if(validate.field === 'title'){
-                titleAlert = validate.error
-            }
-            if(validate.field === 'description'){
-                firstHeaderAlert = validate.error
-            }
+            if(validate.field === 'title'){ titleAlert = validate.error}
+            if(validate.field === 'description'){firstHeaderAlert = validate.error}
             return false
         })
         return {
@@ -328,6 +297,7 @@ const UpdateUserPortfolio = AsyncHandler(async (request, response) => {
 
             if (upload.status) {
                 imageName = upload.newName;
+                portfolio.image.push(imageName)
             } else if(upload.error){
                 return response.send({ status: 'error', message: upload.error })
             }
@@ -340,18 +310,24 @@ const UpdateUserPortfolio = AsyncHandler(async (request, response) => {
             technology = portfolio.technologies
         }
 
+        // check if image is present then add to array of images
+        if(imageName){
+            portfolio.image.push(imageName)
+        }
+
         const updateContent = {
             user_id: user_id,
             title: title,
+            link: input.link,
             description: input.description,
             from_month: input.fromMonth,
             from_year: parseInt(input.fromYear),
             to_month: input.toMonth,
             to_year: parseInt(input.toYear),
             technologies: technology,
-            is_featured: 0,
+            is_featured: portfolio.is_featured ? 1 : 0,
             updated_at: today(),
-            image: imageName ? portfolio.image.push(imageName) : portfolio.image,
+            image: portfolio.image,
         };
 
         const update = await PortfolioModel.findOneAndUpdate({_id: portfolio._id}, {$set: updateContent}).exec()
@@ -592,6 +568,43 @@ const DeleteUserPortfolioImage = AsyncHandler(async (request, response) => {
 
 
 
+// update user portifolio orer
+const UpdateUserPortfolioOrder = AsyncHandler(async (request, response) => {
+    try{
+        const input = request.body
+        const userToken = jwt.verify(input.token, env.SECRET_KEY) //check if user token exists
+        if(!userToken){
+            return response.send({status: 'not-login', message: 'Login user to perform this action'})
+        }
+
+        const user_id = userToken.string._id
+        const exists = await PortfolioModel.findOne({ _id: input._id, user_id:  user_id}).exec()
+        if(!exists){
+            return response.send({status: 'error', message: 'Either Portfolio does not exist or you need to login'})
+        }
+        const updateContent = {
+            order: input.order,
+            updated_at: today(), 
+        }
+        const update = await PortfolioModel.findOneAndUpdate({_id: exists._id}, {$set: updateContent}).exec()
+        if(update){
+            const updatedPortfolio = await PortfolioModel.findOne({ _id: exists._id })
+            return response.send({status: 'ok', updatedPortfolio: updatedPortfolio})
+        }
+        return response.send({status: 'error', message: 'Something went wrong, try again!'})
+    }catch(error){
+        return response.send({ status: 'catch-error', catchError: error })
+    }
+})
+
+
+
+
+
+
+
+
+
 
 
 // ****************** CLIENT SECTION *****************
@@ -599,7 +612,7 @@ const DeleteUserPortfolioImage = AsyncHandler(async (request, response) => {
 //   fetch client portfolios
 const FetchClientUserPortfolios = AsyncHandler(async (request, response) => {
     try{
-        const portfolios = await PortfolioModel.find({is_featured: 1}).exec()
+        const portfolios = await PortfolioModel.find({is_featured: 1}).sort({ order: 1 }).exec()
         if(portfolios){
             return response.send({status: 'ok', portfolios: portfolios})
         }
@@ -644,6 +657,7 @@ module.exports = {
     FetchUserPortfolios,
     EditUserPortfolioImage,
     AddUserPortfolioImage,
+    UpdateUserPortfolioOrder,
     DeleteUserPortfolioImage,
     FetchClientUserPortfolios,
     ToggleFeaturedUserPortfolio,

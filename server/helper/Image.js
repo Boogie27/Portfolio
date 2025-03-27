@@ -32,6 +32,7 @@ const FileUpload = (file) => {
                 return console.log(error)
             }
         })
+        console.log('file uploaded successfully')
         return { status: true, newName: newName}
     }
     return { status: 'error'}
@@ -64,8 +65,38 @@ const RemoveFile = (filePath) => {
 }
 
 
+// accept base64 string, convert to buffer and upload
+const UploadCropImage = (string) => {
+    return new Promise((resolve, reject) => {
+        let imageName = ''
+        const image = string.base64.split(':')
+        if(!string){
+            return resolve({ status: 'error', error: 'Base64 string is required' })
+        }
+        if(image && image[0] != 'http'){
+            const base64 = string.base64.split(',')[1] // Get the base64 string without the "data:image/jpeg;base64," part
+            const buffer = Buffer.from(base64, 'base64') // Decode base64 string to buffer
+            const name = `${string.name}-${Date.now()}.${string.extension}`
+            const fileName = `${string.destination}${name}`
+        
+            // Write buffer to a file
+            fs.writeFile(fileName, buffer, (err) => {
+                if (err) {
+                    console.error('Error writing file', err)
+                    return resolve({ status: 'error', error: 'Failed to save image' })
+                }
+                return resolve({ status: 'ok', imageName: name });
+            });
+        }else{
+            return resolve({ status: 'ok', imageName: imageName });
+        }
+    })
+}
+
+
 module.exports = {
     FileUpload,
     RemoveFile,
     RandomString,
+    UploadCropImage,
 }

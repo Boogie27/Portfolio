@@ -119,11 +119,15 @@ const generate_token = (string ='', secret_key='', duration='') => {
 
 const FetchLoginAdminUser = AsyncHandler(async (request, response) => {
     const token = request.params.token
-    const user = jwt.verify(token, env.SECRET_KEY)
-    if(!user){
+    const userToken = jwt.verify(token, env.SECRET_KEY)
+    if(!userToken){
         return response.send({status: 'error', message: 'Login to access the admin dashboard!'})
+    }
+    const exists = await UserModel.findOne({ email: userToken.string.email, is_active: 1 })
+    if(!exists){
+        return response.send({status: 'error', message: 'Login admin to perform that action!'})
     }else{
-        return response.send({status: 'ok', user: user.string})
+        return response.send({status: 'ok', user: exists})
     }
     return response.send({status: 'error', message: 'Something went wront, try again!'})
 })
@@ -134,7 +138,7 @@ const FetchLoginAdminUser = AsyncHandler(async (request, response) => {
 
 
 const ToggleAdminUserAppTheme = AsyncHandler(async (request, response) => {
-    const { token } = request.body
+    const { token, theme } = request.body
     const userToken = jwt.verify(token, env.SECRET_KEY)
     if(!userToken){
         return response.send({status: 'error', message: 'Login to perform that action!'})
@@ -143,10 +147,12 @@ const ToggleAdminUserAppTheme = AsyncHandler(async (request, response) => {
     if(!exists){
         return response.send({status: 'error', message: 'Login admin to perform that action!'})
     }
-    const theme = exists.admin_theme == 'dark' ? 'light' : 'dark'
     const update = await UserModel.findOneAndUpdate({_id: exists._id}, {$set: { admin_theme:  theme }}).exec()
+   
     if(update){
-        return response.send({status: 'ok', theme: theme})
+        const user = await UserModel.findOne({ _id: exists._id, is_active: 1 })
+        console.log(user.admin_theme)
+        return response.send({status: 'ok', admin_theme: user.admin_theme})
     }
     return response.send({status: 'error', message: 'Something went wront, try again!'})
 })

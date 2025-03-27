@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 const HomeBannerModel = require('../models/HomeBannerModel')
 const AsyncHandler = require('express-async-handler')
 const { today } = require('../data')
-const { FileUpload } = require('../helper/Image')
+const { FileUpload, RemoveFile } = require('../helper/Image')
 
 
 
@@ -176,29 +176,48 @@ const FetchClientHomeBanner = AsyncHandler(async (request, response) => {
 
 
 
-const UploadHomeBanner = AsyncHandler(async (req, res) => {
-    let exists = await HomeBannerModel.findOne().exec()
-    if(exists){
-        const destinationPath = path.join(__dirname, '../public/asset/image/users/');
-        // Ensure the directory exists
-        if (!fs.existsSync(destinationPath)) {
-            fs.mkdirSync(destinationPath, { recursive: true });
+const UploadHomeBanner = AsyncHandler(async (request, response) => {
+    try {
+        const size = 1000;
+        let imageName = '';
+        const input = request.body;
+        
+        const userToken = jwt.verify(input.token, env.SECRET_KEY)
+        if (!userToken) {
+            return response.send({ status: 'error', message: 'Login user to perform this action' })
         }
-    
-        const upload = createUpload(destinationPath);
-    
-        upload(req, res, async (err) => {
-            if (err) {
-                res.status(400).send({ message: err });
-            } else {
-                if (req.file === undefined) {
-                    res.status(400).send({ message: 'No file selected!' });
-                } else {
-                    await HomeBannerModel.findOneAndUpdate({_id: exists._id}, {$set: { image: req.file.filename}}).exec()
-                    res.send({ status: 'ok', imageName: req.file.filename});
+
+        const user_id = userToken.string._id
+        let exists = await HomeBannerModel.findOne({ user_id: user_id}).exec()
+        const imageFile = request.files ? request.files.image : null;
+        if(exists){
+            const types = ['jpg', 'png', 'jpeg', 'svg', 'webp'];
+            const destination = path.join(__dirname, '../public/asset/image/users/')
+            if (imageFile) {
+                const upload = FileUpload({
+                    size: size,
+                    types: types,
+                    file: imageFile,
+                    name: 'banner-image-',
+                    destination: destination
+                })
+                if (upload.status) {
+                    imageName = upload.newName;
+                    const filePath = destination + exists.image
+                    RemoveFile(filePath) // delete old existing image from user folder
+                } else if(upload.error){
+                    return response.send({ status: 'error', message: upload.error })
                 }
+                const updatedContent = {
+                    image: imageName,
+                }
+                await HomeBannerModel.findOneAndUpdate({_id: exists._id, user_id: user_id}, {$set: updatedContent}).exec()
+                return response.send({ status: 'ok', imageName: imageName});
             }
-        });
+        }
+        
+    } catch (error) {
+        return response.send({ status: 'error', error: error.message });
     }
 })
 

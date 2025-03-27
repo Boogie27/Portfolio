@@ -10,15 +10,27 @@ import React from 'react'
 const Preloader = () => {
     const serverREaderRef = useRef()
     const [preloader, setPreloader] = useState(true)
+    const [isServerLoaded, setIsServerLoaded] = useState(false)
+
 
     const CheckIFServerIsReady = () => {
         Axios.get(url('/api/client/check-server-ready')).then((response) => {
             const data = response.data
             if(data.status === 'ok'){
                 removerPreloader()
+                setIsServerLoaded(true)
+            }
+            if(isServerLoaded === true){
+                setIsServerLoaded(false)
             }
         }).catch(error => {
-            console.log(error)
+            // console.log(error)
+            if(isServerLoaded === false){
+                setTimeout(() => {
+                    CheckIFServerIsReady()
+                    console.log("Can't detect server...")
+                }, 5000)
+            }
         })
     }
 

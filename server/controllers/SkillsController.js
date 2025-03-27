@@ -187,6 +187,7 @@ const AddNewSkills = AsyncHandler(async (request, response) => {
             title: title,
             rating: input.rating,
             image: imageName,
+            is_featured: 0,
             created_at: today(),
             updated_at: today()
         }
@@ -398,6 +399,50 @@ const validate_edit_skill_input = (input) => {
 
 
 
+
+
+
+
+
+
+
+// toggle user skill featured
+const ToggleUserSkillsFeature = AsyncHandler(async (request, response) => {
+    try{
+        
+        const { _id, token } = request.body
+        const userToken = jwt.verify(token, env.SECRET_KEY) //check if user token exists
+        if(!userToken){
+            return response.send({status: 'error', message: 'Login user to perform this action'})
+        }
+        const user_id = userToken.string._id
+        const exists = await SkillsModel.findOne({ _id: _id, user_id:  user_id}).exec()
+        if(!exists){
+            return response.send({status: 'error', message: 'Either Skill does not exist or you need to login'})
+        }
+        const featured = exists.is_featured ? 0 : 1
+        const update = await SkillsModel.findOneAndUpdate({_id: exists._id}, {$set: {is_featured: featured}}).exec()
+        if(update){
+            const updatedSkill = await SkillsModel.findOne({ _id: exists._id })
+            console.log(updatedSkill)
+            return response.send({status: 'ok', updatedSkill: updatedSkill})
+        }
+        return response.send({status: 'error', message: 'Something went wrong, try again!'})
+    }catch(error){
+        return response.send({ status: 'catch-error', catchError: error })
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
 // ****************** CLIENT SKILL SECTION *********************
 //   fetch client skills header
 const FetchClientSkillsHeader = AsyncHandler(async (request, response) => {
@@ -442,5 +487,6 @@ module.exports = {
     FetchClientSkills,
     UpdateUserSkillsHeader,
     FetchClientSkillsHeader,
+    ToggleUserSkillsFeature,
 }
 

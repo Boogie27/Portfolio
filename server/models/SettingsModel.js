@@ -12,7 +12,15 @@ const SettingsSchema  = new mongoose.Schema({
         type: String,
         required: true
     },
+    email_title: {
+        type: String,
+        required: true
+    },
     email: {
+        type: String,
+        required: true
+    },
+    phone_title: {
         type: String,
         required: true
     },
@@ -22,9 +30,12 @@ const SettingsSchema  = new mongoose.Schema({
     },
     phone_two: {
         type: String,
-        required: true
     },
     address: {
+        type: String,
+        required: true
+    },
+    address_title: {
         type: String,
         required: true
     },
@@ -35,6 +46,9 @@ const SettingsSchema  = new mongoose.Schema({
     postcode: {
         type: String,
         required: true
+    },
+    state: {
+        type: String,
     },
     country: {
         type: String,
