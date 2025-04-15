@@ -1721,6 +1721,7 @@ h1{
 .testimonial-container .inner-testimonial .react-multiple-carousel__arrow{
     display: none;
 }
+
 /* ************** dark mode ********** */
 .portfolio-container.dark .testimonial-container .inner-testimonial h3{
     color: #FDB813;

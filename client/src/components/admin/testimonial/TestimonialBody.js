@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { url, DateTime, user_image } from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserPortfolios, UpdateUserPortfolio } from '../../redux/admin/PortfolioSlice'
+import { fetchTestimonial, toggleTestimonialFeature, UpdateTestimonial } from '../../redux/admin/TestimonialSlice'
 import  DeleteTestimonial  from './DeleteTestimonial'
 import AddTestimonial from './AddTestimonial'
 import EditTestimonial from './EditTestimonial'
@@ -21,9 +21,8 @@ import EditTestimonial from './EditTestimonial'
 
 
 
-
 const TestimonialBody = ({preloader, alertNotification}) => {
-    const FetchUserPortfoliosRef = useRef(null)
+    const FetchTestimonialRef = useRef(null)
     let token = Cookies.get('Eloquent_token')
     const [addFormState, setAddFormState] = useState(false)
     const [deleteFormState, setDeleteFormState] = useState({state: false, _id: ''})
@@ -31,7 +30,7 @@ const TestimonialBody = ({preloader, alertNotification}) => {
 
     // redux 
     const dispatch = useDispatch()
-    const portfolios = useSelector(state => state.portfolios.portfolios)
+    const testimonials = useSelector(state => state.testimonials.testimonials)
 
 
     // toggle delete message modal
@@ -50,6 +49,7 @@ const TestimonialBody = ({preloader, alertNotification}) => {
         setEditFormState({state: state, _id: _id})
     }
 
+   
 
     // toggle features
     const toggleFeature = (_id) => {
@@ -59,10 +59,10 @@ const TestimonialBody = ({preloader, alertNotification}) => {
                 token: token
             }
             preloader(true, 'Please wait...')
-            Axios.post(url('/api/admin/toggle-portfolio-feature'), content).then((response) => {
+            Axios.post(url('/api/admin/toggle-testimonial-feature'), content).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
-                    dispatch(UpdateUserPortfolio(data.updatedPortfolio))
+                    dispatch(toggleTestimonialFeature(data.testimonialFeature))
                 }else if(data.status === 'error'){
                     alertNotification('error', data.message)
                 }else if(data.status === 'catch-error'){
@@ -77,12 +77,12 @@ const TestimonialBody = ({preloader, alertNotification}) => {
     }
 
     // fetch  user portfolio
-    const FetchUserPortfolios = () => {
+    const FetchTestimonials = () => {
         if(token){
-            Axios.get(url(`/api/admin/fetch-user-portfolios/${token}`)).then((response) => {
+            Axios.get(url(`/api/admin/fetch-user-testimonials/${token}`)).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
-                    dispatch(getUserPortfolios(data.portfolios))
+                    dispatch(fetchTestimonial(data.testimonials))
                 }
             }).catch(error => {
                 console.log(error)
@@ -93,61 +93,70 @@ const TestimonialBody = ({preloader, alertNotification}) => {
 
 
     
-    FetchUserPortfoliosRef.current = FetchUserPortfolios
+    FetchTestimonialRef.current = FetchTestimonials
 
     useEffect(() => {
         window.scrollTo(0, 0) // page scroll to top
-        FetchUserPortfoliosRef.current()
+        FetchTestimonialRef.current()
     }, [])
 
 
-    const testimonials = [
-        {
-            _id: 1,
-            name: "charles anonye",
-            image: "",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 2,
-            is_featured: 1,
-        },
-        {
-            _id: 1,
-            name: "charles anonye",
-            image: "4.png",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 3,
-            is_featured: 1,
-        },
-        {
-            _id: 3,
-            name: "charles anonye",
-            image: "5.png",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 4,
-            is_featured: 1,
-        },
-        {
-            _id: 4,
-            name: "charles anonye",
-            image: "6.jpg",
-            job_title: "Content Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 5,
-            is_featured: 1,
-        },
-        {
-            _id: 5,
-            name: "charles anonye",
-            image: "7.jpg",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 3,
-            is_featured: 1,
-        },
-    ]
+    // const testimonials = [
+    //     {
+    //         _id: 1,
+    //         name: "charles anonye",
+    //         image: "",
+    //         email: "anonyecharles@gmail.com",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 2,
+    //         is_featured: 1,
+    //         updated_at: "03/2/2023",
+    //     },
+    //     {
+    //         _id: 1,
+    //         name: "charles anonye",
+    //         image: "4.png",
+    //         email: "anonyecharles@gmail.com",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 3,
+    //         is_featured: 1,
+    //         updated_at: "03/2/2023",
+    //     },
+    //     {
+    //         _id: 3,
+    //         name: "charles anonye",
+    //         image: "5.png",
+    //          email: "anonyecharles@gmail.com",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 4,
+    //         is_featured: 1,
+    //         updated_at: "03/2/2023",
+    //     },
+    //     {
+    //         _id: 4,
+    //         name: "charles anonye",
+    //         image: "6.jpg",
+    //         job_title: "Content Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 5,
+    //         is_featured: 1,
+    //         updated_at: "03/2/2023",
+    //     },
+    //     {
+    //         _id: 5,
+    //         name: "charles anonye",
+    //         image: "7.jpg",
+    //          email: "anonyecharles@gmail.com",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 3,
+    //         is_featured: 1,
+    //         updated_at: "03/2/2023",
+    //     },
+    // ]
 
 
     
@@ -155,12 +164,14 @@ const TestimonialBody = ({preloader, alertNotification}) => {
         <div className="dashboard-banner-container">
             <TitleHeader toggleAddForm={toggleAddForm}/>
             <ContentTable testimonials={testimonials}  toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
-            <AddTestimonial addFormState={addFormState} toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
+            <AddTestimonial addFormState={addFormState}  toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
             {editFormState.state ? (<EditTestimonial editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
             <DeleteTestimonial deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
         </div>
     )
 }
+
+
 
 
 export default TestimonialBody
@@ -189,8 +200,9 @@ const ContentTable = ({testimonials, toggleDeleteForm, toggleFeature, toggleEdit
             <table className="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">Name</th>
                         <th scope="col">Image</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Job Title</th>
                         <th scope="col">Ratings</th>
                         <th scope="col">Featured</th>
@@ -227,17 +239,20 @@ const ContentItem = ({testimonial, toggleEditForm, toggleFeature, toggleDeleteFo
     return (
         <tr>
             <td>
-                <NavLink to={`/dashboard/testimonial/detail/${testimonial._id}`}>{testimonial.name}</NavLink>
-            </td>
-            <td>
                 <NavLink to={`/dashboard/testimonial/detail/${testimonial._id}`}>
                     <div className="image">
                         <img src={user_image(testimonial.image)} alt={testimonial.image}/>
                     </div>
                 </NavLink>
             </td>
+            <td>
+                <NavLink to={`/dashboard/testimonial/detail/${testimonial._id}`}>{testimonial.name}</NavLink>
+            </td>
+            <td>
+                <NavLink to={`/dashboard/testimonial/detail/${testimonial._id}`}>{testimonial.email}</NavLink>
+            </td>
             <td>{testimonial.job_title}</td>
-            <td>{testimonial.ratings}</td>
+            <td>{testimonial.rating} / 5</td>
             <td className="table-data-icon">
                 <FontAwesomeIcon onClick={() => toggleFeature(testimonial._id)} className={`icon ${testimonial.is_featured ? 'active' : ''}`} icon={testimonial.is_featured ? faToggleOn : faToggleOff}/>
             </td>

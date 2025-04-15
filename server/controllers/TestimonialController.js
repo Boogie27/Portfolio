@@ -292,7 +292,7 @@ const UpdateUserTestimonial = AsyncHandler(async (request, response) => {
             const update = await TestimonialModel.findOneAndUpdate({_id: exists._id}, {$set: updateContent}).exec()
             if(update){
                 const updatedContent = await TestimonialModel.findOne({_id: exists._id}).exec()
-                return response.send({status: 'ok', testimonial: updatedContent})
+                return response.send({status: 'ok', updateTestimonial: updatedContent})
             }
         }
         return response.send({status: 'error', message: 'Something went wront, try again!'})
@@ -346,7 +346,7 @@ const ToggleUserTestimonialFeature = AsyncHandler(async (request, response) => {
     const update = await TestimonialModel.findOneAndUpdate({_id: exists._id}, {$set: {is_featured: featured}}).exec()
     if(update){
         const testimonial = await TestimonialModel.findOne({ _id: _id })
-        return response.send({status: 'ok', testimonial: testimonial})
+        return response.send({status: 'ok', testimonialFeature: testimonial})
     }
     return response.send({status: 'error', message: 'Something went wrong, try again!'})
 })

@@ -194,7 +194,7 @@ const ContentItem = ({title, image, rate}) => {
                                 <li className="percentage-icon">%</li>
                             </ul>
                         </div>
-                   </div>
+                    </div>
                     <div className="ratings">
                        <div style={{ width: `${rate}%` }} className="bar"></div> 
                     </div>

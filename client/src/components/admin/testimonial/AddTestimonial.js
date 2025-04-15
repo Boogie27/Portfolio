@@ -12,8 +12,9 @@ import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
 import { url, user_image } from '../../../File'
 import { useDispatch } from 'react-redux'
-import { AddUserPortfolio } from '../../redux/admin/PortfolioSlice'
+import { AddUserTestimonial } from '../../redux/admin/TestimonialSlice'
 import { Validate } from '../../../helper/Validation'
+import ImageCropper from './ImageCropper'
 
 
 
@@ -33,6 +34,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     const [name, setName] = useState('')
     const [jobTitle, setJobTitle] = useState('')
     const [image, setImage] = useState('')
+    const [isImageUrl, setIsImageUrl] = useState(null)
     const [imageSource, setImageSource] = useState('')
     const [rating, setRating] = useState('')
     const [description, setDescription] = useState('')
@@ -71,7 +73,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                 }else if(data.status === 'error'){
                     alertNotification('error', data.message)
                 }else if(data.status === 'ok'){
-                    dispatch(AddUserPortfolio(data.newPortfolio))
+                    dispatch(AddUserTestimonial(data.testimonial))
                     alertNotification('success', 'Testimonial added successfully!')
                     initFormInput() //init fields
                     toggleForm(false)
@@ -83,27 +85,35 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
             })
         }
     }
-
+   
     // clear file input
     const clearFileInput = () => {
-        return imageRef.current.value = '';
+        return imageRef.current.value = null
     }
     // open file picker
     const toggleImageInput = () => {
         return imageRef.current.click()
     }
-
     // set image file
     const getImageFile = (e) => {
         const file = e.target.files
         if(file && file.length > 0){
             const reader = new FileReader()
             reader.addEventListener('load', () => {
-                const imageUrl = reader.result ? reader.result.toString() : ''
+                const imageUrl = reader.result ? reader.result.toString() : '' 
                 setImageSource(imageUrl)
+                toggeleImageWindow(imageUrl)
             })
             reader.readAsDataURL(file[0])
         }
+    }
+     // toggle image crop window
+     const toggeleImageWindow = (imageUrl) => {
+        if(imageUrl !== 'close'){
+            return setIsImageUrl(imageUrl)
+        }
+        clearFileInput()
+        return setIsImageUrl(null)
     }
 
     // close add form
@@ -180,7 +190,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
             <div className="content-form">
                <div className="form">
                     <div className="title-header">
-                        <h3>ADD NEW PORTFOLIO</h3>
+                        <h3>ADD NEW TESTIMONIAL</h3>
                         <FontAwesomeIcon onClick={() => toggleForm(false) } className="icon" icon={faTimes} />
                     </div>
                     <Row className="show-grid">
@@ -190,7 +200,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                                     <FontAwesomeIcon  onClick={() => toggleImageInput()} className="icon" icon={faCamera} /> 
                                     <img src={user_image()} alt={'profile'}/>
                                 </div>
-                                <input type="file" ref={imageRef} style={{ display: 'none' }}  onChange={getImageFile} className="form-control" placeholder="Enter Image"/>
+                                <input type="file" ref={imageRef} style={{ display: '' }}  onChange={getImageFile} className="form-control" placeholder="Enter Image"/>
                             </div>
                         </Col>
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -243,6 +253,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                     </Row>
                </div>
             </div>
+            {isImageUrl ? (<ImageCropper toggeleImageWindow={toggeleImageWindow}/>) : null }
         </div>
     )
 }

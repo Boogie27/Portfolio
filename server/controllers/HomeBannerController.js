@@ -246,7 +246,7 @@ const UploadImageFile = AsyncHandler(async (request, response) => {
     const size = 1000  
     const imageFile = request.files.image
     const types = ['jpg', 'png', 'jpeg', 'svg']
-    const destination = path.join(__dirname, '../public/asset/image/users/');
+    const destination = path.join(__dirname, '../public/asset/image/users/')
 
     const upload = FileUpload({
         size: size,
