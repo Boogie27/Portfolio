@@ -88,6 +88,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                     alertNotification('success', 'Testimonial added successfully!')
                     initFormInput() //init fields
                     toggleForm(false)
+                    clearFileInput()
                 }
                 return setButton(false)
             }).catch(error => {

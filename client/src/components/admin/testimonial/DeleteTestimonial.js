@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { url } from '../../../File'
 import { useDispatch } from 'react-redux'
-import { deleteUserPortfolio } from '../../redux/admin/PortfolioSlice'
+import { deleteTestimonial } from '../../redux/admin/TestimonialSlice'
 
 
 
@@ -40,11 +40,11 @@ const DeleteContent = ({deleteFormState, setDeleteFormState, alertNotification})
                 token: token
             }
             setButton(false)
-            Axios.post(url('/api/admin/delete-user-portfolio'), content).then((response) => {
+            Axios.post(url('/api/admin/delete-user-testimonial'), content).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
-                    dispatch(deleteUserPortfolio(data.deletedPortfolio))
-                    alertNotification('success', 'Portfolio Deleted successfully!')
+                    dispatch(deleteTestimonial(data.deletedTestimonial))
+                    alertNotification('success', 'Testimonial Deleted successfully!')
                 }else{
                     alertNotification('error', data.message)
                 }
@@ -86,7 +86,7 @@ const DeleteModal = ({toggleActionModal, button, deleteContact, deleteFormState}
                         button ? (
                             <button type="button">Please wait...</button>
                         ) : (
-                            <button onClick={() => deleteContact(deleteFormState._id)} type="button">Delete Portfolio</button>
+                            <button onClick={() => deleteContact(deleteFormState._id)} type="button">Delete Testimonial</button>
                         )
                     }
                 </div>
