@@ -34,13 +34,17 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     const [name, setName] = useState('')
     const [jobTitle, setJobTitle] = useState('')
     const [image, setImage] = useState('')
+    const [cropWindow, setCropWindow] = useState(false)
     const [isImageUrl, setIsImageUrl] = useState(null)
     const [imageSource, setImageSource] = useState('')
     const [rating, setRating] = useState('')
+    const [email, setEmail] = useState('')
     const [description, setDescription] = useState('')
     const [button, setButton] = useState(false)
 
     const [nameAlert, setNameAlert] = useState('')
+    const [emailAlert, setEmailAlert] = useState('')
+    const [imageAlert, setImageAlert] = useState('')
     const [ratingAlert, setRatingAlert] = useState('')
     const [jobTitleAlert, setJobTitleAlert] = useState('')
     const [descriptionAlert, setDescriptionAlert] = useState('')
@@ -50,6 +54,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
         if(token){
             const content = {
                 name: name,
+                email: email,
                 rating: rating,
                 job_title: jobTitle,
                 description: description,
@@ -57,17 +62,23 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
             const validate = validate_input(content)
             if(validate !== 'success') return
             initErrorAlert() //initialize form input error alert
+
+            if(!isImageUrl){ 
+               return  alertNotification('error', 'Upload Photo field is required!')
+            }
            
             setButton(true)
             const formData = new FormData()
-            formData.append('image', image)
             formData.append('name', name)
+            formData.append('email', email)
             formData.append('token', token)
-            formData.append('job_title', jobTitle)
             formData.append('rating', rating)
+            formData.append('job_title', jobTitle)
+            formData.append('image', imageSource)
             formData.append('description', description)
             Axios.post(url('/api/admin/add-new-testimonnial'), formData).then((response) => {
                 const data = response.data
+                console.log(data)
                 if(data.status === 'input-error'){
                     inputErrorForBackend(data.validationError)
                 }else if(data.status === 'error'){
@@ -108,12 +119,12 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
         }
     }
      // toggle image crop window
-     const toggeleImageWindow = (imageUrl) => {
-        if(imageUrl !== 'close'){
-            return setIsImageUrl(imageUrl)
+     const toggeleImageWindow = (string) => {
+        if(string === 'close'){
+            clearFileInput()
+            return setCropWindow(false)
         }
-        clearFileInput()
-        return setIsImageUrl(null)
+        return setCropWindow(true)
     }
 
     // close add form
@@ -130,6 +141,9 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
    const initErrorAlert = () => {
         setNameAlert('')
         setRatingAlert('')
+        setEmailAlert('')
+        setEmailAlert('')
+        setImageAlert('')
         setJobTitleAlert('')
         setDescriptionAlert('')
     }
@@ -138,13 +152,16 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     const initFormInput = () => {
         setName('')
         setJobTitle('')
+        setEmailAlert('')
         setRating('')
+        setImageAlert('')
         setDescription('')
     }
 
     // backen error message
     const inputErrorForBackend = (error) => {
         setNameAlert(error.name)
+        setEmailAlert(error.email)
         setRatingAlert(error.rating)
         setJobTitleAlert(error.job_title)
         setDescriptionAlert(error.description)
@@ -158,13 +175,17 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
         { field: 'name', input: input.name, maxLength: 50, minLength: 3, required: true },
         { field: 'job_title', input: input.job_title, maxLength: 100, minLength: 3, required: true },
         { field: 'rating', input: input.rating, required: true },
+        { field: 'email', input: input.email,  email: true, required: true },
         { field: 'description', input: input.description, maxLength: 2000, minLength: 3,  required: true }
     ]
     const validation = Validate(content)
     if(validation !== 'success'){
         validation.map((validate) => {
-            if(validate.field === 'title'){
+            if(validate.field === 'name'){
                 setNameAlert(validate.error)
+            }
+            if(validate.field === 'email'){
+                setEmailAlert(validate.error)
             }
             if(validate.field === 'job_title'){
                 setJobTitleAlert(validate.error)
@@ -198,9 +219,10 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                             <div className="form-group">
                                 <div className="profile-image text-center">
                                     <FontAwesomeIcon  onClick={() => toggleImageInput()} className="icon" icon={faCamera} /> 
-                                    <img src={user_image()} alt={'profile'}/>
+                                    <img src={isImageUrl ? isImageUrl : user_image()} alt={'profile'}/>
                                 </div>
-                                <input type="file" ref={imageRef} style={{ display: '' }}  onChange={getImageFile} className="form-control" placeholder="Enter Image"/>
+                                <input type="file" ref={imageRef} style={{ display: 'none' }}  onChange={getImageFile} className="form-control" placeholder="Enter Image"/>
+                                <FormInputAlert alert={imageAlert}/>
                             </div>
                         </Col>
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -217,7 +239,14 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                                 <FormInputAlert alert={jobTitleAlert}/>
                             </div>
                         </Col>
-                        <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                            <div className="form-group">
+                                <label>Email:</label>
+                                <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} className="form-control" placeholder="Enter email"/>
+                                <FormInputAlert alert={emailAlert}/>
+                            </div>
+                        </Col>
+                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                             <div className="form-group">
                                 <label>Description:</label>
                                 <textarea className="form-control" onChange={(e) => setDescription(e.target.value)}  value={description} rows="4" cols="50" placeholder="Write Message..."></textarea>
@@ -253,7 +282,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                     </Row>
                </div>
             </div>
-            {isImageUrl ? (<ImageCropper toggeleImageWindow={toggeleImageWindow}/>) : null }
+            {cropWindow ? (<ImageCropper image={imageSource} setIsImageUrl={setIsImageUrl} toggeleImageWindow={toggeleImageWindow}/>) : null }
         </div>
     )
 }

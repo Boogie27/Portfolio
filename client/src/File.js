@@ -79,8 +79,6 @@ const userImage = (string='') => {
     return url('/public/asset/image/users/' + image)
 }
 
-
-
 const icon = (string='') => {
     return url('/public/asset/image/icon/' + string)
 }

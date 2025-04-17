@@ -43,11 +43,11 @@ const Portfolio = () => {
         setPortfolioState(state)
     }
 
-    const header = {
-        title: "MY RECENT PORTFOLIO",
-        header_one: "Elevate your brand to new",
-        header_two: "heights with our portfolio expertise",
-    }
+    // const header = {
+    //     title: "MY RECENT PORTFOLIO",
+    //     header_one: "Elevate your brand to new",
+    //     header_two: "heights with our portfolio expertise",
+    // }
 
     // const portfolios = [
     //     {

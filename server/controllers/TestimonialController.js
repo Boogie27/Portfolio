@@ -142,7 +142,7 @@ const FetchTestimonialHeader = AsyncHandler(async (request, response) => {
 
 
 
-// add newe testimonial
+// add new testimonial
 const AddNewTestimonial = AsyncHandler(async (request, response) => {
     try{
         let imageName = ''
@@ -151,12 +151,11 @@ const AddNewTestimonial = AsyncHandler(async (request, response) => {
         if(validation != 'success'){
             return response.send({status: 'input-error', validationError: validation})
         }
+
         const userToken = jwt.verify(input.token, env.SECRET_KEY) //check if user token exists
         if(!userToken){
             return response.send({status: 'not-login', message: 'Login user to perform this action'})
         }
-
-        
 
         const user_id = userToken.string._id;
         const name = input.name.toLowerCase()
@@ -171,6 +170,7 @@ const AddNewTestimonial = AsyncHandler(async (request, response) => {
                 name: 'testimonial-image',
                 destination:  path.join(__dirname, '../public/asset/image/users/')
             })
+            
             if(uploades.status == 'error'){
                 return response.send({status: 'error', message: uploades.error})
             }else if(uploades.status == 'ok'){

@@ -26,7 +26,7 @@ const ReviewRequestRoute = require('./routes/ReviewRequestRoute')
 
 // CORS Middleware Setup
 app.use((request, response, next) => {
-    response.header("Access-Control-Allow-Origin", "https://charles.koworldltd.com");
+    response.header("Access-Control-Allow-Origin", "https://elotechsolutions.com");
     response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     response.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow specific methods
     next()

@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { url, DateTime, user_image } from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchTestimonial, toggleTestimonialFeature, UpdateTestimonial } from '../../redux/admin/TestimonialSlice'
+import { fetchTestimonial, toggleTestimonialFeature } from '../../redux/admin/TestimonialSlice'
 import  DeleteTestimonial  from './DeleteTestimonial'
 import AddTestimonial from './AddTestimonial'
 import EditTestimonial from './EditTestimonial'

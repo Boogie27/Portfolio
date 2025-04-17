@@ -17,7 +17,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Client = ({setAppState}) => {
     const setThemeAutoRef = useRef(null)
-    const preloaderRef = useRef(null)
     const [theme, setTheme] = useState('dark')
     const [isLoading, setIsLoading] = useState({ state: false, text: 'Loading...'})
 

@@ -70,8 +70,11 @@ const UploadCropImage = (string) => {
     return new Promise((resolve, reject) => {
         let imageName = ''
         const image = string.base64.split(':')
+        if(string.base64 === ''){
+            return resolve({ status: 'error', error: 'Base64 Image string is required' })
+        }
         if(!string){
-            return resolve({ status: 'error', error: 'Base64 string is required' })
+            return resolve({ status: 'error', error: 'Base64 Image string is required' })
         }
         if(image && image[0] != 'http'){
             const base64 = string.base64.split(',')[1] // Get the base64 string without the "data:image/jpeg;base64," part

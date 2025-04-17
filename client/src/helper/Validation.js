@@ -5,20 +5,20 @@ const Validate = (inputs) => {
     let error = []
     if(inputs && inputs.length) {
         inputs.map((input) => {
-            if(input.required && !input.input.length){
+            if(input.required && input.input.length === 0){
                 const name = capitalized(input.field)
                 const message = {
                     field: input.field,
                     error: `*${name} field is required`
                 }
                 error.push(message)
-            }else if(input.input.length > input.maxLength ){
+            }else if(input.input.length &&  input.input.length > input.maxLength ){
                 const message = {
                     field: input.field,
                     error: `*Must be maximum of ${input.maxLength} characters`
                 }
                 error.push(message)
-            }else if(input.input.length < input.minLength ){
+            }else if(input.input.length && input.input.length < input.minLength ){
                 const message = {
                     field: input.field,
                     error: `*Must be minimum of ${input.minLength} characters`
