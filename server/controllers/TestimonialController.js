@@ -161,8 +161,8 @@ const AddNewTestimonial = AsyncHandler(async (request, response) => {
         const name = input.name.toLowerCase()
         const email = input.email.toLowerCase()
         let exists = await TestimonialModel.findOne({name: name, user_id: user_id}).exec()
-        if(exists && exists.name === name){
-            return response.send({status: 'input-error', validationError: { name: 'Name already exists!' }})
+        if(!exists){
+            return response.send({status: 'error', message: 'Testimonial does not exist!'})
         }else{
             const uploades = await UploadCropImage({
                 base64: input.image,
@@ -252,37 +252,40 @@ const UpdateUserTestimonial = AsyncHandler(async (request, response) => {
         }
 
         const user_id = userToken.string._id;
-        const name = input.name.toLowerCase()
-        const email = input.email.toLowerCase()
         let exists = await TestimonialModel.findOne({ _id: input._id, user_id: user_id }).exec()
         if(!exists){
             return response.send({status: 'error', message: 'Either Testimonial deos not exist or Login!'})
         }else{
-            const imageExists = input.image.split(':')
-            if(imageExists[0] == 'http' || imageExists[0] == 'https'){   
-                imageName = exists.image
+            if(!input.image || input.image === null){
+                imageName =  exists.image
             }else{
-                const uploades = await UploadCropImage({
-                    base64: input.image,
-                    extension: 'png',
-                    name: 'testimonial-image',
-                    destination:  path.join(__dirname, '../public/asset/image/users/')
-                })
-                if(uploades.status == 'error'){
-                    return response.send({status: 'error', message: uploades.error})
-                }else if(uploades.status == 'ok'){
-                    imageName = uploades.imageName
-                    if(exists.image){
-                        const destination = path.join(__dirname, '../public/asset/image/users/');
-                        const filePath = destination + exists.image
-                        RemoveFile(filePath) // delete old existing image from image folder
+                const imageExists = input.image.split(':')
+                if(imageExists[0] == 'http' || imageExists[0] == 'https'){   
+                    imageName = exists.image
+                }else{
+                    const uploades = await UploadCropImage({
+                        base64: input.image,
+                        extension: 'png',
+                        name: 'testimonial-image',
+                        destination:  path.join(__dirname, '../public/asset/image/users/')
+                    })
+                    if(uploades.status == 'error'){
+                        return response.send({status: 'error', message: uploades.error})
+                    }else if(uploades.status == 'ok'){
+                        imageName = uploades.imageName
+                        if(exists.image){
+                            const destination = path.join(__dirname, '../public/asset/image/users/');
+                            const filePath = destination + exists.image
+                            RemoveFile(filePath) // delete old existing image from image folder
+                        }
                     }
                 }
             }
+            
            
             const updateContent = {
-                name: name,
-                email: email,
+                name: input.name,
+                email: input.email,
                 rating: parseInt(input.rating),
                 job_title: input.job_title,
                 description: input.description,

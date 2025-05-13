@@ -34,6 +34,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     const [name, setName] = useState('')
     const [jobTitle, setJobTitle] = useState('')
     const [image, setImage] = useState('')
+    const [base64, setBase64] = useState('')
     const [cropWindow, setCropWindow] = useState(false)
     const [isImageUrl, setIsImageUrl] = useState(null)
     const [imageSource, setImageSource] = useState('')
@@ -74,11 +75,10 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
             formData.append('token', token)
             formData.append('rating', rating)
             formData.append('job_title', jobTitle)
-            formData.append('image', imageSource)
+            formData.append('image', base64)
             formData.append('description', description)
             Axios.post(url('/api/admin/add-new-testimonnial'), formData).then((response) => {
                 const data = response.data
-                console.log(data)
                 if(data.status === 'input-error'){
                     inputErrorForBackend(data.validationError)
                 }else if(data.status === 'error'){
@@ -89,6 +89,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                     initFormInput() //init fields
                     toggleForm(false)
                     clearFileInput()
+                    setIsImageUrl(null)
                 }
                 return setButton(false)
             }).catch(error => {
@@ -136,13 +137,13 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
         initFormInput()
         clearFileInput()
         setButton(false)
+        setIsImageUrl('')
     }
 
     //  initialize form input error
    const initErrorAlert = () => {
         setNameAlert('')
         setRatingAlert('')
-        setEmailAlert('')
         setEmailAlert('')
         setImageAlert('')
         setJobTitleAlert('')
@@ -153,7 +154,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     const initFormInput = () => {
         setName('')
         setJobTitle('')
-        setEmailAlert('')
+        setEmail('')
         setRating('')
         setImageAlert('')
         setDescription('')
@@ -283,7 +284,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                     </Row>
                </div>
             </div>
-            {cropWindow ? (<ImageCropper image={imageSource} setIsImageUrl={setIsImageUrl} toggeleImageWindow={toggeleImageWindow}/>) : null }
+            {cropWindow ? (<ImageCropper image={imageSource} setIsImageUrl={setIsImageUrl} setBase64={setBase64} toggeleImageWindow={toggeleImageWindow}/>) : null }
         </div>
     )
 }

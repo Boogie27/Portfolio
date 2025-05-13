@@ -75,11 +75,11 @@ const DeleteModal = ({toggleActionModal, button, deleteContact, deleteFormState}
         <div className="form-action-modal">
             <div className="inner-form-action">
                 <div className="title-header">
-                    <h3>Delete User Portfolio</h3>
+                    <h3>Delete User Testimonial</h3>
                     <FontAwesomeIcon onClick={() => toggleActionModal()} className="icon" icon={faTimes} />
                 </div>
                 <div className="body">
-                    Do you wish to delete this Portfolio?
+                    Do you wish to delete this Testimonial?
                 </div>
                 <div className="button">
                     {

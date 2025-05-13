@@ -11,9 +11,10 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
 import { url, user_image } from '../../../File'
-import { useDispatch } from 'react-redux'
-import { AddUserPortfolio } from '../../redux/admin/PortfolioSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { UpdateTestimonial } from '../../redux/admin/TestimonialSlice'
 import { Validate } from '../../../helper/Validation'
+import ImageCropper from './ImageCropper'
 
 
 
@@ -25,29 +26,39 @@ import { Validate } from '../../../helper/Validation'
 
 
 
-const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
+const EditTestimonial = ({editFormState, toggleEditForm, alertNotification}) => {
     // react hooks
     const dispatch = useDispatch()
+    const testimonials = useSelector(state => state.testimonials.testimonials)
+    const testimonial = testimonials.find(testimonial => testimonial._id === editFormState._id)
+
     const imageRef = useRef(null)
     let token = Cookies.get('Eloquent_token')
-    const [name, setName] = useState('')
-    const [jobTitle, setJobTitle] = useState('')
-    const [image, setImage] = useState('')
-    const [imageSource, setImageSource] = useState('')
-    const [rating, setRating] = useState('')
-    const [description, setDescription] = useState('')
+    const [name, setName] = useState(testimonial.name)
+    const [jobTitle, setJobTitle] = useState(testimonial.job_title)
+    const [image, setImage] = useState(testimonial.image)
+    const [base64, setBase64] = useState('')
+    const [cropWindow, setCropWindow] = useState(false)
+    const [isImageUrl, setIsImageUrl] = useState(null)
+    const [imageSource, setImageSource] = useState(testimonial.image)
+    const [rating, setRating] = useState(testimonial.rating)
+    const [email, setEmail] = useState(testimonial.email)
+    const [description, setDescription] = useState(testimonial.description)
     const [button, setButton] = useState(false)
 
     const [nameAlert, setNameAlert] = useState('')
+    const [emailAlert, setEmailAlert] = useState('')
+    const [imageAlert, setImageAlert] = useState('')
     const [ratingAlert, setRatingAlert] = useState('')
     const [jobTitleAlert, setJobTitleAlert] = useState('')
     const [descriptionAlert, setDescriptionAlert] = useState('')
 
 
-    const editMyTestimonial = () => {
+    const editNewTestimonial = () => {
         if(token){
             const content = {
                 name: name,
+                email: email,
                 rating: rating,
                 job_title: jobTitle,
                 description: description,
@@ -55,14 +66,15 @@ const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
             const validate = validate_input(content)
             if(validate !== 'success') return
             initErrorAlert() //initialize form input error alert
-           
             setButton(true)
             const formData = new FormData()
-            formData.append('image', image)
+            formData.append('_id', editFormState._id)
             formData.append('name', name)
+            formData.append('email', email)
             formData.append('token', token)
-            formData.append('job_title', jobTitle)
             formData.append('rating', rating)
+            formData.append('job_title', jobTitle)
+            formData.append('image', base64)
             formData.append('description', description)
             Axios.post(url('/api/admin/edit-user-testimonnial'), formData).then((response) => {
                 const data = response.data
@@ -71,10 +83,12 @@ const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                 }else if(data.status === 'error'){
                     alertNotification('error', data.message)
                 }else if(data.status === 'ok'){
-                    dispatch(AddUserPortfolio(data.newPortfolio))
+                    dispatch(UpdateTestimonial(data.updateTestimonial))
                     alertNotification('success', 'Testimonial updated successfully!')
                     initFormInput() //init fields
                     toggleForm(false)
+                    clearFileInput()
+                    setIsImageUrl(null)
                 }
                 return setButton(false)
             }).catch(error => {
@@ -83,43 +97,54 @@ const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
             })
         }
     }
-
+   
     // clear file input
     const clearFileInput = () => {
-        return imageRef.current.value = '';
+        return imageRef.current.value = null
     }
     // open file picker
     const toggleImageInput = () => {
         return imageRef.current.click()
     }
-
     // set image file
     const getImageFile = (e) => {
         const file = e.target.files
         if(file && file.length > 0){
             const reader = new FileReader()
             reader.addEventListener('load', () => {
-                const imageUrl = reader.result ? reader.result.toString() : ''
+                const imageUrl = reader.result ? reader.result.toString() : '' 
                 setImageSource(imageUrl)
+                toggeleImageWindow(imageUrl)
             })
             reader.readAsDataURL(file[0])
         }
+    }
+     // toggle image crop window
+     const toggeleImageWindow = (string) => {
+        if(string === 'close'){
+            clearFileInput()
+            return setCropWindow(false)
+        }
+        return setCropWindow(true)
     }
 
     // close add form
     const toggleForm = (state) => {
         setImage('')
-        toggleAddForm(state)
+        toggleEditForm(state)
         initErrorAlert()
         initFormInput()
         clearFileInput()
         setButton(false)
+        setIsImageUrl('')
     }
 
     //  initialize form input error
    const initErrorAlert = () => {
         setNameAlert('')
         setRatingAlert('')
+        setEmailAlert('')
+        setImageAlert('')
         setJobTitleAlert('')
         setDescriptionAlert('')
     }
@@ -128,13 +153,16 @@ const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     const initFormInput = () => {
         setName('')
         setJobTitle('')
+        setEmail('')
         setRating('')
+        setImageAlert('')
         setDescription('')
     }
 
     // backen error message
     const inputErrorForBackend = (error) => {
         setNameAlert(error.name)
+        setEmailAlert(error.email)
         setRatingAlert(error.rating)
         setJobTitleAlert(error.job_title)
         setDescriptionAlert(error.description)
@@ -148,13 +176,17 @@ const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
         { field: 'name', input: input.name, maxLength: 50, minLength: 3, required: true },
         { field: 'job_title', input: input.job_title, maxLength: 100, minLength: 3, required: true },
         { field: 'rating', input: input.rating, required: true },
+        { field: 'email', input: input.email,  email: true, required: true },
         { field: 'description', input: input.description, maxLength: 2000, minLength: 3,  required: true }
     ]
     const validation = Validate(content)
     if(validation !== 'success'){
         validation.map((validate) => {
-            if(validate.field === 'title'){
+            if(validate.field === 'name'){
                 setNameAlert(validate.error)
+            }
+            if(validate.field === 'email'){
+                setEmailAlert(validate.error)
             }
             if(validate.field === 'job_title'){
                 setJobTitleAlert(validate.error)
@@ -176,11 +208,11 @@ const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
 
 
     return (
-        <div className={`app-content-form ${addFormState ? 'active' : ''}`}>
+        <div className={`app-content-form ${editFormState ? 'active' : ''}`}>
             <div className="content-form">
                <div className="form">
                     <div className="title-header">
-                        <h3>ADD NEW TESTIMONIAL</h3>
+                        <h3>EDIT TESTIMONIAL</h3>
                         <FontAwesomeIcon onClick={() => toggleForm(false) } className="icon" icon={faTimes} />
                     </div>
                     <Row className="show-grid">
@@ -188,9 +220,10 @@ const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                             <div className="form-group">
                                 <div className="profile-image text-center">
                                     <FontAwesomeIcon  onClick={() => toggleImageInput()} className="icon" icon={faCamera} /> 
-                                    <img src={user_image()} alt={'profile'}/>
+                                    <img src={isImageUrl ? isImageUrl : user_image(testimonial.image)} alt={'profile'}/>
                                 </div>
                                 <input type="file" ref={imageRef} style={{ display: 'none' }}  onChange={getImageFile} className="form-control" placeholder="Enter Image"/>
+                                <FormInputAlert alert={imageAlert}/>
                             </div>
                         </Col>
                         <Col xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -207,7 +240,14 @@ const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                                 <FormInputAlert alert={jobTitleAlert}/>
                             </div>
                         </Col>
-                        <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                            <div className="form-group">
+                                <label>Email:</label>
+                                <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} className="form-control" placeholder="Enter email"/>
+                                <FormInputAlert alert={emailAlert}/>
+                            </div>
+                        </Col>
+                        <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                             <div className="form-group">
                                 <label>Description:</label>
                                 <textarea className="form-control" onChange={(e) => setDescription(e.target.value)}  value={description} rows="4" cols="50" placeholder="Write Message..."></textarea>
@@ -234,7 +274,7 @@ const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                                     button ? (
                                         <button type="button">PLEASE WAIT...</button>
                                     ) : (
-                                        <button onClick={() => editMyTestimonial()} type="button">UPDATE TESTIMONIAL</button>
+                                        <button onClick={() => editNewTestimonial()} type="button">UPDATE TESTIMONIAL</button>
                                     )
                                 }
                                 
@@ -243,6 +283,7 @@ const EditTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
                     </Row>
                </div>
             </div>
+            {cropWindow ? (<ImageCropper image={imageSource} setIsImageUrl={setIsImageUrl} setBase64={setBase64} toggeleImageWindow={toggeleImageWindow}/>) : null }
         </div>
     )
 }
