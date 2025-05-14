@@ -424,7 +424,6 @@ const ToggleUserSkillsFeature = AsyncHandler(async (request, response) => {
         const update = await SkillsModel.findOneAndUpdate({_id: exists._id}, {$set: {is_featured: featured}}).exec()
         if(update){
             const updatedSkill = await SkillsModel.findOne({ _id: exists._id })
-            console.log(updatedSkill)
             return response.send({status: 'ok', updatedSkill: updatedSkill})
         }
         return response.send({status: 'error', message: 'Something went wrong, try again!'})

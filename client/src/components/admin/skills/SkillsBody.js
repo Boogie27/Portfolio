@@ -1,18 +1,18 @@
 import Axios from 'axios'
 import Cookies from 'js-cookie'
-import HTMLReactParser from 'html-react-parser'
 import { useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faPen,
     faTrash,
+    faToggleOff,
     faFolderOpen,
     faToggleOn,
 } from '@fortawesome/free-solid-svg-icons'
 import { url, DateTime, icon } from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserSkills } from '../../redux/admin/SkillSlice'
-import  DeleteContactForm  from './DeleteContactForm'
+import { getUserSkills, toggleSKillsFeature } from '../../redux/admin/SkillSlice'
+import  DeleteSkillsForm  from './DeleteSkillsForm'
 import AddSkills from './AddSkills'
 import EditSkills from './EditSkills'
 
@@ -63,7 +63,26 @@ const SkillsBody = ({preloader, alertNotification}) => {
         }
     }
 
-
+    // feature skills on or off
+    const toggleFeatured = (_id) => {
+        if(token){
+            const content = {
+                _id: _id,
+                token: token
+            }
+            Axios.post(url(`/api/admin/toggle-skills-feature`), content).then((response) => {
+                const data = response.data
+                if(data.status === 'ok'){
+                    dispatch(toggleSKillsFeature(data.updatedSkill))
+                }else if(data.status === 'error'){
+                    alertNotification('error', data.message)
+                }
+            }).catch(error => {
+                console.log(error)
+                alertNotification('error', 'Oops!, an error has occured, check the server!')
+            })
+        }
+    }
 
     
     FetchUserSkillsRef.current = FetchUserSkills
@@ -177,10 +196,10 @@ const SkillsBody = ({preloader, alertNotification}) => {
     return (
         <div className="dashboard-banner-container">
             <TitleHeader toggleAddForm={toggleAddForm}/>
-            <ContentTable skills={skills}  toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
+            <ContentTable skills={skills}  toggleFeatured={toggleFeatured} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
             <AddSkills addFormState={addFormState} toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
             {editFormState.state ? (<EditSkills editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
-            <DeleteContactForm deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
+            <DeleteSkillsForm deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
         </div>
     )
 }
@@ -206,7 +225,7 @@ const TitleHeader = ({toggleAddForm}) => {
   }
 
 
-const ContentTable = ({skills, toggleDeleteForm, toggleEditForm}) => {
+const ContentTable = ({skills, toggleDeleteForm, toggleFeatured, toggleEditForm}) => {
     return (
         <div className="table-content-container">
             <table className="table table-hover">
@@ -223,7 +242,7 @@ const ContentTable = ({skills, toggleDeleteForm, toggleEditForm}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    { skills.map((skill, index) => (<ContentItem key={index} skill={skill} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
+                    { skills.map((skill, index) => (<ContentItem key={index} skill={skill} toggleFeatured={toggleFeatured} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
                 </tbody>
             </table>
             { skills.length === 0 ? (<TableEmpty/>) : null }
@@ -246,7 +265,7 @@ const TableEmpty = () => {
 
 
 
-const ContentItem = ({skill, toggleEditForm, toggleDeleteForm}) => {
+const ContentItem = ({skill, toggleEditForm, toggleFeatured, toggleDeleteForm}) => {
     return (
         <tr>
             <td>{skill.title}</td>
@@ -257,7 +276,7 @@ const ContentItem = ({skill, toggleEditForm, toggleDeleteForm}) => {
             </td>
             <td>{skill.rating}%</td>
             <td className="table-data-icon">
-                <FontAwesomeIcon className="icon" icon={faToggleOn} />
+                <FontAwesomeIcon  onClick={() => toggleFeatured(skill._id)}  className={`icon ${skill.is_featured ? 'active' : ''}`} icon={skill.is_featured ? faToggleOn : faToggleOff} />
             </td>
             <td>{DateTime(skill.created_at, 'Do MMMM YYYY | h:mma')}</td>
             <td>{DateTime(skill.updated_at, 'Do MMMM YYYY | h:mma')}</td>

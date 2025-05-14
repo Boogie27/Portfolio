@@ -34,7 +34,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
     const [name, setName] = useState('')
     const [jobTitle, setJobTitle] = useState('')
     const [image, setImage] = useState('')
-    const [base64, setBase64] = useState('')
+    const [base64, setBase64] = useState(null)
     const [cropWindow, setCropWindow] = useState(false)
     const [isImageUrl, setIsImageUrl] = useState(null)
     const [imageSource, setImageSource] = useState('')

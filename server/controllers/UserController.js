@@ -143,6 +143,7 @@ const ToggleAdminUserAppTheme = AsyncHandler(async (request, response) => {
     if(!userToken){
         return response.send({status: 'error', message: 'Login to perform that action!'})
     }
+    console.log(theme)
     const exists = await UserModel.findOne({ email: userToken.string.email, is_active: 1 })
     if(!exists){
         return response.send({status: 'error', message: 'Login admin to perform that action!'})
@@ -151,7 +152,10 @@ const ToggleAdminUserAppTheme = AsyncHandler(async (request, response) => {
    
     if(update){
         const user = await UserModel.findOne({ _id: exists._id, is_active: 1 })
-        console.log(user.admin_theme)
+        if(!user){
+            return response.send({status: 'error', message: 'Login admin to perform that action!'})
+        }
+        return console.log(user.admin_theme)
         return response.send({status: 'ok', admin_theme: user.admin_theme})
     }
     return response.send({status: 'error', message: 'Something went wront, try again!'})

@@ -18,7 +18,7 @@ import { deleteUserSkill } from '../../redux/admin/SkillSlice'
 
 
 
-const DeleteContent = ({deleteFormState, setDeleteFormState, alertNotification}) => {
+const DeleteSkillsForm = ({deleteFormState, setDeleteFormState, alertNotification}) => {
     // react hooks
     const dispatch = useDispatch()
 
@@ -65,7 +65,7 @@ const DeleteContent = ({deleteFormState, setDeleteFormState, alertNotification})
     )
 }
 
-export default DeleteContent
+export default DeleteSkillsForm
 
 
 

@@ -16,6 +16,7 @@ const skillSlice = createSlice({
                     title: content.title,
                     image: content.image,
                     rating: content.rating,
+                    is_featured: content.is_featured,
                     created_at: content.created_at,
                     updated_at: content.updated_at
                 }
@@ -33,7 +34,13 @@ const skillSlice = createSlice({
                 const index = state.skills.findIndex(skill => skill._id === action.payload._id)
                 state.skills[index] = action.payload
             }
-        }
+        },
+        toggleSKillsFeature: (state, action) => {
+            if(state.skills !== undefined){    
+                const index = state.skills.findIndex(skill => skill._id === action.payload._id)
+                state.skills[index] = action.payload
+            }
+        },
     }
 })
 
@@ -46,6 +53,7 @@ export const {
     AddUserSkill,
     deleteUserSkill,
     UpdateUserSkill,
+    toggleSKillsFeature,
 } = skillSlice.actions
 export default skillSlice.reducer
 

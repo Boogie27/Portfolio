@@ -14,7 +14,7 @@ const ImageCropper = ({ image, setIsImageUrl, setBase64, toggeleImageWindow }) =
     const [crop, setCrop] = useState({ x:0, y:0 })
     const [zoom, setZoom] = useState(1)
     const [rotation, setRotation] = useState(0)
-    const [croppedImage, setCroppedImage] = useState(null)
+    // const [croppedImage, setCroppedImage] = useState(null)
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
     
   
@@ -35,7 +35,7 @@ const ImageCropper = ({ image, setIsImageUrl, setBase64, toggeleImageWindow }) =
 
           setBase64(croppedImage.base64)
           setIsImageUrl(croppedImage.blobUrl)
-          setCroppedImage(croppedImage.blobUrl)
+          // setCroppedImage(croppedImage.blobUrl)
           toggeleImageWindow('close')
         } catch (e) {
           console.error(e)

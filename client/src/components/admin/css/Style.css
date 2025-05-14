@@ -805,6 +805,7 @@ h1{
     position: relative;
     margin-bottom: 60px;
     background-color: transparent;
+    border: 1px solid #ededed;
 }
 .app-content-form .content-form .form .form-group .profile-image .icon{
     right: 0px;

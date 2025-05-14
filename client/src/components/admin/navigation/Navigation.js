@@ -19,19 +19,21 @@ const Navigation = ({ theme, setTheme, setAppState, alertNotification}) => {
     if(token){
       const content = {
         token: token,
+        theme: state,
       }
+
       setTheme(state)
       Axios.post(url('/api/admin/toggle-admin-app-theme'), content).then((response) => {
         const data = response.data
         if(data.status === 'error'){
             alertNotification('error', data.message)
         }else if(data.status === 'ok'){
-          setTheme(data.theme)
-          Cookies.set('Eloquent-admin-theme', data.theme, { expires: 7 })
+          setTheme(data.admin_theme)
+          Cookies.set('Eloquent-admin-theme', data.admin_theme, { expires: 7 })
         }
       }).catch(error => {
           console.log(error)
-          alertNotification('error', 'Something went wrong!')
+          alertNotification('error', 'Oops!, Something went wrong on the server side!')
       })
     }
   }
