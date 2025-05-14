@@ -24,6 +24,7 @@ import Qualification from './qualification/Qualification'
 import Portfolio from './portfolio/Portfolio'
 import PortfolioDetail from './portfolio/PortfolioDetail'
 import Testimonial from './testimonial/Testimonial'
+import Settings from './settings/Settings'
 
 
 
@@ -126,6 +127,7 @@ const Admin = ({setAppState}) => {
                 <Route path="/dashboard/about" element={<AboutMe preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/services" element={<Services preloader={preloader} alertNotification={alertNotification}/> }/>
                 <Route path="/dashboard/banner" element={<Banner user={user} preloader={preloader} alertNotification={alertNotification}/>}/>
+                <Route path="/dashboard/settings" element={<Settings user={user} preloader={preloader} alertNotification={alertNotification}/>}/>
             </Route>
             <Route path="/dashboard/login" element={<Login setIsLoggedIn={setIsLoggedIn} preloader={preloader} alertNotification={alertNotification}/>}/>
         </Routes>
