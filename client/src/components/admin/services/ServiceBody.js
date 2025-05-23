@@ -39,7 +39,6 @@ const ServiceBody = ({alertNotification, preloader}) => {
         setAddFormState(state)
     }
 
-
     // toggle edit form modal
     const toggleEditForm = (state=false, _id='') => {
         setEditFormState({state: state, _id: _id})

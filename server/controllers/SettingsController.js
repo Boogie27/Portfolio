@@ -19,6 +19,7 @@ const UpdateAppUserSettings = AsyncHandler(async (request, response) => {
     try{
         const input = request.body
         const validation = validate_input(input)
+       
         if(validation != 'success'){
             return response.send({status: 'input-error', validationError: validation})
         }
@@ -73,12 +74,12 @@ const UpdateAppUserSettings = AsyncHandler(async (request, response) => {
             }
             const settings = await SettingsModel.create(content)
             if(settings){
-                return response.send({status: 'ok', settings: settings})
+                return response.send({status: 'ok', updatedSettings: settings})
             }
         }
-        return response.send({status: 'error', message: 'Something went wront, try again!'})
+        return response.send({status: 'error', message: 'Oops!, Something went wront, try again!'})
     }catch(error) {
-        return response.send({status: 'error', message: 'Something went wront, try again!'})
+        return response.send({status: 'error', message: 'Oops!, Something went wront, try again!'})
     }
 })
 
@@ -102,37 +103,41 @@ const UpdateAppUserSettings = AsyncHandler(async (request, response) => {
     let allRightsAlert = ''
 
     const content = [
-        { field: 'app name', input: input.appName,  maxLength: 50,  minLength: 3, required: true },
+        { field: 'app name', input: input.app_name, maxLength: 50, minLength: 3, required: true },
+        { field: 'email_title', input: input.email_title, maxLength: 50, minLength: 3, required: true },
         { field: 'email', input: input.email,  email: true, required: true },
-        { field: 'email title', input: input.emailTitle,  maxLength: 50,  minLength: 3, required: true },
-        { field: 'phone title', input: input.phoneTitle,  maxLength: 50,  minLength: 3, required: true },
-        { field: 'phone one', input: input.phoneOne, required: true },
-        { field: 'address title', input: input.addressTitle,  maxLength: 50,  minLength: 3, required: true },
-        { field: 'address', input: input.address,  maxLength: 100,  minLength: 3, required: true },
-        { field: 'postcode', input: input.postCode,  maxLength: 30,  minLength: 3, required: true },
-        { field: 'town', input: input.town,  maxLength: 100,  minLength: 3, required: true },
-        { field: 'state', input: input.state,  maxLength: 100,  minLength: 3},
-        { field: 'country', input: input.country,  maxLength: 50,  minLength: 3, required: true },
-        { field: 'all rights', input: input.allRights,  maxLength: 50,  minLength: 3, required: true },
+        { field: 'address_title', input: input.address_title, maxLength: 50, minLength: 3,  required: true },
+        { field: 'address', input: input.address, maxLength: 200, minLength: 3, required: true },
+        { field: 'phone_title', input: input.phone_title, maxLength: 50, minLength: 3, required: true },
+        { field: 'phone_one', input: input.phone_one, phone: true, required: true },
+        { field: 'phone_two', input: input.phone_two, phone: true },
+        { field: 'state', input: input.state, maxLength: 50, minLength: 3,  required: true },
+        { field: 'postcode', input: input.postcode, maxLength: 10, minLength: 3,  required: true },
+        { field: 'town', input: input.town, maxLength: 50, minLength: 3,  required: true },
+        { field: 'country', input: input.country, maxLength: 50, minLength: 3,  required: true },
+        { field: 'all_rights', input: input.all_rights, maxLength: 50, minLength: 3,  required: true },
     ]
     const validation = Validate(content)
+
     if(validation != 'success'){
         validation.map((validate) => {
-            if(validate.field === 'app name'){ appNameAlert = validate.error}
+            console.log(validate)
+            if(validate.field === 'app_name'){ appNameAlert = validate.error}
             if(validate.field === 'email'){ emailAlert = validate.error}
-            if(validate.field === 'email title'){ emailTitleAlert = validate.error}
-            if(validate.field === 'address title'){ addressTitleAlert = validate.error}
+            if(validate.field === 'email_title'){ emailTitleAlert = validate.error}
+            if(validate.field === 'address_title'){ addressTitleAlert = validate.error}
             if(validate.field === 'address'){ addressAlert = validate.error}
             if(validate.field === 'postcode'){ postcodeAlert = validate.error}
             if(validate.field === 'town'){ townAlert = validate.error}
             if(validate.field === 'state'){ stateAlert = validate.error}
             if(validate.field === 'country'){ countryAlert = validate.error}
-            if(validate.field === 'phone title'){ phoneTitleAlert = validate.error}
-            if(validate.field === 'phone one'){ phoneOneAlert = validate.error}
-            if(validate.field === 'phone two'){ phoneTwoAlert = validate.error}
-            if(validate.field === 'all rights'){ allRightsAlert = validate.error}
+            if(validate.field === 'phone_title'){ phoneTitleAlert = validate.error}
+            if(validate.field === 'phone_one'){ phoneOneAlert = validate.error}
+            if(validate.field === 'phone_two'){ phoneTwoAlert = validate.error}
+            if(validate.field === 'all_rights'){ allRightsAlert = validate.error}
             return false
         })
+        
         return {
             appName: appNameAlert, email: emailAlert, emailTitle: emailTitleAlert, addressTitle: addressTitleAlert,
             address: addressAlert, postcode: postcodeAlert, town: townAlert, country: countryAlert, phoneTitle: phoneTitleAlert,
@@ -160,7 +165,6 @@ const FetchAppUserSettings = AsyncHandler(async (request, response) => {
         if (!userToken) {
             return response.send({ status: 'not-login', message: 'Login user to perform this action' })
         }
-
         const user_id = userToken.string._id;
         const settings = await SettingsModel.findOne({ user_id: user_id }).exec()
 
@@ -170,7 +174,7 @@ const FetchAppUserSettings = AsyncHandler(async (request, response) => {
 
         return response.send({ status: 'ok', settings: {} })
     } catch (error) {
-        return response.status(500).send({ status: 'error', message: 'An error occurred', error: error.message })
+        return response.status(500).send({ status: 'error', message: 'Oops!, an error has occurred', error: error.message })
     }
 })
 
@@ -193,7 +197,7 @@ const FetchAppClientSettings = AsyncHandler(async (request, response) => {
     try{
         const footerSettings = await SettingsModel.findOne().exec()
         if(footerSettings){
-            return response.send({status: 'ok', footerSettings: footerSettings})
+            return response.send({status: 'ok', settings: footerSettings})
         }
         return response.send({status: 'ok', footerSettings: {}})
     }catch(error){

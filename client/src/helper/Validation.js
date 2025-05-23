@@ -123,6 +123,13 @@ export {
 //         input: 'lkhfioukgdfbvubf',
 //         required: true,
 //     },
+// {
+    //         field: 'phone',
+    //         input: '6678thsf',
+    //         phone: true,
+    //         required: true,
+    //         equals: 'compare-password'
+    //     },
 // ]
 
 

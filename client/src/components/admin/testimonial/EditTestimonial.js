@@ -182,21 +182,11 @@ const EditTestimonial = ({editFormState, toggleEditForm, alertNotification}) => 
     const validation = Validate(content)
     if(validation !== 'success'){
         validation.map((validate) => {
-            if(validate.field === 'name'){
-                setNameAlert(validate.error)
-            }
-            if(validate.field === 'email'){
-                setEmailAlert(validate.error)
-            }
-            if(validate.field === 'job_title'){
-                setJobTitleAlert(validate.error)
-            }
-            if(validate.field === 'rating'){
-                setRatingAlert(validate.error)
-            }
-            if(validate.field === 'description'){
-                setDescriptionAlert(validate.error)
-            }
+            if(validate.field === 'name'){ setNameAlert(validate.error) }
+            if(validate.field === 'email'){ setEmailAlert(validate.error) }
+            if(validate.field === 'job_title'){ setJobTitleAlert(validate.error) }
+            if(validate.field === 'rating'){ setRatingAlert(validate.error) }
+            if(validate.field === 'description'){  setDescriptionAlert(validate.error) }
             return false
         })
         return false
