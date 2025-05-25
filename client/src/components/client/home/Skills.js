@@ -15,7 +15,7 @@ import Qualifications from './Qualifications'
 
 
 
-const Skills = () => {
+const Skills = ({skillsRef}) => {
 
     // const header = {
     //     title: "MY SKILLS & RATINGS",
@@ -128,10 +128,9 @@ const Skills = () => {
     }, [])
 
   return (
-    <div className="skills-container">
+    <div ref={skillsRef} className="skills-container">
         <div className="inner-skills">
             <TitleHeader header={header}/>
-            <Qualifications/>
             <Content skills={skills}/>
         </div>
     </div>

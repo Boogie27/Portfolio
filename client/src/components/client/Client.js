@@ -16,6 +16,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const Client = ({setAppState}) => {
+    const homeRef = useRef(null)
+    const aboutRef = useRef(null)
+    const skillsRef = useRef(null)
+    const servicesRef = useRef(null)
+    const projectsRef = useRef(null)
+    const contactRef = useRef(null)
+    const qualificationsRef = useRef(null)
+    const testimonialRef = useRef(null)
     const setThemeAutoRef = useRef(null)
     const [theme, setTheme] = useState('dark')
     const [isLoading, setIsLoading] = useState({ state: false, text: 'Loading...'})
@@ -40,12 +48,29 @@ const Client = ({setAppState}) => {
         }
     }
 
+    // toggle app state if admin or client
+    const toggleApp = (state) => {
+        setAppState(state)
+      }
+
     // action preloader
     const loader = (state=false, text='') => {
         setIsLoading({ state: state, text: text})
     }
+    // onclick smooth scroll 
+    const scrollToView = (item) => {
+        if(item === 'home'){homeRef.current?.scrollIntoView({ behavior: 'smooth' }) }
+        if(item === 'services'){servicesRef.current?.scrollIntoView({ behavior: 'smooth' })}
+        if(item === 'about'){aboutRef.current?.scrollIntoView({ behavior: 'smooth' })}
+        if(item === 'projects'){projectsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+        if(item === 'contact'){contactRef.current?.scrollIntoView({ behavior: 'smooth' })}
+        if(item === 'contact'){contactRef.current?.scrollIntoView({ behavior: 'smooth' })}
+        if(item === 'skills'){skillsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+        if(item === 'testimonial'){testimonialRef.current?.scrollIntoView({ behavior: 'smooth' })}
+    }
 
 
+    
     setThemeAutoRef.current = setThemeAuto
 
     useEffect(() => {
@@ -56,9 +81,9 @@ const Client = ({setAppState}) => {
     <div className={`portfolio-container ${theme}`}>
         <Preloader/>
         { isLoading.state ? (<ActionPreloader text={isLoading.text}/>) : null }
-        <Navigation theme={theme} setTheme={setTheme} setAppState={setAppState}/>
+        <Navigation theme={theme} scrollToView={scrollToView} toggleApp={toggleApp} setTheme={setTheme}/>
             <Routes>
-                <Route path="/" element={<Home loader={loader} alertNotification={alertNotification}/>}/>
+                <Route path="/" element={<Home loader={loader} homeRef={homeRef} testimonialRef={testimonialRef} aboutRef={aboutRef} qualificationsRef={qualificationsRef} skillsRef={skillsRef} servicesRef={servicesRef} contactRef={contactRef} projectsRef={projectsRef} alertNotification={alertNotification}/>}/>
             </Routes>
         <Footer/>
         <ToastContainer/>

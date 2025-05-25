@@ -25,7 +25,7 @@ import FormInputAlert from '../alert/FormInputAlert'
 
 
 
-const ContactMe = ({ loader, alertNotification }) => {
+const ContactMe = ({ loader, contactRef, alertNotification }) => {
     const FetchContactMeRef = useRef()
     const [contactMe, setContactMe] = useState({})
 
@@ -62,7 +62,7 @@ const ContactMe = ({ loader, alertNotification }) => {
 
   return (
     <Fragment>
-        { contactMe ? ( <ContactMeContent alertNotification={alertNotification} loader={loader} contactMe={contactMe}/>) : null }
+        { contactMe ? ( <ContactMeContent contactRef={contactRef} alertNotification={alertNotification} loader={loader} contactMe={contactMe}/>) : null }
     </Fragment>
   )
 }
@@ -71,10 +71,10 @@ export default ContactMe
 
 
 
-const ContactMeContent = ({contactMe, alertNotification, loader}) => {
+const ContactMeContent = ({contactMe, contactRef, alertNotification, loader}) => {
     return (
-        <div className="get-in-touch-container">
-        <div className="inner-get-in-touch">
+        <div ref={contactRef} className="get-in-touch-container">
+            <div className="inner-get-in-touch">
                 <Row className="show-grid">
                     <Col xs={12} sm={12} md={12} lg={12} xl={6}>
                         <ContentLeft contactMe={contactMe}/>

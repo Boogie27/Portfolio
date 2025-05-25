@@ -7,7 +7,7 @@ import Cookies from 'js-cookie'
 
 
 
-const Navigation = ({ theme, setTheme, setAppState}) => {
+const Navigation = ({ theme, scrollToView, toggleApp, setTheme }) => {
   const [sideNav, setSideNav] = useState(false)
 
 
@@ -21,11 +21,16 @@ const Navigation = ({ theme, setTheme, setAppState}) => {
     const toggleNavigation = () => {
       setSideNav(!sideNav)
     }
+
+    const sideScrollToView = (item) => {
+      scrollToView(item)
+      setSideNav(false)
+    }
     
   return (
     <div className="main-navigation">
-      <TopNavigation theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme} setAppState={setAppState}/>
-      <SideNavigation theme={theme} sideNav={sideNav} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
+      <TopNavigation theme={theme} scrollToView={scrollToView} toggleApp={toggleApp} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
+      <SideNavigation theme={theme} sideNav={sideNav} sideScrollToView={sideScrollToView} toggleApp={toggleApp} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
     </div>
   )
 }

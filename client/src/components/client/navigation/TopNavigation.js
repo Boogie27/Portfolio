@@ -11,17 +11,13 @@ import { NavLink } from 'react-router-dom'
 
 
 
-const TopNavigation = ({ theme, toggleAppTheme, toggleNavigation, setAppState}) => {
-  const toggleApp = (state) => {
-    setAppState(state)
-  }
-
+const TopNavigation = ({ theme, scrollToView, toggleApp, toggleAppTheme, toggleNavigation}) => {
   
   return (
     <div className="top-navigation-container">
         <div className="inner-navigation">
             <NavigationLeft/>
-            <NavigationMiddle toggleApp={toggleApp}/>
+            <NavigationMiddle scrollToView={scrollToView} toggleApp={toggleApp}/>
             <NavigationRight theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
         </div>
     </div>
@@ -49,18 +45,18 @@ const NavigationLeft = () => {
 
 
 
-const NavigationMiddle = ({toggleApp}) => {
+const NavigationMiddle = ({scrollToView, toggleApp}) => {
     return (
       <div className="navigation-middle">
         <ul>
-            <li>Home</li>
+            <li onClick={() => scrollToView('home')}>Home</li>
             <li>
               <NavLink onClick={() => toggleApp('admin')} to="/dashboard">Dashboard</NavLink>
             </li>
-            <li>About</li>
-            <li>Services</li>
-            <li>Projects</li>
-            <li>Contact</li>
+            <li onClick={() => scrollToView('about')}>About</li>
+            <li onClick={() => scrollToView('services')}>Services</li>
+            <li onClick={() => scrollToView('projects')}>Projects</li>
+            <li onClick={() => scrollToView('contact')}>Contact</li>
         </ul>
       </div>
     )

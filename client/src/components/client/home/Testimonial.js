@@ -15,7 +15,7 @@ import {
 
 
 
-const Testimonial = () => {
+const Testimonial = ({testimonialRef}) => {
 
     const responsive = {
         superLargeDesktop: {
@@ -92,7 +92,6 @@ const Testimonial = () => {
         Axios.get(url(`/api/client/fetch-client-user-testimonial-header`)).then((response) => {
             const data = response.data
             if(data.status === 'ok'){
-                console.log(data.testimonialHeader)
                 setTestimonialHeader(data.testimonialHeader)
             }
         }).catch(error => {
@@ -114,7 +113,7 @@ const Testimonial = () => {
     <Fragment>
        {
             testimonialHeader && testimonialHeader.is_featured ? (
-                <div className="testimonial-container">
+                <div ref={testimonialRef} className="testimonial-container">
                     <div className="inner-testimonial">
                         <TitleHeader testimonialHeader={testimonialHeader}/>
                         <TestimonialContent myTestimonial={myTestimonial} responsive={responsive}/>

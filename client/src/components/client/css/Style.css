@@ -332,6 +332,14 @@ h1{
 .side-navigation-container .side-navigation-body .side-nav-content::-webkit-scrollbar-thumb {
     background: transparent;
 }
+.side-navigation-container .side-navigation-body .side-nav-content .client-side-nav-link ul li,
+.side-navigation-container .side-navigation-body .side-nav-content .client-side-nav-link ul li a{
+    color: #333;
+}
+.side-navigation-container .side-navigation-body .side-nav-content .client-side-nav-link ul li:hover{
+    font-weight: bold;
+    background-color: #f6f6f6;
+}
 .side-navigation-container .side-navigation-body .contact-us .title h3{
     font-size: 20px;
     font-weight: bold;
@@ -420,6 +428,13 @@ h1{
 .side-navigation-container .side-navigation-body .contact-us input::placeholder,
 .side-navigation-container .side-navigation-body .contact-us textarea::placeholder{
     color: #3a3a3a;
+}
+.side-navigation-container .side-navigation-body .side-nav-content .client-side-nav-link ul li,
+.side-navigation-container .side-navigation-body .side-nav-content .client-side-nav-link ul li a{
+    color: #ccc;
+}
+.side-navigation-container .side-navigation-body .side-nav-content .client-side-nav-link ul li:hover{
+    background-color: #2b2b2b;
 }
 @media only screen and (max-width: 1400px){
     .side-navigation-container .side-navigation-body .side-nav-content{

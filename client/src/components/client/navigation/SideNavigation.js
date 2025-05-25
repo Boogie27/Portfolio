@@ -4,11 +4,11 @@ import {
   faMoon,
   faEnvelope
 } from '@fortawesome/free-solid-svg-icons'
+import { NavLink } from 'react-router-dom'
 
 
 
-
-const SideNavigation = ({ theme, sideNav, toggleNavigation, toggleAppTheme}) => {
+const SideNavigation = ({ theme, sideNav, sideScrollToView, toggleApp, toggleNavigation, toggleAppTheme}) => {
 
   const aboutUs = {
     title: "MY RECENT PORTFOLIO",
@@ -23,7 +23,8 @@ const SideNavigation = ({ theme, sideNav, toggleNavigation, toggleAppTheme}) => 
       <div className="side-navigation-body">
         <TitleHeader theme={theme} toggleNavigation={toggleNavigation} toggleAppTheme={toggleAppTheme}/>
         <div className="side-nav-content">
-          <AboutUs aboutUs={aboutUs}/>
+          <Navlink sideScrollToView={sideScrollToView} toggleApp={toggleApp}/>
+          {/* <AboutUs aboutUs={aboutUs}/> */}
           <ContactUs/>
         </div>
       </div>
@@ -34,6 +35,25 @@ const SideNavigation = ({ theme, sideNav, toggleNavigation, toggleAppTheme}) => 
 export default SideNavigation
 
 
+
+const Navlink = ({sideScrollToView, toggleApp}) => {
+  return (
+    <div className="client-side-nav-link">
+       <ul>
+          <li onClick={() => sideScrollToView('home')}>Home</li>
+          <li>
+            <NavLink onClick={() => toggleApp('admin')} to="/dashboard">Dashboard</NavLink>
+          </li>
+          <li onClick={() => sideScrollToView('about')}>About</li>
+          <li onClick={() => sideScrollToView('services')}>Services</li>
+          <li onClick={() => sideScrollToView('projects')}>Projects</li>
+          <li onClick={() => sideScrollToView('contact')}>Contact</li>
+          <li onClick={() => sideScrollToView('skills')}>Skills</li>
+          <li onClick={() => sideScrollToView('testimonial')}>Testimonial</li>
+      </ul>
+    </div>
+  )
+}
 
 
 

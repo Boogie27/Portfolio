@@ -15,7 +15,7 @@ import HTMLReactParser from 'html-react-parser'
 
 
 
-const Banner = () => {
+const Banner = ({homeRef}) => {
   const [homeBanners, setHomeBanners] = useState([])
 
   const homeBannerRef = useRef()
@@ -40,7 +40,7 @@ const Banner = () => {
 }, [])
 
   return (
-    <div className="banner-container">
+    <div ref={homeRef} className="banner-container">
       <Row className="show-grid">
           <Col xs={12} sm={12} md={12} lg={12} xl={7}><ContentLeft homeBanners={homeBanners}/></Col>
           <Col xs={12} sm={12} md={12} lg={12} xl={5}><ContentRight homeBanners={homeBanners}/></Col>

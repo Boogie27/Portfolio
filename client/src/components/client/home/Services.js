@@ -10,7 +10,7 @@ import HTMLReactParser from 'html-react-parser'
 
 
 
-const Services = () => {
+const Services = ({servicesRef}) => {
     const FetchUserServicesRef = useRef(null)
     const FetchServiceHeaderRef = useRef(null)
     const [services, setServices] = useState([])
@@ -66,7 +66,7 @@ const Services = () => {
     }, [])
 
   return (
-    <div className="services-container">
+    <div ref={servicesRef} className="services-container">
       <div className="inner-services">
         { serviceHeaders ? (<TitleHeader serviceHeaders={serviceHeaders}/>) : null }
         <ServicesBody services={services}/>

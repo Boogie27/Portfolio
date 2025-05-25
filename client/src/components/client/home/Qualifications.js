@@ -13,7 +13,7 @@ import HTMLReactParser from 'html-react-parser'
 
 
 
-const Qualifications = () => {
+const Qualifications = ({qualificationsRef}) => {
 
     
     // const qualifications = [
@@ -45,8 +45,22 @@ const Qualifications = () => {
 
 
     const FetchQualificationsRef = useRef(null)
+    const FetchQualificationHeaderRef = useRef(null)
     const [qualifications, setQualifications] = useState([])
+    const [qualificationsHeader, setQualificationsHeader] = useState('')
 
+
+    // fetch qaulification header
+    const FetchQualificationHeader = () => {
+        Axios.get(url(`/api/client/fetch-client-qualification-header`)).then((response) => {
+            const data = response.data
+            if(data.status === 'ok'){
+                setQualificationsHeader(data.qualificationHeader)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 
     // fetch skills 
     const FetchQualifications = () => {
@@ -64,20 +78,28 @@ const Qualifications = () => {
 
 
     FetchQualificationsRef.current = FetchQualifications
+    FetchQualificationHeaderRef.current = FetchQualificationHeader
 
     useEffect(() => {
         window.scrollTo(0, 0) // page scroll to top
         FetchQualificationsRef.current()
+        FetchQualificationHeaderRef.current()
     }, [])
 
 
 
     return (
-        <div className="education-skills">
-            <Row className="show-grid">
-                { qualifications.map((qualification, index) => (<QualificationItems key={index} qualification={qualification}/>))}
-            </Row>
-        </div>
+         <div ref={qualificationsRef} className="skills-container">
+                <div className="inner-skills">
+                    <TitleHeader qualificationsHeader={qualificationsHeader}/>
+                    <div className="education-skills">
+                        <Row className="show-grid">
+                            { qualifications.map((qualification, index) => (<QualificationItems key={index} qualification={qualification}/>))}
+                        </Row>
+                    </div>
+                </div>
+            </div>
+       
     )
 }
 
@@ -86,6 +108,19 @@ export default Qualifications
 
 
 
+
+
+const TitleHeader = ({qualificationsHeader}) => {
+    return (
+        <div className="title-header">
+            { qualificationsHeader.title ? (<h3>{qualificationsHeader.title}</h3>) : null }
+            <div className="title">
+                { qualificationsHeader.first_header ? (<h1>{qualificationsHeader.first_header}</h1>) : null }
+                { qualificationsHeader.second_header ? (<h1>{qualificationsHeader.second_header}</h1>) : null }
+            </div>
+        </div>
+    )
+}
 
 
 

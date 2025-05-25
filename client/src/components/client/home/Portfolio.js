@@ -24,7 +24,7 @@ import HTMLReactParser from 'html-react-parser'
 
 
 
-const Portfolio = () => {
+const Portfolio = ({projectsRef}) => {
     const FetchPortfoliosRef = useRef(null)
     const FetchPortfolioHeaderRef = useRef(null)
 
@@ -201,7 +201,7 @@ const Portfolio = () => {
 
    
     return (
-        <div className="portfolio-content-container">
+        <div ref={projectsRef} className="portfolio-content-container">
             <div className="inner-portfolio-content">
                 <TitleHeader portfolioHeader={portfolioHeader}/>
                 <ShowMore portfolioState={portfolioState} togglePortfolioGrid={togglePortfolioGrid}/>

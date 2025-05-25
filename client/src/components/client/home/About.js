@@ -14,7 +14,7 @@ import HTMLReactParser from 'html-react-parser'
 
 
 
-const About = () => {
+const About = ({aboutRef}) => {
     const FetchUserAboutRef = useRef()
     const [aboutMe, setAboutMe] = useState([])
 
@@ -52,7 +52,7 @@ const About = () => {
 
 
     return (
-        <div className="about-us-container">
+        <div ref={aboutRef} className="about-us-container">
             <div className="inner-about-us">
                 <div className="title-header">
                     <h3>{aboutMe.title}</h3>
