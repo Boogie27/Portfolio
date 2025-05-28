@@ -9,19 +9,14 @@ import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 
 
-const CommentForm = ({comment, name, setName, setJobTitle, commentAlert, jobTitle, nameAlert, jobTitleAlert, setComment}) => {
-   
-
-
-
-
+const CommentForm = ({ button, submitComment, toggleForm, comment, name, setName, setJobTitle, commentAlert, jobTitle, nameAlert, jobTitleAlert, setComment}) => {
 
     return (
         <div className="review-form star-form-container">
-            <CancelButton/>
+            <CancelButton toggleForm={toggleForm}/>
             <TitleHeader/>
             <CommentSection name={name} setName={setName} nameAlert={nameAlert} jobTitle={jobTitle} setJobTitle={setJobTitle} commentAlert={commentAlert} jobTitleAlert={jobTitleAlert} comment={comment} setComment={setComment}/>
-            <ActionButton/>
+            <ActionButton button={button} submitComment={submitComment}/>
         </div>
     )
 }
@@ -31,10 +26,10 @@ export default CommentForm
 
 
 
-const CancelButton = () => {
+const CancelButton = ({ toggleForm }) => {
     return (
         <div className="cancel-button">
-           <FontAwesomeIcon className="icon" icon={faArrowLeft} />
+           <FontAwesomeIcon  onClick={() => toggleForm(1)} className="icon" icon={faArrowLeft} />
         </div>
     )
 }
@@ -83,12 +78,18 @@ const CommentSection = ({ name, setName, comment, commentAlert, jobTitle, setJob
 
 
 
-const ActionButton = () => {
+const ActionButton = ({ button, submitComment}) => {
     return (
         <div className="action-button">
-            <button type="button">
-                NEXT
-                <FontAwesomeIcon className="icon" icon={faArrowRight} />
+            <button disabled={button} onClick={(e) => submitComment()}  type="button">
+                {
+                    button === true ? <>PLEASE WAIT...</> : (
+                        <>
+                            NEXT
+                            <FontAwesomeIcon className="icon" icon={faArrowRight} />
+                        </>
+                    )
+                }
             </button>
         </div>
     )

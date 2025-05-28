@@ -9,9 +9,8 @@ import ImageCropper from './ImageCropper'
 
 
 
-const ImageForm = () => {
+const ImageForm = ({ button, submitReview, setBase64, toggleForm }) => {
     const imageRef = useRef(null)
-    const [base64, setBase64] = useState(null)
     const [image, setImage] = useState('')
     const [isImageUrl, setIsImageUrl] = useState(null)
     const [cropWindow, setCropWindow] = useState(false)
@@ -55,11 +54,11 @@ const ImageForm = () => {
 
     return (
         <div className="review-form image-form-container">
-            <CancelButton/>
+            <CancelButton toggleForm={toggleForm}/>
             <UploadButton toggleImageInput={toggleImageInput}/>
             <TitleHeader/>
             <PhotoImage isImageUrl={isImageUrl} imageRef={imageRef} getImageFile={getImageFile}/>
-            <ActionButton/>
+            <ActionButton button={button} submitReview={submitReview}/>
             {cropWindow ? (<ImageCropper image={image} setIsImageUrl={setIsImageUrl} setBase64={setBase64} toggeleImageWindow={toggeleImageWindow}/>) : null }
         </div>
     )
@@ -71,10 +70,10 @@ export default ImageForm
 
 
 
-const CancelButton = () => {
+const CancelButton = ({ toggleForm }) => {
     return (
         <div className="cancel-button">
-           <FontAwesomeIcon className="icon" icon={faArrowLeft} />
+           <FontAwesomeIcon onClick={() => toggleForm(2)} className="icon" icon={faArrowLeft} />
         </div>
     )
 }
@@ -111,11 +110,13 @@ const PhotoImage = ({isImageUrl, imageRef, getImageFile}) => {
 
 
 
-const ActionButton = () => {
+const ActionButton = ({button, submitReview}) => {
     return (
         <div className="action-button">
-            <button type="button">
-                SUBMIT REVIEW
+           <button disabled={button} onClick={(e) => submitReview()}  type="button">
+                {
+                    button === true ? <>PLEASE WAIT...</> : <>SUBMIT REVIEW</>
+                }
             </button>
         </div>
     )

@@ -7,7 +7,7 @@ import { faStar } from '@fortawesome/free-regular-svg-icons'
 
 
 
-const StarForm = ({rating, setRating}) => {
+const StarForm = ({ rating, toggleForm, setRating}) => {
    
 
 
@@ -16,10 +16,10 @@ const StarForm = ({rating, setRating}) => {
 
     return (
         <div className="review-form star-form-container">
-            <CancelButton/>
+            <CancelButton toggleForm={toggleForm}/>
             <TitleHeader/>
             <Stars rating={rating} setRating={setRating}/>
-            <ActionButton/>
+            <ActionButton rating={rating} toggleForm={toggleForm}/>
         </div>
     )
 }
@@ -29,10 +29,10 @@ export default StarForm
 
 
 
-const CancelButton = () => {
+const CancelButton = ({toggleForm }) => {
     return (
         <div className="cancel-button">
-           <FontAwesomeIcon className="icon" icon={faArrowLeft} />
+           <FontAwesomeIcon onClick={() => toggleForm(0)} className="icon" icon={faArrowLeft} />
         </div>
     )
 }
@@ -43,7 +43,7 @@ const TitleHeader = () => {
     return (
         <div className="title-header">
             <h3>STAR RATINGS</h3>
-            <p>Please kindly tell us how was your experience with us?</p>
+            <p>Please kindly rate your experience with us?</p>
         </div>
     )
 }
@@ -58,7 +58,7 @@ const Stars = ({ rating, setRating}) => {
                     <FontAwesomeIcon key={index}  onClick={(e) => setRating(index + 1)} className={`star ${index <= rating - 1 ? 'active' : ''}`} icon={faStar} /> 
                 ))
                 }
-                0/5
+                {rating}/5
             </span>
         </div>
     )
@@ -67,10 +67,10 @@ const Stars = ({ rating, setRating}) => {
 
 
 
-const ActionButton = () => {
+const ActionButton = ({ rating, toggleForm}) => {
     return (
         <div className="action-button">
-            <button type="button">
+           <button disabled={rating === 0} onClick={() => toggleForm(2)} type="button">
                 NEXT
                 <FontAwesomeIcon className="icon" icon={faArrowRight} />
             </button>
