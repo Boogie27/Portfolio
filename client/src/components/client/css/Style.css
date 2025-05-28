@@ -2071,7 +2071,104 @@ h1{
 .review-container .review-form textarea::placeholder{
     color: #c0c0c0;
 }
+.review-container .review-form .photo-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+}
+.review-container .review-form .photo-image img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.review-container .review-form .upload-button{
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    position: absolute;
+    transition: color 0.3s ease;
+}
+.review-container .review-form .upload-button .icon{
+    color: #181818;
+    padding: 10px;
+    border-radius: 3px;
+    background-color: #e6e6e6;
+    transition: color 0.1s ease;
+}
+.review-container .review-form .upload-button .icon:hover{
+    color: #fff;
+    background-color: #ffdc89;
+}
 
+/* ***************** IMAGE CROPPER ************** */
+.client.image-cropper-container {
+    top: 0px;
+    left: 0px;
+    z-index: 40;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    transition: all 2s ease;
+    justify-content: center;
+    background-color: rgba(14, 14, 14, 0.194);
+}
+.client.image-cropper-container .image-cropper-inner{
+    width: 600px;
+    height: 600px;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
+}
+.client.image-cropper-container .image-cropper-inner .image-container{
+    width: 550px;
+    height: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.client.image-cropper-container .image-cropper-inner .image-container img{
+    width: 100%;
+    height: 550px;
+    object-fit: contain;
+}
+.client.image-cropper-container .image-cropper-inner .image-cropper-btn{
+    right: 0px;
+    bottom: 2px;
+    display: flex;
+    position: absolute;
+}
+.client.image-cropper-container .image-cropper-inner .image-cropper-btn button{
+    width: 100px;
+    color: #fff;
+    padding: 10px 10px;
+    margin-right: 10px;
+    border: 1px solid #FDB813;
+    background-color: #fdb7138e;
+}
+.client.image-cropper-container .image-cropper-inner .image-cropper-btn button.cancel{
+    color: #FDB813;
+    border: 1px solid #FDB813;
+    background-color: #ffffffc6;
+}
+@media only screen and (max-width: 567px){
+    .client.image-cropper-container .image-cropper-inner{
+        width: 100%;
+        border-radius: 0px;
+    }
+}
+@media only screen and (max-width: 392px){
+    .client.image-cropper-container .image-cropper-inner .image-cropper-btn{
+        width: 100%;
+    }
+    .client.image-cropper-container .image-cropper-inner .image-cropper-btn button{
+        width: 50%;
+        margin: 0px;
+    }
+}
 
 
 

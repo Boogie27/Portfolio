@@ -46,7 +46,7 @@ const ImageCropper = ({ image, setIsImageUrl, setBase64, toggeleImageWindow }) =
  
 
   return (
-    <div className="admin image-cropper-container">
+    <div className="client image-cropper-container">
       <div className="image-cropper-inner">
         <div className="image-container">
           {image && (

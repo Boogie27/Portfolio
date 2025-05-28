@@ -1665,8 +1665,9 @@ h1{
         padding: 30px 60px;
     }
 }
+
 /* ***************** IMAGE CROPPER ************** */
-.image-cropper-container {
+.admin.image-cropper-container {
     top: 0px;
     left: 0px;
     z-index: 40;
@@ -1679,7 +1680,7 @@ h1{
     justify-content: center;
     background-color: rgba(14, 14, 14, 0.194);
 }
-.image-cropper-container .image-cropper-inner{
+.admin.image-cropper-container .image-cropper-inner{
     width: 500px;
     height: 500px;
     border-radius: 3px;
@@ -1687,25 +1688,25 @@ h1{
     overflow: hidden;
     background-color: #fff;
 }
-.image-cropper-container .image-cropper-inner .image-container{
+.admin.image-cropper-container .image-cropper-inner .image-container{
     width: 500px;
     height: 500px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.image-cropper-container .image-cropper-inner .image-container img{
+.admin.image-cropper-container .image-cropper-inner .image-container img{
     width: 100%;
     height: 500px;
     object-fit: contain;
 }
-.image-cropper-container .image-cropper-inner .image-cropper-btn{
+.admin.image-cropper-container .image-cropper-inner .image-cropper-btn{
     right: 0px;
     bottom: 2px;
     display: flex;
     position: absolute;
 }
-.image-cropper-container .image-cropper-inner .image-cropper-btn button{
+.admin.image-cropper-container .image-cropper-inner .image-cropper-btn button{
     width: 100px;
     color: #fff;
     padding: 10px 10px;
@@ -1713,22 +1714,22 @@ h1{
     border: 1px solid #FDB813;
     background-color: #fdb7138e;
 }
-.image-cropper-container .image-cropper-inner .image-cropper-btn button.cancel{
+.admin.image-cropper-container .image-cropper-inner .image-cropper-btn button.cancel{
     color: #FDB813;
     border: 1px solid #FDB813;
     background-color: #ffffffc6;
 }
 @media only screen and (max-width: 567px){
-    .image-cropper-container .image-cropper-inner{
+    .admin.image-cropper-container .image-cropper-inner{
         width: 100%;
         border-radius: 0px;
     }
 }
 @media only screen and (max-width: 392px){
-    .image-cropper-container .image-cropper-inner .image-cropper-btn{
+    .admin.image-cropper-container .image-cropper-inner .image-cropper-btn{
         width: 100%;
     }
-    .image-cropper-container .image-cropper-inner .image-cropper-btn button{
+    .admin.image-cropper-container .image-cropper-inner .image-cropper-btn button{
         width: 50%;
         margin: 0px;
     }
