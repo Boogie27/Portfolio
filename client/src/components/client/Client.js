@@ -9,7 +9,7 @@ import Preloader from './preloader/Preloader'
 import ActionPreloader from './preloader/ActionPreloader'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Review from './review/Review'
 
 
 
@@ -86,6 +86,7 @@ const Client = ({setAppState}) => {
                 <Route path="/" element={<Home loader={loader} homeRef={homeRef} testimonialRef={testimonialRef} aboutRef={aboutRef} qualificationsRef={qualificationsRef} skillsRef={skillsRef} servicesRef={servicesRef} contactRef={contactRef} projectsRef={projectsRef} alertNotification={alertNotification}/>}/>
             </Routes>
         <Footer/>
+        <Review/>
         <ToastContainer/>
     </div>
   )

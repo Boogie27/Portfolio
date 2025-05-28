@@ -3,10 +3,13 @@ import { useState, useRef } from 'react'
 import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
-    faStar,
     faTimes,
     faCamera,
 } from '@fortawesome/free-solid-svg-icons'
+import { 
+  faStar
+} from '@fortawesome/free-regular-svg-icons'
+
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormInputAlert from '../alert/FormInputAlert'
