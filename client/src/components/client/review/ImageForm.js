@@ -4,12 +4,17 @@ import { faArrowRight, faArrowLeft, faCamera } from '@fortawesome/free-solid-svg
 import { faStar } from '@fortawesome/free-regular-svg-icons'
 import { user_image } from '../../../File'
 import ImageCropper from './ImageCropper'
+import FormInputAlert from '../alert/FormInputAlert'
 
 
 
 
 
-const ImageForm = ({ button, submitReview, setBase64, toggleForm }) => {
+
+
+
+
+const ImageForm = ({ button, setBase64, imageAlert, toggleForm }) => {
     const imageRef = useRef(null)
     const [image, setImage] = useState('')
     const [isImageUrl, setIsImageUrl] = useState(null)
@@ -58,7 +63,7 @@ const ImageForm = ({ button, submitReview, setBase64, toggleForm }) => {
             <UploadButton toggleImageInput={toggleImageInput}/>
             <TitleHeader/>
             <PhotoImage isImageUrl={isImageUrl} imageRef={imageRef} getImageFile={getImageFile}/>
-            <ActionButton button={button} submitReview={submitReview}/>
+            <ActionButton imageAlert={imageAlert} button={button} toggleForm={toggleForm}/>
             {cropWindow ? (<ImageCropper image={image} setIsImageUrl={setIsImageUrl} setBase64={setBase64} toggeleImageWindow={toggeleImageWindow}/>) : null }
         </div>
     )
@@ -110,14 +115,15 @@ const PhotoImage = ({isImageUrl, imageRef, getImageFile}) => {
 
 
 
-const ActionButton = ({button, submitReview}) => {
+const ActionButton = ({button, imageAlert, toggleForm}) => {
     return (
         <div className="action-button">
-           <button disabled={button} onClick={(e) => submitReview()}  type="button">
+           <button disabled={button} onClick={(e) => toggleForm('submit')}  type="button">
                 {
                     button === true ? <>PLEASE WAIT...</> : <>SUBMIT REVIEW</>
                 }
             </button>
+            <FormInputAlert position='text-center' alert={imageAlert}/>
         </div>
     )
 }

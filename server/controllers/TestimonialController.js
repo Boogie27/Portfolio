@@ -387,7 +387,29 @@ const DeleteTestimonial = AsyncHandler(async (request, response) => {
 
 
 
-// ******************** CLIENT SECTION ******************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ******************** CLIENT SECTION *****************************************************************************
+// *****************************************************************************************************************
+
 //   fetch client testimonial header
 const FetchClientTestimonialHeader = AsyncHandler(async (request, response) => {
     try{

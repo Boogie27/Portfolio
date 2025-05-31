@@ -9,14 +9,14 @@ import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 
 
-const CommentForm = ({ button, submitComment, toggleForm, comment, name, setName, setJobTitle, commentAlert, jobTitle, nameAlert, jobTitleAlert, setComment}) => {
+const CommentForm = ({ button, toggleForm, email, setEmail, emailAlert, comment, name, setName, setJobTitle, commentAlert, jobTitle, nameAlert, jobTitleAlert, setComment}) => {
 
     return (
         <div className="review-form star-form-container">
             <CancelButton toggleForm={toggleForm}/>
             <TitleHeader/>
-            <CommentSection name={name} setName={setName} nameAlert={nameAlert} jobTitle={jobTitle} setJobTitle={setJobTitle} commentAlert={commentAlert} jobTitleAlert={jobTitleAlert} comment={comment} setComment={setComment}/>
-            <ActionButton button={button} submitComment={submitComment}/>
+            <CommentSection name={name} email={email} setEmail={setEmail} emailAlert={emailAlert} setName={setName} nameAlert={nameAlert} jobTitle={jobTitle} setJobTitle={setJobTitle} commentAlert={commentAlert} jobTitleAlert={jobTitleAlert} comment={comment} setComment={setComment}/>
+            <ActionButton button={button} toggleForm={toggleForm}/>
         </div>
     )
 }
@@ -46,7 +46,7 @@ const TitleHeader = () => {
 }
 
 
-const CommentSection = ({ name, setName, comment, commentAlert, jobTitle, setJobTitle, nameAlert, jobTitleAlert, setComment}) => {
+const CommentSection = ({ name, setName, email, setEmail, emailAlert, comment, commentAlert, jobTitle, setJobTitle, nameAlert, jobTitleAlert, setComment}) => {
     return (
         <div className="comment-section-container">
             <Row className="show-grid">
@@ -64,7 +64,14 @@ const CommentSection = ({ name, setName, comment, commentAlert, jobTitle, setJob
                         <FormInputAlert alert={jobTitleAlert}/>
                     </div>
                 </Col>
-                <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <div className="form-group">
+                        <label>Email:</label>
+                        <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} className="form-control" placeholder="Enter Email"/>
+                        <FormInputAlert alert={emailAlert}/>
+                    </div>
+                </Col>
+               <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                     <div className="form-group">
                         <label>Comment:</label>
                         <textarea className="form-control" onChange={(e) => setComment(e.target.value)}  value={comment} rows="4" cols="50" placeholder="Write comment..."></textarea>
@@ -78,10 +85,10 @@ const CommentSection = ({ name, setName, comment, commentAlert, jobTitle, setJob
 
 
 
-const ActionButton = ({ button, submitComment}) => {
+const ActionButton = ({ button, toggleForm}) => {
     return (
         <div className="action-button">
-            <button disabled={button} onClick={(e) => submitComment()}  type="button">
+            <button disabled={button} onClick={(e) => toggleForm('validate')}  type="button">
                 {
                     button === true ? <>PLEASE WAIT...</> : (
                         <>
