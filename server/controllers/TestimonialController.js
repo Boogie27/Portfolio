@@ -157,12 +157,11 @@ const AddNewTestimonial = AsyncHandler(async (request, response) => {
             return response.send({status: 'not-login', message: 'Login user to perform this action'})
         }
 
-        const user_id = userToken.string._id;
         const name = input.name.toLowerCase()
         const email = input.email.toLowerCase()
-        let exists = await TestimonialModel.findOne({name: name, user_id: user_id}).exec()
-        if(!exists){
-            return response.send({status: 'error', message: 'Testimonial does not exist!'})
+        let exists = await TestimonialModel.findOne({email: email}).exec()
+        if(exists){
+            return response.send({status: 'error', message: 'Testimonial already exist!'})
         }else{
             const uploades = await UploadCropImage({
                 base64: input.image,
@@ -178,7 +177,6 @@ const AddNewTestimonial = AsyncHandler(async (request, response) => {
             }
             const content = {
                 name: name,
-                user_id: user_id,
                 email: email,
                 rating: parseInt(input.rating),
                 job_title: input.job_title,
@@ -453,22 +451,10 @@ const AddNewClientTestimonial = AsyncHandler(async (request, response) => {
         if(validation != 'success'){
             return response.send({status: 'input-error', validationError: validation})
         }
-        // user the token form the email sent to check for the email
-        const checkForEmail = await RequestReviewModel.findOne({ token: input.token }).exec()
-        if(!checkForEmail){
-            return response.send({status: 'token-error'})
-        }else{
-            if(checkForEmail.email != input.email){
-                return response.send({status: 'input-error', validationError: { email: 'Wrong email specified!'}})
-            }
-            if(checkForEmail.is_completed){
-                return response.send({status: 'completed'})
-            }
-        }
        
         const name = input.name.toLowerCase()
         const email = input.email.toLowerCase()
-        let exists = await TestimonialModel.findOne({email: email, user_id: checkForEmail.user_id}).exec()
+        let exists = await TestimonialModel.findOne({email: email}).exec()
         if(exists){
             return response.send({status: 'input-error', validationError: { email: 'Portfolio has already been rated by this email!'}})
         }else{
@@ -486,7 +472,6 @@ const AddNewClientTestimonial = AsyncHandler(async (request, response) => {
             const content = {
                 name: name,
                 email: email,
-                user_id: checkForEmail.user_id,
                 rating: parseInt(input.rating),
                 job_title: input.job_title,
                 description: input.description,
@@ -498,16 +483,9 @@ const AddNewClientTestimonial = AsyncHandler(async (request, response) => {
             
             const testimonial = await TestimonialModel.create(content)
             if(testimonial){
-                // update the review request table and set to completed
-                const update = {
-                    is_completed: 1,  
-                    completed_at: today()
-                }
-
-                const requestReview = await RequestReviewModel.findOneAndUpdate({user_id: checkForEmail.user_id, email: input.email}, {$set: update}).exec()
-
+                const requestReview = await RequestReviewModel.findOneAndUpdate({email: input.email}, {$set: update}).exec()
                 // send  mail to the user to thank them
-                const settings = await SettingsModel.findOne({user_id: checkForEmail.user_id}).exec()
+                const settings = await SettingsModel.findOne({email: 'anonyecharles@gmail.com'}).exec()
                 if(settings){
                     const sendEmail = sendMailToClient(request.body, settings) // send out email  here
                 }

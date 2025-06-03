@@ -86,7 +86,7 @@ const Client = ({setAppState}) => {
                 <Route path="/" element={<Home loader={loader} homeRef={homeRef} testimonialRef={testimonialRef} aboutRef={aboutRef} qualificationsRef={qualificationsRef} skillsRef={skillsRef} servicesRef={servicesRef} contactRef={contactRef} projectsRef={projectsRef} alertNotification={alertNotification}/>}/>
             </Routes>
         <Footer/>
-        <Review/>
+        <Review alertNotification={alertNotification}/>
         <ToastContainer/>
     </div>
   )

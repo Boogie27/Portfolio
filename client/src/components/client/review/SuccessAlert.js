@@ -1,8 +1,25 @@
 
 
-const SuccessAlert = () => {
+const SuccessAlert = ({toggleForm}) => {
   return (
-    <div className="review-form star-form-container">
+    <div className="review-form">
+        <SuccessMessage/>
+        <ActionButton toggleForm={toggleForm}/>
+    </div>
+  )
+}
+
+export default SuccessAlert;
+
+
+
+
+
+
+
+const SuccessMessage = () => {
+  return (
+    <div className="star-form-container">
         <div className="success-alert-container">
             <svg className="checkmark" viewBox="0 0 52 52">
                 <circle className="checkmark-circle" cx="26" cy="26" r="25" />
@@ -14,4 +31,14 @@ const SuccessAlert = () => {
   )
 }
 
-export default SuccessAlert;
+
+
+
+
+const ActionButton = ({toggleForm}) => {
+    return (
+        <div className="action-button">
+           <button onClick={(e) => toggleForm('close')}  type="button">CLOSE</button>
+        </div>
+    )
+}

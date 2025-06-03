@@ -3,11 +3,6 @@ const mongoose = require('mongoose')
 
 
 const TestimonialSchema  = new mongoose.Schema({
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'users',
-    },
     name: {
         type: String,
         required: true

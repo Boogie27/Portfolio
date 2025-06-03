@@ -13,7 +13,7 @@ import Axios from 'axios'
 
 
 
-const Review = () => {
+const Review = ({alertNotification}) => {
     const [rating, setRating] = useState(0)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -36,6 +36,7 @@ const Review = () => {
 
     // toggle review form forward or backwards
     const toggleForm = (state) => {
+        setButton(true)
         if(state === 'submit'){
             if(base64 === '' || base64 === null){
                 setImageAlert('Please upload a photo!')
@@ -46,6 +47,10 @@ const Review = () => {
             ValidateForm()
         }else if(state > 0){
             setFormCounter(state)
+        }else if(state === 'close'){
+            setFormCounter(0)
+            initialiseForm()
+            initErrorAlert()
         }else{
             setFormCounter(0)
             initialiseForm()
@@ -70,7 +75,7 @@ const Review = () => {
         setRatingAlert('')
         setNameAlert('')
         setEmailAlert('')
-        setCommentAlert(0)
+        setCommentAlert('')
         setJobTitleAlert('')
         setImageAlert('')
     }
@@ -81,7 +86,7 @@ const Review = () => {
             setImageAlert(error.image)
             setEmailAlert(error.email)
             setRatingAlert(error.rating)
-            setJobTitleAlert(error.job_title)
+            setJobTitleAlert(error.jobTitle)
             setCommentAlert(error.description)
         }
     
@@ -133,7 +138,6 @@ const Review = () => {
         initErrorAlert() //initialize form input error alert
         const formData = new FormData()
         formData.append('name', name)
-        // formData.append('token', token)
         formData.append('rating', rating)
         formData.append('email', email)
         formData.append('job_title', jobTitle)
@@ -141,18 +145,21 @@ const Review = () => {
         formData.append('description', comment)
         Axios.post(url('/api/client/submit-review'), formData).then((response) => {
             const data = response.data
-            // if(data.status === 'input-error'){
-            //     inputErrorForBackend(data.validationError)
-            // }else if(data.status === 'error'){
-            //     alertNotification('error', data.message)
-            // }else if(data.status === 'ok'){
-            //     dispatch(UpdateTestimonial(data.updateTestimonial))
-            //     alertNotification('success', 'Testimonial updated successfully!')
-            //     initFormInput() //init fields
-            //     toggleForm(false)
-            //     clearFileInput()
-            //     setIsImageUrl(null)
-            // }
+            console.log(response.data)
+            if(data.status === 'input-error'){
+                const error = data.validationError
+                if(error.email || error.jobTitle || error.name || error.description){
+                    setFormCounter(2)
+                }else if(error.rating){
+                    setFormCounter(1)
+                }
+                setBase64('')
+                inputErrorForBackend(data.validationError)
+            }else if(data.status === 'error'){
+                alertNotification('error', data.message)
+            }else if(data.status === 'ok'){
+                setFormCounter(4)
+            }
             return setButton(false)
         }).catch(error => {
             setButton(false)
@@ -177,7 +184,7 @@ const Review = () => {
                         { formCounter === 1 ? (<StarForm toggleForm={toggleForm} rating={rating} setRating={setRating} ratingAlert={ratingAlert}/>) : null }
                         { formCounter === 2 ? (<CommentForm button={button} setEmail={setEmail} email={email} emailAlert={emailAlert} toggleForm={toggleForm} toggleForm={toggleForm} nameAlert={nameAlert} commentAlert={commentAlert} jobTitleAlert={jobTitleAlert} comment={comment} setComment={setComment} name={name} setName={setName} setJobTitle={setJobTitle} jobTitle={jobTitle}/>) : null }
                         { formCounter === 3 ? (<ImageForm button={button} imageAlert={imageAlert} setBase64={setBase64} toggleForm={toggleForm} submitReview={submitReview}/>) : null }
-                        { formCounter === 4 ? (<SuccessAlert />) : null }
+                        { formCounter === 4 ? (<SuccessAlert toggleForm={toggleForm}/>) : null }
                     </div>
                 ) : null
             }
