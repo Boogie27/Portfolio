@@ -35,8 +35,6 @@ router.post('/api/admin/edit-user-testimonnial', UpdateUserTestimonial)
 // client testimonial route***************************************************
 router.get('/api/client/fetch-client-user-testimonial-header', FetchClientTestimonialHeader)
 router.get('/api/client/fetch-client-user-testimonials', FetchClientTestimonials)
-router.post('/api/client/client-add-new-testimonnial', AddNewClientTestimonial)
-router.get('/api/client/check-token-review-requests/:token', FetchClientReviewToken)
 
 
 

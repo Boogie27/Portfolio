@@ -249,8 +249,7 @@ const UpdateUserTestimonial = AsyncHandler(async (request, response) => {
             return response.send({status: 'not-login', message: 'Login user to perform this action'})
         }
 
-        const user_id = userToken.string._id;
-        let exists = await TestimonialModel.findOne({ _id: input._id, user_id: user_id }).exec()
+        let exists = await TestimonialModel.findOne({ _id: input._id}).exec()
         if(!exists){
             return response.send({status: 'error', message: 'Either Testimonial deos not exist or Login!'})
         }else{
@@ -316,8 +315,7 @@ const FetchTestimonials = AsyncHandler(async (request, response) => {
             return response.send({ status: 'not-login', message: 'Login user to perform this action' })
         }
 
-        const user_id = userToken.string._id;
-        const testimonials = await TestimonialModel.find({ user_id: user_id }).exec()
+        const testimonials = await TestimonialModel.find().exec()
 
         if (testimonials) {
             return response.send({ status: 'ok', testimonials: testimonials })
@@ -339,7 +337,7 @@ const ToggleUserTestimonialFeature = AsyncHandler(async (request, response) => {
     if(!userToken){
         return response.send({status: 'error', message: 'Login user to perform this action'})
     }
-    const exists = await TestimonialModel.findOne({ _id: _id, user_id:  userToken.string._id}).exec()
+    const exists = await TestimonialModel.findOne({ _id: _id }).exec()
     if(!exists){
         return response.send({status: 'error', message: 'Either Testimonial does not exist or you need to login'})
     }
@@ -362,7 +360,7 @@ const DeleteTestimonial = AsyncHandler(async (request, response) => {
     if(!userToken){
         return response.send({status: 'error', message: 'Login user to perform this action'})
     }
-    const exists = await TestimonialModel.findOne({ _id: _id, user_id:  userToken.string._id}).exec()
+    const exists = await TestimonialModel.findOne({ _id: _id}).exec()
     if(!exists){
         return response.send({status: 'error', message: 'Either Testimonial does not exist or you need to login'})
     }
@@ -442,97 +440,6 @@ const FetchClientTestimonials = AsyncHandler(async (request, response) => {
 
 
 
-//   add new  client testimonial 
-const AddNewClientTestimonial = AsyncHandler(async (request, response) => {
-    try{
-        let imageName = ''
-        const input = request.body
-        const validation = validate_add_testimonial_input(input)
-        if(validation != 'success'){
-            return response.send({status: 'input-error', validationError: validation})
-        }
-       
-        const name = input.name.toLowerCase()
-        const email = input.email.toLowerCase()
-        let exists = await TestimonialModel.findOne({email: email}).exec()
-        if(exists){
-            return response.send({status: 'input-error', validationError: { email: 'Portfolio has already been rated by this email!'}})
-        }else{
-            const uploades = await UploadCropImage({
-                base64: input.image,
-                extension: 'png',
-                name: 'testimonial-image',
-                destination:  path.join(__dirname, '../public/asset/image/users/')
-            })
-            if(uploades.status == 'error'){
-                return response.send({status: 'error', message: uploades.error})
-            }else if(uploades.status == 'ok'){
-                imageName = uploades.imageName
-            }
-            const content = {
-                name: name,
-                email: email,
-                rating: parseInt(input.rating),
-                job_title: input.job_title,
-                description: input.description,
-                image: imageName,
-                is_featured: 0,
-                updated_at: today(),
-                created_at: today(),
-            }
-            
-            const testimonial = await TestimonialModel.create(content)
-            if(testimonial){
-                const requestReview = await RequestReviewModel.findOneAndUpdate({email: input.email}, {$set: update}).exec()
-                // send  mail to the user to thank them
-                const settings = await SettingsModel.findOne({email: 'anonyecharles@gmail.com'}).exec()
-                if(settings){
-                    const sendEmail = sendMailToClient(request.body, settings) // send out email  here
-                }
-                return response.send({status: 'ok'})
-            }
-        }
-        return response.send({status: 'error', message: 'Something went wront, try again!'})
-   
-    }catch(error){
-        return response.send({ status: 'catch-error', catchError: error })
-    }
-})
-
-
-
-
-
-
-//   check if review token exists
-const FetchClientReviewToken = AsyncHandler(async (request, response) => {
-    try{
-        const { token } = request.params
-        const clientToken = await RequestReviewModel.findOne({ token: token }).exec()
-        if(clientToken){
-            return response.send({status: 'ok'})
-        }
-        return response.send({status: 'failed'})
-    }catch(error){
-        return response.send({ status: 'catch-error', catchError: error })
-    }
-})
-
-
-
-
-
-
-//  send email function
-const sendMailToClient = (input, settings) => {
-    string = {
-        from: settings.email,
-        to: input.email,
-        subject: 'Portfolio Revied',
-        message: HtmlMessage(input, settings)
-    }
-    return SendMail(string)
-}
 
 
 
@@ -547,11 +454,9 @@ module.exports = {
     FetchTestimonials,
     AddNewTestimonial,
     DeleteTestimonial,
-    FetchClientReviewToken,
     UpdateTestimonialHeader,
     FetchTestimonialHeader,
     UpdateUserTestimonial,
-    AddNewClientTestimonial,
     FetchClientTestimonials,
     ToggleUserTestimonialFeature,
     FetchClientTestimonialHeader,

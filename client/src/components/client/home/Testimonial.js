@@ -44,50 +44,52 @@ const Testimonial = ({testimonialRef}) => {
     // }
 
 
-    const myTestimonial = [
-        {
-            name: "charles anonye",
-            image: "",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 2
-        },
-        {
-            name: "charles anonye",
-            image: "4.png",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 3
-        },{
-            name: "charles anonye",
-            image: "5.png",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 4
-        },
-        {
-            name: "charles anonye",
-            image: "6.jpg",
-            job_title: "Content Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 5
-        },
-        {
-            name: "charles anonye",
-            image: "7.jpg",
-            job_title: "Software Developer",
-            description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
-            ratings: 3
-        },
-    ]
+    // const testimonial = [
+    //     {
+    //         name: "charles anonye",
+    //         image: "",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 2
+    //     },
+    //     {
+    //         name: "charles anonye",
+    //         image: "4.png",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 3
+    //     },{
+    //         name: "charles anonye",
+    //         image: "5.png",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 4
+    //     },
+    //     {
+    //         name: "charles anonye",
+    //         image: "6.jpg",
+    //         job_title: "Content Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 5
+    //     },
+    //     {
+    //         name: "charles anonye",
+    //         image: "7.jpg",
+    //         job_title: "Software Developer",
+    //         description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed thisnquia consequuntur magni dolores eos qui ratione voluptatem",
+    //         ratings: 3
+    //     },
+    // ]
 
 
 
+    const FetchTestimonialsRef = useRef(null)
     const FetchTestimonialHeaderRef = useRef(null)
     const [testimonialHeader, setTestimonialHeader] = useState([])
+    const [testimonials, setTestimonials] = useState([])
 
 
-    // fetch skills 
+    // fetch testimonial header 
     const FetchTestimonialHeader = () => {
         Axios.get(url(`/api/client/fetch-client-user-testimonial-header`)).then((response) => {
             const data = response.data
@@ -100,15 +102,32 @@ const Testimonial = ({testimonialRef}) => {
     }
 
 
+     // fetch testimonials 
+    const FetchTestimonials = () => {
+        Axios.get(url(`/api/client/fetch-client-user-testimonials`)).then((response) => {
+            const data = response.data
+            if(data.status === 'ok'){
+                setTestimonials(data.testimonials)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 
 
+
+
+    FetchTestimonialsRef.current = FetchTestimonials
     FetchTestimonialHeaderRef.current = FetchTestimonialHeader
 
     useEffect(() => {
         window.scrollTo(0, 0) // page scroll to top
+        FetchTestimonialsRef.current()
         FetchTestimonialHeaderRef.current()
     }, [])
 
+
+    
   return (
     <Fragment>
        {
@@ -116,7 +135,7 @@ const Testimonial = ({testimonialRef}) => {
                 <div ref={testimonialRef} className="testimonial-container">
                     <div className="inner-testimonial">
                         <TitleHeader testimonialHeader={testimonialHeader}/>
-                        <TestimonialContent myTestimonial={myTestimonial} responsive={responsive}/>
+                        <TestimonialContent testimonials={testimonials} responsive={responsive}/>
                     </div>
                 </div>
             ) : null
@@ -144,7 +163,7 @@ const TitleHeader = ({testimonialHeader}) => {
 
 
 
-const TestimonialContent = ({ myTestimonial, responsive}) => {
+const TestimonialContent = ({ testimonials, responsive}) => {
     return (
         <div className="testimonial-slider-frame">
             <Carousel 
@@ -152,7 +171,7 @@ const TestimonialContent = ({ myTestimonial, responsive}) => {
             autoPlay={true}
             autoPlaySpeed={5000}
             responsive={responsive}>
-                { myTestimonial.map((item, index) => (<SliderContentItem key={index} item={item}/>)) }
+                { testimonials.map((item, index) => (<SliderContentItem key={index} item={item}/>)) }
             </Carousel>
         </div>
     )

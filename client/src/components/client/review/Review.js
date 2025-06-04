@@ -35,13 +35,6 @@ const Review = ({ alertNotification }) => {
   const params = new URLSearchParams(location.search)
   const string = params.get('review')
 
-  useEffect(() => {
-    const reviewToken = Cookies.get('Elotech_review_token')
-    if (!reviewToken && string === 'true') {
-      setFormCounter(1)
-      setShowForm(true)
-    }
-  }, [string])
 
   const toggleForm = (state) => {
     setButton(true)
@@ -157,6 +150,15 @@ const Review = ({ alertNotification }) => {
       console.log(error)
     })
   }
+
+
+   useEffect(() => {
+    const reviewToken = Cookies.get('Elotech_review_token')
+    if (!reviewToken && string === 'true') {
+      setFormCounter(1)
+      setShowForm(true)
+    }
+  }, [string])
 
   return (
     <Fragment>

@@ -82,6 +82,7 @@ const TestimonialBody = ({preloader, alertNotification}) => {
             Axios.get(url(`/api/admin/fetch-user-testimonials/${token}`)).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
+                    console.log(data.testimonials)
                     dispatch(fetchTestimonial(data.testimonials))
                 }
             }).catch(error => {
