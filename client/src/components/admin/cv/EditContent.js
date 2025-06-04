@@ -17,7 +17,6 @@ import { url, user_image } from '../../../File'
 import { useDispatch, useSelector } from 'react-redux'
 import { UpdateTestimonial } from '../../redux/admin/TestimonialSlice'
 import { Validate } from '../../../helper/Validation'
-import ImageCropper from './ImageCropper'
 
 
 
@@ -276,7 +275,6 @@ const EditTestimonial = ({editFormState, toggleEditForm, alertNotification}) => 
                     </Row>
                </div>
             </div>
-            {cropWindow ? (<ImageCropper image={imageSource} setIsImageUrl={setIsImageUrl} setBase64={setBase64} toggeleImageWindow={toggeleImageWindow}/>) : null }
         </div>
     )
 }

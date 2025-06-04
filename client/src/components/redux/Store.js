@@ -8,6 +8,7 @@ import qualificationReducer from './admin/QualificationSlice'
 import portfolioReducer from './admin/PortfolioSlice'
 import testimonialReducer from './admin/TestimonialSlice'
 import settingsReducer from './admin/SettingsSlice'
+import CvReducer from './admin/CvSlice'
 
 
 
@@ -26,6 +27,7 @@ const store = configureStore({
         contacts: contactReducer,
         skills: slillReducer,
         settings: settingsReducer,
+        cvs: CvReducer,
         portfolios: portfolioReducer,
         qualifications: qualificationReducer,
         testimonials: testimonialReducer,

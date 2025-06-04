@@ -21,6 +21,7 @@ const TestimonialRoute = require('./routes/TestimonialRoute')
 const SettingsRoute = require('./routes/SettingsRoute')
 const ReviewRequestRoute = require('./routes/ReviewRequestRoute')
 const ReviewRoute = require('./routes/ReviewRoute')
+const CvRoute = require('./routes/CvRoute')
 
 
 
@@ -64,6 +65,7 @@ app.use(PortfolioRoute)
 app.use(TestimonialRoute)
 app.use(SettingsRoute)
 app.use(ReviewRoute)
+app.use(CvRoute)
 app.use(ReviewRequestRoute)
 
 

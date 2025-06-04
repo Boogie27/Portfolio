@@ -229,7 +229,7 @@ const TableEmpty = () => {
             <div className="empty-icon">
                 <FontAwesomeIcon  className="icon" icon={faFolderOpen} />
             </div>
-            <div className="text">There are no Testimonials yets!</div>
+            <div className="text">There are no Testimonials yet!</div>
         </div>
     )
 }

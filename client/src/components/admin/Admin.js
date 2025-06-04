@@ -19,6 +19,7 @@ import Axios from 'axios'
 import ProtectedRoutes from './utility/ProtectedRoutes'
 import { useDispatch } from 'react-redux'
 import { fetchUser } from '../redux/admin/UserSlice'
+import Cv from './cv/Cv'
 import Skills from './skills/Skills'
 import Qualification from './qualification/Qualification'
 import Portfolio from './portfolio/Portfolio'
@@ -119,6 +120,7 @@ const Admin = ({setAppState}) => {
                 <Route path="/dashboard/testimonial" element={<Testimonial preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/portfolio/detail/:_id" element={<PortfolioDetail preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/portfolio" element={<Portfolio preloader={preloader} alertNotification={alertNotification}/>}/>
+                <Route path="/dashboard/cv" element={<Cv preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/skills" element={<Skills preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/qualifications" element={<Qualification preloader={preloader} alertNotification={alertNotification}/>}/>
                 <Route path="/dashboard/contacts" element={<Contacts preloader={preloader} alertNotification={alertNotification}/>}/>

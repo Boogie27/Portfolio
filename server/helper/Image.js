@@ -97,9 +97,28 @@ const UploadCropImage = (string) => {
 }
 
 
+
+
+
+
+
+const GetExtension = (base64) => {
+    if(base64.includes('application/pdf')) return 'pdf'
+    if(base64.includes('application/jpeg')) return 'jpeg'
+    if(base64.includes('application/jpg')) return 'jpg'
+    if(base64.includes('application/msword')) return 'doc'
+    return '*Upload the right file!'
+}
+
+
+
+
+
+
 module.exports = {
     FileUpload,
     RemoveFile,
     RandomString,
     UploadCropImage,
+    GetExtension,
 }

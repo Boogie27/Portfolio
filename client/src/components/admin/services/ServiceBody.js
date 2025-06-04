@@ -102,11 +102,11 @@ const ServiceBody = ({alertNotification, preloader}) => {
 
     return (
         <div>
-        <TitleHeader toggleAddForm={toggleAddForm}/>
-        <ContentTable services={services} toggleFeature={toggleFeature} deleteService={deleteService} toggleEditForm={toggleEditForm}/>
-        <AddService addFormState={addFormState} toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
-        {editFormState.state ? (<EditService editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
-        <DeleteUserService deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
+            <TitleHeader toggleAddForm={toggleAddForm}/>
+            <ContentTable services={services} toggleFeature={toggleFeature} deleteService={deleteService} toggleEditForm={toggleEditForm}/>
+            <AddService addFormState={addFormState} toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
+            {editFormState.state ? (<EditService editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
+            <DeleteUserService deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
         </div>
     )
 }

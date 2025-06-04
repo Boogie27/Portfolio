@@ -101,7 +101,7 @@ const AddTestimonial = ({addFormState, toggleAddForm, alertNotification}) => {
    
     // clear file input
     const clearFileInput = () => {
-        return imageRef.current.value = null
+        return imageRef.current.value = ''
     }
     // open file picker
     const toggleImageInput = () => {
