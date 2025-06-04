@@ -58,7 +58,7 @@ const Stars = ({ rating, setRating}) => {
                     <FontAwesomeIcon key={index}  onClick={(e) => setRating(index + 1)} className={`star ${index <= rating - 1 ? 'active' : ''}`} icon={faStar} /> 
                 ))
                 }
-                {rating}/5
+                <span>{rating}/5</span> 
             </span>
         </div>
     )

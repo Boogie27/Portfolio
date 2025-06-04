@@ -2016,9 +2016,12 @@ h1{
 .review-container .review-form .cancel-button:hover{
     color: #FDB813;
 }
+.review-container .review-form .stars-container{
+    text-align: center;
+}
 .review-container .review-form .stars-container .star{
    font-size: 60px;
-   padding: 0px 5px;
+   padding: 5px 5px;
    cursor: pointer;
 }
 .review-container .review-form .stars-container .star.active{
@@ -2105,7 +2108,48 @@ h1{
     color: #fff;
     background-color: #ffdc89;
 }
-
+@media only screen and (max-width: 992px){
+    .review-container .review-form{
+        width: 90%;
+        height: 500px;
+    }
+} 
+@media only screen and (max-width: 767px){
+    .review-container .review-form{
+        height: 70vh;
+    }
+    .review-container .review-form .stars-container .star{
+        font-size: 50px;
+    }
+    .review-container .review-form .title-header h3{
+        margin-top: 80px;
+    }
+} 
+@media only screen and (max-width: 567px){
+    .review-container .review-form .stars-container .star{
+        font-size: 40px;
+    }
+    .review-container .review-form .title-header h3{
+        font-size: 25px;
+    }
+    .review-container .review-form .title-header p{
+        font-size: 12px;
+    }
+    .review-container .review-form .stars-container .rating span{
+        font-size: 12px;
+    }
+} 
+@media only screen and (max-width: 398px){
+    .review-container .review-form .stars-container .star{
+        font-size: 30px;
+    }
+     .review-container .review-form .action-button{
+        width: 100%;
+    }
+    .review-container .review-form .action-button button{
+        width: 100%;
+    }
+}
 /* ***************** IMAGE CROPPER ************** */
 .client.image-cropper-container {
     top: 0px;
