@@ -25,7 +25,7 @@ const CvSlice = createSlice({
             state.cvs.push(action.payload)
         },
          toggleCvFeature: (state, action) => {
-                if(state.cvs !== undefined){    
+            if(state.cvs !== undefined){    
                 const index = state.cvs.findIndex(cv => cv._id === action.payload._id)
                 state.cvs[index] = action.payload
             }

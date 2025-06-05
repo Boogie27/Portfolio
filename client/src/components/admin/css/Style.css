@@ -446,6 +446,9 @@ h1{
 .table-content-container tbody tr.seen{
     background-color: #fff;
 }
+.table-content-container tbody tr td .file-icon{
+    font-size: 25px;
+}
 .table-content-container tbody tr td .icon,
 .table-content-container tbody tr td .icon.delete{
     color: #656565;
@@ -796,6 +799,10 @@ h1{
 }
 .app-content-form .content-form .form .form-group{
     margin-bottom: 20px;
+}
+.app-content-form .content-form .form .form-group .file-icon{
+    color: #4e4e4e;
+    font-size: 50px;
 }
 .app-content-form .content-form .form .form-group .profile-image{
     width: 150px;

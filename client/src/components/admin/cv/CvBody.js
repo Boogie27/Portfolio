@@ -7,6 +7,7 @@ import {
     faPen,
     faTrash,
     faEye,
+    faFilePdf,
     faFolderOpen,
     faToggleOn,
     faToggleOff,
@@ -207,6 +208,9 @@ const TableEmpty = () => {
 const ContentItem = ({cv, toggleEditForm, toggleFeature, toggleDeleteForm}) => {
     return (
         <tr>
+            <td>
+                <FontAwesomeIcon className="file-icon" icon={faFilePdf} />
+            </td>
             <td>
                 {cv.cv_title}
             </td>

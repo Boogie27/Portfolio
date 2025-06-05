@@ -67,6 +67,63 @@ const AddNewCV = AsyncHandler(async (request, response) => {
 
 
 
+// ************** ADD NEW CV *************
+const UpdateCV = AsyncHandler(async (request, response) => {
+    try {
+        let imageName = ''
+        const input = request.body
+        const validation = validate_Update_CV_input(input)
+        if(validation != 'success'){
+            return response.send({status: 'input-error', validationError: validation})
+        }
+        const userToken = jwt.verify(input.token, env.SECRET_KEY) //check if user token exists
+        if(!userToken){
+            return response.send({status: 'not-login', message: 'Login user to perform this action'})
+        }
+
+        let exists = await CvModel.findOne({ _id: input._id}).exec()
+        if(!exists){
+            return response.send({status: 'error', message: 'Either Cv deos not exist or Login!'})
+        }
+
+        if(!input.cv){
+            cvNewName = exists.cv
+        }else{
+            const fileExtention = GetExtension(input.cv)
+            if(fileExtention !== 'pdf'){
+                return response.send({status: 'input-error', validationError: { cvAlert: '*PDF file type is required!'}})
+            }
+            const uploades = await UploadCropImage({
+                base64: input.cv,
+                extension: 'pdf',
+                name: input.cv_title,
+                destination:  path.join(__dirname, '../public/asset/files/cv/')
+            })
+            
+            if(uploades.status == 'error'){
+                return response.send({status: 'error', message: uploades.error})
+            }else if(uploades.status == 'ok'){
+                cvNewName = uploades.imageName
+            }
+        }
+       
+        const updateContent = { 
+            cv_title: input.cv_title, 
+            cv: cvNewName, 
+            updated_at: today(),
+        }
+        const updateCv = await CvModel.findOneAndUpdate({_id: exists._id}, {$set: updateContent}).exec()
+        if(updateCv){
+            return response.send({status: 'ok', updateCv: updateCv})
+        }
+        return response.send({status: 'error', message: 'Oops!, Something went wront, try again!'})
+    } catch (error) {
+        return response.status(500).send({ status: 'error', message: 'Oops!, An error occurred', error: error.message })
+    }
+})
+
+
+
 
 
  // validate input
@@ -85,6 +142,27 @@ const AddNewCV = AsyncHandler(async (request, response) => {
             return false
         })
         return { cvTitleAlert: cvTitleAlert, cvAlert: cvAlert }
+    }else{
+        return 'success'
+    }
+}
+
+
+
+
+ // validate Update cv input
+ const validate_Update_CV_input = (input) => {
+    let cvTitleAlert = ''
+    const content = [
+        { field: 'cv title', input: input.cv_title, maxLength: 50, minLength: 3, required: true },
+    ]
+    const validation = Validate(content)
+    if(validation != 'success'){
+        validation.map((validate) => {
+            if(validate.field === 'cv title'){ cvTitleAlert = validate.error }
+            return false
+        })
+        return { cvTitleAlert: cvTitleAlert}
     }else{
         return 'success'
     }
@@ -184,6 +262,7 @@ const DeleteCv = AsyncHandler(async (request, response) => {
 module.exports = { 
    AddNewCV,
    DeleteCv,
+   UpdateCV,
    FetchUserCv,
    ToggleUserCvFeature,
 }

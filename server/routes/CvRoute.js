@@ -6,6 +6,7 @@ const router = express.Router()
 const {
    AddNewCV,
    DeleteCv,
+   UpdateCV,
    FetchUserCv,
    ToggleUserCvFeature,
 } = require('../controllers/CVController')
@@ -17,6 +18,7 @@ const {
 
 // admin cv routers
 router.post('/api/admin/add-new-cv', AddNewCV)
+router.post('/api/admin/update-user-cv', UpdateCV)
 router.get('/api/admin/fetch-user-cv/:token', FetchUserCv)
 router.post('/api/admin/toggle-cv-feature', ToggleUserCvFeature)
 router.post('/api/admin/delete-user-cv', DeleteCv)
