@@ -204,7 +204,7 @@ const DeleteReviewRequest = AsyncHandler(async (request, response) => {
         return response.send({status: 'error', message: 'Either Request does not exist or you need to login'})
     }
 
-    const deletedRequest = await RequestReviewModel.findByIdAndDelete({_id, _id})
+    const deletedRequest = await RequestReviewModel.findByIdAndDelete(_id)
     if(deletedRequest){
         return response.send({status: 'ok', deletedRequest: deletedRequest})
     }

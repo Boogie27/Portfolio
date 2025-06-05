@@ -18,6 +18,11 @@ import { getUserCv, toggleCvFeature } from '../../redux/admin/CvSlice'
 import  DeleteContent  from './DeleteContent'
 import AddContent from './AddContent'
 import EditContent from './EditContent'
+import CvViewer from './CvViewer'
+
+
+
+
 
 
 
@@ -26,6 +31,7 @@ import EditContent from './EditContent'
 const CvBody = ({preloader, alertNotification}) => {
     const FetchCvRef = useRef(null)
     let token = Cookies.get('Eloquent_token')
+    const [isViewed, setIsViewed] = useState(false)
     const [addFormState, setAddFormState] = useState(false)
     const [deleteFormState, setDeleteFormState] = useState({state: false, _id: ''})
     const [editFormState, setEditFormState] = useState({state: false, service: []})
@@ -94,6 +100,11 @@ const CvBody = ({preloader, alertNotification}) => {
 
 
 
+    // cb viewer
+    const ViewCV = (cv) => {
+        setIsViewed({state: cv.state, cv: cv.cv})
+    }
+
     
     FetchCvRef.current = FetchCv
 
@@ -135,10 +146,11 @@ const CvBody = ({preloader, alertNotification}) => {
     return (
         <div className="dashboard-banner-container">
             <TitleHeader toggleAddForm={toggleAddForm}/>
-            <ContentTable cvs={cvs}  toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
+            <ContentTable cvs={cvs}  ViewCV={ViewCV} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
             <AddContent addFormState={addFormState}  toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
             {editFormState.state ? (<EditContent editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
             <DeleteContent deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
+            <CvViewer/>
         </div>
     )
 }
@@ -166,13 +178,14 @@ const TitleHeader = ({toggleAddForm}) => {
 }
 
 
-const ContentTable = ({cvs, toggleDeleteForm, toggleFeature, toggleEditForm}) => {
+const ContentTable = ({cvs, ViewCV, toggleDeleteForm, toggleFeature, toggleEditForm}) => {
     return (
         <div className="table-content-container">
             <table className="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Cv Title</th>
+                        <th scope="col">Cv</th>
                         <th scope="col">View Cv</th>
                         <th scope="col">Download Count</th>
                         <th scope="col">Featured</th>
@@ -182,7 +195,7 @@ const ContentTable = ({cvs, toggleDeleteForm, toggleFeature, toggleEditForm}) =>
                     </tr>
                 </thead>
                 <tbody>
-                    { cvs.map((cv, index) => (<ContentItem key={index} cv={cv} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
+                    { cvs.map((cv, index) => (<ContentItem key={index} ViewCV={ViewCV} cv={cv} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
                 </tbody>
             </table>
             { cvs.length === 0 ? (<TableEmpty/>) : null }
@@ -205,7 +218,7 @@ const TableEmpty = () => {
 
 
 
-const ContentItem = ({cv, toggleEditForm, toggleFeature, toggleDeleteForm}) => {
+const ContentItem = ({cv, ViewCV, toggleEditForm, toggleFeature, toggleDeleteForm}) => {
     return (
         <tr>
             <td>
@@ -215,7 +228,7 @@ const ContentItem = ({cv, toggleEditForm, toggleFeature, toggleDeleteForm}) => {
                 {cv.cv_title}
             </td>
             <td>
-                <FontAwesomeIcon  className="icon" icon={faEye} />
+                <FontAwesomeIcon  onClick={() => ViewCV({state: true, cv: cv.cv})} className="icon" icon={faEye} />
             </td>
              <td>
                 {cv.download_count}

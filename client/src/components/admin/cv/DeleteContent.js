@@ -39,11 +39,11 @@ const DeleteContent = ({deleteFormState, setDeleteFormState, alertNotification})
                 _id: _id,
                 token: token
             }
-            setButton(false)
+            setButton(true)
             Axios.post(url('/api/admin/delete-user-cv'), content).then((response) => {
                 const data = response.data
                 if(data.status === 'ok'){
-                    dispatch(deleteCv(data.deletedCv))
+                    dispatch(deleteCv(data.deleteCv))
                     alertNotification('success', 'Cv Deleted successfully!')
                 }else{
                     alertNotification('error', data.message)

@@ -272,7 +272,7 @@ const DeleteUserSkills = AsyncHandler(async (request, response) => {
         if(!exists){
             return response.send({status: 'error', message: 'Either Skill does not exist or you need to login'})
         }
-        const deleteSkill = await SkillsModel.findByIdAndDelete({_id, _id})
+        const deleteSkill = await SkillsModel.findByIdAndDelete(_id)
         if(deleteSkill){
             if(deleteSkill.image){
                 const destination = path.join(__dirname, '../public/asset/image/icon/');

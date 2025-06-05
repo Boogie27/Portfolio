@@ -370,7 +370,7 @@ const DeleteTestimonial = AsyncHandler(async (request, response) => {
         RemoveFile(filePath) // delete old existing image from image folder
     }
 
-    const deletedTestimonial = await TestimonialModel.findByIdAndDelete({_id, _id})
+    const deletedTestimonial = await TestimonialModel.findByIdAndDelete(_id)
     if(deletedTestimonial){
         return response.send({status: 'ok', deletedTestimonial: deletedTestimonial})
     }

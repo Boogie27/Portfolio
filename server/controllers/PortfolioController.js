@@ -358,7 +358,7 @@ const DeleteUserPortfolio = AsyncHandler(async (request, response) => {
         if(!exists){
             return response.send({status: 'error', message: 'Either Portfolio does not exist or you need to login'})
         }
-        const deletedPortfolio = await PortfolioModel.findByIdAndDelete({_id, _id})
+        const deletedPortfolio = await PortfolioModel.findByIdAndDelete(_id)
         if(deletedPortfolio){
             if(deletedPortfolio.image.length){
                 const destination = path.join(__dirname, '../public/asset/image/portfolio/');

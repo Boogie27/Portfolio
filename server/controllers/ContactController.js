@@ -191,7 +191,7 @@ const DeleteContactMessage = AsyncHandler(async (request, response) => {
         if(!exists){
             return response.send({status: 'error', message: 'Either Message does not exist or you need to login'})
         }
-        const deleteMessage = await ContactModel.findByIdAndDelete({_id, _id})
+        const deleteMessage = await ContactModel.findByIdAndDelete(_id)
         if(deleteMessage){
             return response.send({status: 'ok', deleteMessage: deleteMessage})
         }

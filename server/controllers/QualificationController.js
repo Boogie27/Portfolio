@@ -282,7 +282,7 @@ const DeleteUserQualification = AsyncHandler(async (request, response) => {
         if(!exists){
             return response.send({status: 'error', message: 'Either Quailification does not exist or you need to login'})
         }
-        const deleteQualification = await QualificationModel.findByIdAndDelete({_id, _id})
+        const deleteQualification = await QualificationModel.findByIdAndDelete(_id)
         if(deleteQualification){
             return response.send({status: 'ok', qualification: deleteQualification})
         }

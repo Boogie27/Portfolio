@@ -74,6 +74,7 @@ app.use(ReviewRequestRoute)
 
 
 // serve static image from folders in the server to frontend
+app.use('/public/asset/files/cv/', express.static(path.join(__dirname, '/public/asset/files/cv')));
 app.use('/public/asset/image/icon/', express.static(path.join(__dirname, '/public/asset/image/icon')));
 app.use('/public/asset/image/users/', express.static(path.join(__dirname, '/public/asset/image/users')));
 app.use('/public/asset/image/portfolio/', express.static(path.join(__dirname, '/public/asset/image/portfolio')));

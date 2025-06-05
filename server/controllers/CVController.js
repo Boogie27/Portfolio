@@ -229,6 +229,7 @@ const ToggleUserCvFeature = AsyncHandler(async (request, response) => {
 // delete user cv
 const DeleteCv = AsyncHandler(async (request, response) => {
     const { _id, token } = request.body
+
     const userToken = jwt.verify(token, env.SECRET_KEY) //check if user token exists
     if(!userToken){
         return response.send({status: 'error', message: 'Login user to perform this action'})
@@ -237,13 +238,13 @@ const DeleteCv = AsyncHandler(async (request, response) => {
     if(!exists){
         return response.send({status: 'error', message: 'Either Cv does not exist or you need to login'})
     }
-    if(exists.image){
+    if(exists.cv){
         const destination = path.join(__dirname, '../public/asset/files/cv/');
-        const filePath = destination + exists.image
+        const filePath = destination + exists.cv
         RemoveFile(filePath) // delete old existing image from image folder
     }
-
-    const deleteCv = await CvModel.findByIdAndDelete({_id: _id})
+   
+    const deleteCv = await CvModel.findByIdAndDelete(_id)
     if(deleteCv){
         return response.send({status: 'ok', deleteCv: deleteCv})
     }

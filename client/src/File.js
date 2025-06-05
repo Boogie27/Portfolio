@@ -97,6 +97,10 @@ const auth_image = (string) => {
     return ClientUrl('/asset/image/auth/' + string)
 }
 
+const get_cv = (string) => {
+    return url('/public/asset/files/cv/' + string)
+}
+
 
 const curentURL = (string) => {
     return window.location.href
@@ -140,6 +144,7 @@ export {
     url,
     icon,
     page,
+    get_cv,
     DateTime,
     curentURL,
     auth_image,

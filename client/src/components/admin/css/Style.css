@@ -1745,8 +1745,34 @@ h1{
 .cv-container{
     padding: 50px 0px;
 }
-
-
+.cv-viewer-container{
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+}
+.cv-viewer-container .dark-skin{
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    width: 100%;
+    height: 100vh;
+    display: block;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.654);
+}
+.cv-viewer-container .cv-viewer-frame{
+    z-index: 30;
+    height: 90vh;
+    width: 800px;
+    position: relative;
+    background-color: #fff;
+}
 
 
 
