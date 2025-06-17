@@ -8,7 +8,9 @@ const {
    DeleteCv,
    UpdateCV,
    FetchUserCv,
+   FetchClientUserCv,
    ToggleUserCvFeature,
+   DownLoadClientUserCv,
 } = require('../controllers/CVController')
 
 
@@ -26,6 +28,10 @@ router.post('/api/admin/toggle-cv-feature', ToggleUserCvFeature)
 
 
 
+
+// ************** CLIENT SECTION **************
+router.get('/api/client/fetch-user-cv', FetchClientUserCv)
+router.post('/api/client/download-user-cv', DownLoadClientUserCv)
 
 
 module.exports = router

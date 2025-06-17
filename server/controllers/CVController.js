@@ -256,7 +256,31 @@ const DeleteCv = AsyncHandler(async (request, response) => {
 
 
 
+    // *********************** CLIENT SECTION **************************
+//   fetch client services header
+const FetchClientUserCv = AsyncHandler(async (request, response) => {
+    try{
+        const content = await CvModel.find({is_featured: 1}).exec()
+        if(content){
+            return response.send({status: 'ok', cvs: content})
+        }
+        return response.send({status: 'empty', cvs: null })
+    }catch(error){
+        return response.send({status: 'error', message: 'Oops!, Something went wrong, try again!'})
+    }
+})
 
+
+
+const DownLoadClientUserCv = AsyncHandler(async (request, response) => {
+    try{
+        const cv = request.cv
+        const file = path.join(__dirname, '../public/asset/files/cv/', cv)
+        return response.download(file)
+    }catch(error){
+        return response.send({status: 'error', message: 'Oops!, Something went wrong, try again!'})
+    }
+})
 
 
 
@@ -265,5 +289,7 @@ module.exports = {
    DeleteCv,
    UpdateCV,
    FetchUserCv,
+   FetchClientUserCv,
    ToggleUserCvFeature,
+   DownLoadClientUserCv,
 }

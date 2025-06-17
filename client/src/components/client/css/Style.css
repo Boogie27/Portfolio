@@ -506,6 +506,56 @@ h1{
     border-top: 10px solid #333;
     border-bottom: 10px solid #333;
 }
+.banner-container .content-cv-container{
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100vh;
+    z-index: 30;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+}
+.banner-container .content-cv-container .dark-skin{
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
+    display: block;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.654);
+}
+.banner-container .content-cv-container .cv-contents{
+    z-index: 30;
+    width: 400px;
+    min-height: 100px;
+    max-height: 200px;
+    position: relative;
+    border-radius: 3px;
+    overflow-Y: auto;
+    background-color: #fff;
+}
+.banner-container .content-cv-container .cv-contents ul li{
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #eeeeee;
+}
+.banner-container .content-cv-container .cv-contents ul li .icon{
+    margin: 0px 10px;
+}
+.banner-container .content-cv-container .cv-contents ul li:hover{
+    background-color: #f1f1f1;
+}
+.banner-container .content-cv-container .cv-contents::-webkit-scrollbar{
+    width: 0px;
+    background:  transparent;
+}
+.banner-container .content-cv-container .cv-contents::-webkit-scrollbar-thumb {
+    background:  transparent;
+}
 /* ************ dark mode ********** */
 .portfolio-container.dark .banner-container .content-left .body{
     color: #ccc;
@@ -519,6 +569,17 @@ h1{
 }
 .portfolio-container.dark .banner-container .content-left .button button{
     color: #fff;
+}
+.portfolio-container.dark .banner-container .content-cv-container .cv-contents{
+    background-color: #1a1919;
+    border: 1px solid #242424;
+}
+.portfolio-container.dark .banner-container .content-cv-container .cv-contents ul li{
+    color: #868686;
+     border-bottom: 1px solid #2b2b2b;
+}
+.portfolio-container.dark .banner-container .content-cv-container .cv-contents ul li:hover{
+    background-color: #2b2b2b;
 }
 @media only screen and (max-width: 1400px){
     .banner-container{
@@ -545,6 +606,13 @@ h1{
         font-size: 18px;
         text-align: center;
         line-height: 30px;
+    }
+    .banner-container .content-cv-container .cv-contents{
+        width: 95%;
+        max-height: 50vh;
+    }
+    .banner-container .content-cv-container .cv-contents ul li{
+        font-size: 12px;
     }
 }
 @media only screen and (max-width: 398px){

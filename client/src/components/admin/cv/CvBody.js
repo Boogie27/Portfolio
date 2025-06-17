@@ -101,8 +101,11 @@ const CvBody = ({preloader, alertNotification}) => {
 
 
     // cb viewer
-    const ViewCV = (cv) => {
-        setIsViewed({state: cv.state, cv: cv.cv})
+    const toggleCvViewer = (cv) => {
+        if(cv === 'close'){
+            return setIsViewed(false)
+        }
+        return setIsViewed({state: cv.state, cv: cv.cv})
     }
 
     
@@ -146,11 +149,11 @@ const CvBody = ({preloader, alertNotification}) => {
     return (
         <div className="dashboard-banner-container">
             <TitleHeader toggleAddForm={toggleAddForm}/>
-            <ContentTable cvs={cvs}  ViewCV={ViewCV} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
+            <ContentTable cvs={cvs}  toggleCvViewer={toggleCvViewer} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>
             <AddContent addFormState={addFormState}  toggleAddForm={toggleAddForm} alertNotification={alertNotification}/>
             {editFormState.state ? (<EditContent editFormState={editFormState} toggleEditForm={toggleEditForm} alertNotification={alertNotification}/>) : null }
             <DeleteContent deleteFormState={deleteFormState} setDeleteFormState={setDeleteFormState} alertNotification={alertNotification}/>
-            <CvViewer/>
+            {isViewed !== false ? (<CvViewer toggleCvViewer={toggleCvViewer}/>) : null }
         </div>
     )
 }
@@ -178,7 +181,7 @@ const TitleHeader = ({toggleAddForm}) => {
 }
 
 
-const ContentTable = ({cvs, ViewCV, toggleDeleteForm, toggleFeature, toggleEditForm}) => {
+const ContentTable = ({cvs, toggleCvViewer, toggleDeleteForm, toggleFeature, toggleEditForm}) => {
     return (
         <div className="table-content-container">
             <table className="table table-hover">
@@ -195,7 +198,7 @@ const ContentTable = ({cvs, ViewCV, toggleDeleteForm, toggleFeature, toggleEditF
                     </tr>
                 </thead>
                 <tbody>
-                    { cvs.map((cv, index) => (<ContentItem key={index} ViewCV={ViewCV} cv={cv} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
+                    { cvs.map((cv, index) => (<ContentItem key={index} toggleCvViewer={toggleCvViewer} cv={cv} toggleFeature={toggleFeature} toggleEditForm={toggleEditForm} toggleDeleteForm={toggleDeleteForm}/>)) }
                 </tbody>
             </table>
             { cvs.length === 0 ? (<TableEmpty/>) : null }
@@ -218,7 +221,7 @@ const TableEmpty = () => {
 
 
 
-const ContentItem = ({cv, ViewCV, toggleEditForm, toggleFeature, toggleDeleteForm}) => {
+const ContentItem = ({cv, toggleCvViewer, toggleEditForm, toggleFeature, toggleDeleteForm}) => {
     return (
         <tr>
             <td>
@@ -228,7 +231,7 @@ const ContentItem = ({cv, ViewCV, toggleEditForm, toggleFeature, toggleDeleteFor
                 {cv.cv_title}
             </td>
             <td>
-                <FontAwesomeIcon  onClick={() => ViewCV({state: true, cv: cv.cv})} className="icon" icon={faEye} />
+                <FontAwesomeIcon  onClick={() => toggleCvViewer({state: true, cv: cv.cv})} className="icon" icon={faEye} />
             </td>
              <td>
                 {cv.download_count}

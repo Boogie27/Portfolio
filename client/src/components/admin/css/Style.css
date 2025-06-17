@@ -1769,9 +1769,52 @@ h1{
 .cv-viewer-container .cv-viewer-frame{
     z-index: 30;
     height: 90vh;
-    width: 800px;
+    width: 1000px;
     position: relative;
     background-color: #fff;
+}
+.cv-viewer-container .float-button{
+    right: 0px;
+    z-index: 30;
+    bottom: 0px;
+    cursor: pointer;
+    position: absolute;
+    background-color: #fff;
+}
+.cv-viewer-container .float-button{
+    right: 20px;
+    top: 20px;
+    z-index: 30;
+    position: absolute;
+}
+.cv-viewer-container .float-button .icon{
+    right: 20px;
+    top: 20px;
+    color: #fff;
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.3s ease;
+    background-color: #EB5757;
+}
+.cv-viewer-container .float-button .icon:hover{
+    animation: btnSpinner 0.3s linear;
+}
+@media only screen and (max-width: 1125px){
+    .cv-viewer-container .cv-viewer-frame{
+        width: 90%;
+    }
+}
+@media only screen and (max-width: 992px){
+    .cv-viewer-container .cv-viewer-frame{
+        width: 100%;
+        height: 100vh;
+    }
 }
 
 
